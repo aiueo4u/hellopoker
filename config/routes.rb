@@ -1,3 +1,11 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resource :session, only: %i(create)
+  resources :players
+  resources :tables
+
+  resources :tables, only: %i(), module: :tables  do
+    resources :players
+  end
+
+  resource :game_dealer, only: %i(create)
 end

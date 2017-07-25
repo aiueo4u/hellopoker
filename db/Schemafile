@@ -1,0 +1,34 @@
+create_table "game_hand_players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  t.integer "game_hand_id"
+  t.integer "player_id"
+  t.integer "position"
+  t.integer "bet_amount_in_state"
+  t.integer "total_bet_amount"
+  t.integer "state"
+end
+
+create_table "game_hands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  t.integer "table_id"
+  t.integer "state",                   default: 0
+  t.integer "current_seat_no"
+  t.integer "button_seat_no"
+  t.integer "last_aggressive_seat_no"
+  t.boolean "bb_used_option"
+end
+
+create_table "players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  t.string "nickname"
+end
+
+create_table "table_players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  t.integer "table_id"
+  t.integer "player_id"
+  t.integer "stack",     default: 0
+  t.integer "seat_no"
+end
+
+create_table "tables", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  t.string  "name"
+  t.integer "sb_size", null: false, unsigned: true
+  t.integer "bb_size", null: false, unsigned: true
+end
