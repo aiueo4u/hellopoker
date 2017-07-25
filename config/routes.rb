@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  resource :session, only: %i(create)
-  resources :players
-  resources :tables
-
-  resources :tables, only: %i(), module: :tables  do
+  namespace :api do
+    resource :session, only: %i(create)
     resources :players
-  end
+    resources :tables
 
-  resource :game_dealer, only: %i(create)
+    resources :tables, only: %i(), module: :tables  do
+      resources :players
+    end
+    resource :game_dealer, only: %i(create)
+  end
 end

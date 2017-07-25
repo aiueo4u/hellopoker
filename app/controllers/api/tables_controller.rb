@@ -1,4 +1,4 @@
-class TablesController < ApplicationController
+class Api::TablesController < Api::ApplicationController
   before_action :check_jwt
 
   def index

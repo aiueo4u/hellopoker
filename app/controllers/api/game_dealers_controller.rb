@@ -1,4 +1,4 @@
-class GameDealersController < ApplicationController
+class Api::GameDealersController < Api::ApplicationController
   before_action :check_jwt
 
   def create

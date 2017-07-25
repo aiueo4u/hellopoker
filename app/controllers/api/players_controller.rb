@@ -1,4 +1,4 @@
-class PlayersController < ApplicationController
+class Api::PlayersController < Api::ApplicationController
   before_action :check_jwt
 
   def show
