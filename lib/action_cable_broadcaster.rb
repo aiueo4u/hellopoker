@@ -7,8 +7,8 @@ module ActionCableBroadcaster
   end
 
   def self.broadcast_game_result(game_hand)
-    # ベット額が一番少ないやつに合わせてポットを配分する
-    min_bet_game_hand_player = game_hand.game_hand_players.select { |ghp| ghp.total_bet_amount > 0 }.min_by(&:total_bet_amount)
+    # アクティブで、ベット額が一番少ないやつに合わせてポットを配分する
+    min_bet_game_hand_player = game_hand.game_hand_players.select { |ghp| !ghp.folded? && ghp.total_bet_amount > 0 }.min_by(&:total_bet_amount)
     amount_by_one = min_bet_game_hand_player.total_bet_amount
     pot_game_hand_players = game_hand.game_hand_players.select { |game_hand_player| game_hand_player.total_bet_amount > 0 }
 
@@ -29,7 +29,8 @@ module ActionCableBroadcaster
 
     data = {
       type: 'game_hand',
-      pot: amount_by_one * pot_game_hand_players.size,
+      # pot: amount_by_one * pot_game_hand_players.size,
+      pot: game_hand.game_hand_players.sum { |ghp| [ghp.total_bet_amount, amount_by_one].min },
       players: players_data,
     }
     ActionCable.server.broadcast "chip_channel_#{game_hand.table_id}", data

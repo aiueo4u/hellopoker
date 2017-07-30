@@ -18,12 +18,17 @@ class Api::GameDealersController < Api::ApplicationController
 
       total = 0
 
-      min_bet_game_hand_player = game_hand.game_hand_players.select { |ghp| ghp.total_bet_amount > 0 }.min_by(&:total_bet_amount)
+      min_bet_game_hand_player = game_hand.game_hand_players.select { |ghp| !ghp.folded? && ghp.total_bet_amount > 0 }.min_by(&:total_bet_amount)
       amount_by_one = min_bet_game_hand_player.total_bet_amount
       game_hand.game_hand_players.each do |ghp|
         next unless ghp.total_bet_amount > 0
-        total += amount_by_one
-        ghp.total_bet_amount -= amount_by_one
+        if ghp.total_bet_amount >= amount_by_one
+          total += amount_by_one
+          ghp.total_bet_amount -= amount_by_one
+        else
+          total += ghp.total_bet_amount
+          ghp.total_bet_amount = 0
+        end
         ghp.save!
       end
 
