@@ -9,4 +9,6 @@ Rails.application.routes.draw do
     end
     resource :game_dealer, only: %i(create)
   end
+
+  get 'auth/:provider/callback', to: 'sessions#callback'
 end

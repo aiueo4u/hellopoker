@@ -38,7 +38,7 @@ class Api::GameDealersController < Api::ApplicationController
       end
     when 'PLAYER_ACTION_TAKE_SEAT'
       raise 'already seated' if player_id.in?(table_players.map(&:player_id))
-      TablePlayer.create!(table_id: table_id, player_id: player_id, seat_no: params[:seat_no])
+      TablePlayer.create!(table_id: table_id, player_id: player_id, seat_no: params[:seat_no], stack: params[:buy_in_amount])
     when 'PLAYER_ACTION_FOLD'
       table_player = TablePlayer.find_by!(table_id: table_id, player_id: player_id)
       check_your_action!(player_id) # 自分のアクションかチェック
