@@ -1,2 +1,0 @@
-class GameHandPotPlayer < ApplicationRecord
-end
