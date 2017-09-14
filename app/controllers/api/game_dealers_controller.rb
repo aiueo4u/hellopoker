@@ -17,7 +17,10 @@ class Api::GameDealersController < Api::ApplicationController
     seat_no = params[:seat_no].to_i
     buy_in_amount = params[:buy_in_amount].to_i
 
-    GamaManager.take_seat(table_id, player_id, seat_no, buy_in_amount)
+    GameManager.take_seat(table_id, player_id, seat_no, buy_in_amount)
+
+    manager = GameManager.new(table_id, player_id, nil, nil, current_player.id)
+    manager.broadcast_game_state
 
     render json: {}
   end
@@ -31,6 +34,12 @@ class Api::GameDealersController < Api::ApplicationController
 
     manager = GameManager.new(table_id, player_id, type, amount, current_player.id)
     manager.do_action
+
+    # ゲーム開始直後にUNDOされた場合
+    if manager.game_hand.destroyed?
+      manager = GameManager.new(table_id, nil, nil, nil, nil)
+    end
+
     manager.broadcast
 
     render json: {}

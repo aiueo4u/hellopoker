@@ -11,7 +11,7 @@ class GameAction < ApplicationRecord
     finished
   )
 
-  enum action_types: %i(
+  enum action_type: %i(
     blind
     check
     bet

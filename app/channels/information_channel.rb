@@ -1,34 +1,17 @@
 class InformationChannel < ApplicationCable::Channel
   def subscribed
-    stream_from stream_name
-
-    broadcast_data = {
-      type: 'info',
-      info_type: 'entered',
-      nickname: current_player.nickname,
-      time: Time.current.strftime('%Y/%m/%d %H:%M'),
-    }
-    ActionCable.server.broadcast stream_name, broadcast_data
+    stream_from InformationBroadcaster.stream_name(table_id)
+    # TOOD: チャットエリアを新設してそちらに移行
+    # InformationBroadcaster.broadcast_entering(table_id, current_player)
   end
 
   def unsubscribed
-    broadcast_data = {
-      type: 'info',
-      info_type: 'leaving',
-      nickname: current_player.nickname,
-      time: Time.current.strftime('%Y/%m/%d %H:%M'),
-    }
-    ActionCable.server.broadcast stream_name, broadcast_data
-  end
-
-  def info(data)
-    broadcast_data = data.merge(type: 'info', time: Time.current.strftime('%Y/%m/%d %H:%M'))
-    ActionCable.server.broadcast stream_name, broadcast_data
+    # InformationBroadcaster.broadcast_leaving(table_id, current_player)
   end
 
   private
 
-  def stream_name
-    "information_channel_#{params[:tableId]}"
+  def table_id
+    params[:tableId]
   end
 end

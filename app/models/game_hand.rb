@@ -1,6 +1,5 @@
 class GameHand < ApplicationRecord
   has_many :game_hand_players
-  has_many :game_hand_pots
   has_many :game_actions, autosave: true
 
   enum player_states: %i(
@@ -78,7 +77,6 @@ class GameHand < ApplicationRecord
   end
 
   def position_by_seat_no(seat_no)
-    button_seat_no
     if seat_no > button_seat_no
       seat_no - button_seat_no
     else
@@ -122,13 +120,12 @@ class GameHand < ApplicationRecord
       bet_amount_in_state = 0
       total_bet_amount = 0
       actions.each do |action|
-        target_type_values = self.class.action_types.slice(*%w(blind call bet)).values
-        if action.action_type.in?(target_type_values)
+        if action.action_type.in?(%w(blind call bet))
           total_bet_amount += action.amount
           if action.state == self.state
             bet_amount_in_state += action.amount
           end
-        elsif action.action_type == self.class.action_types[:taken]
+        elsif action.action_type == 'taken'
           total_bet_amount -= action.amount
         end
       end
@@ -139,7 +136,7 @@ class GameHand < ApplicationRecord
       table_player = table_player_by_player_id(player_id)
       player_state = nil
       if game_hand_player
-        if last_action_type == self.class.action_types[:fold]
+        if last_action_type == 'fold'
           player_state = self.class.player_states[:folded]
         else
           if table_player.stack == 0
@@ -226,9 +223,9 @@ class GameHand < ApplicationRecord
 
   def undo_action
     last_action.mark_for_destruction
-    if last_action.action_type.in?(GameAction.action_types.slice(*%w(call bet)).values)
+    if last_action.action_type.in?(%w(call bet blind))
       update_player_stack!(last_action.player_id, last_action.amount)
-    elsif last_action.action_type == GameAction.action_types[:taken]
+    elsif last_action.action_type == 'taken'
       update_player_stack!(last_action.player_id, -1 * last_action.amount)
     end
   end
@@ -250,7 +247,7 @@ class GameHand < ApplicationRecord
 
     min_total_bet_amount_in_not_folded_players = self.min_total_bet_amount_in_not_folded_players
 
-    dump_actions.each do |player_id, action|
+    dump_actions.each do |_, action|
       total_bet_amount = action['total_bet_amount']
       next unless total_bet_amount > 0
       if total_bet_amount >= min_total_bet_amount_in_not_folded_players

@@ -1,5 +1,5 @@
 class GameManager
-  attr_reader :table_id, :game_hand, :player_id, :amount, :type
+  attr_reader :table_id, :game_hand, :player_id, :amount, :type, :last_action_state
 
   def self.create_new_game(table_id, player)
     # 新規ゲームの開始
@@ -14,21 +14,21 @@ class GameManager
     # 前のゲームのボタンポジションを取得
     last_button_seat_no = GameHand.where(table_id: table_id).order(:id).last&.button_seat_no
     if last_button_seat_no
-      next_button_seat_no = GameUtils.sort_seat_nos(game_hand.table_players.map(&:seat_no), last_button_seat_no)[1]
+      next_button_seat_no = GameUtils.sort_seat_nos(game_hand.table_players.map(&:seat_no), last_button_seat_no)[0]
     else
       next_button_seat_no = game_hand.table_players.last.seat_no
     end
 
     # ボタン位置と最初のアクション位置を設定
     sorted_seat_nos = GameUtils.sort_seat_nos(game_hand.table_players.map(&:seat_no), next_button_seat_no)
-    sb_seat_no = sorted_seat_nos[0]
-    bb_seat_no = sorted_seat_nos[1]
-    next_seat_no = 
     if sorted_seat_nos.size == 2
-      next_seat_no = sorted_seat_nos[0]
+      sb_seat_no = sorted_seat_nos[1]
+      bb_seat_no = sorted_seat_nos[0]
     else
-      next_seat_no = sorted_seat_nos[2]
+      sb_seat_no = sorted_seat_nos[0]
+      bb_seat_no = sorted_seat_nos[1]
     end
+
     game_hand.button_seat_no = next_button_seat_no
 
     # ブラインド徴収
@@ -59,6 +59,9 @@ class GameManager
   end
 
   def do_action
+    # TODO: 消したい・・・
+    @last_action_state = current_state
+
     case self.type
     when 'PLAYER_ACTION_CHECK'
       table_player = game_hand.table_player_by_player_id(player_id)
@@ -90,14 +93,34 @@ class GameManager
 
       table_player.stack -= amount_to_call
       table_player.save!
-      amount = amount_to_call
+      @amount = amount_to_call
     when 'PLAYER_ACTION_FOLD'
       table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
 
       game_hand.build_fold_action(self.player_id, current_state)
     when 'UNDO_PLAYER_ACTION'
-      game_hand.undo_action
+      if game_hand.game_actions.size == 2 # SB,BB
+        # ゲーム開始直後
+        game_hand.undo_action
+        game_hand.save!
+        game_hand.undo_action
+        game_hand.destroy!
+      elsif current_state == 'finished'
+        # 結果ラウンドはまとめて全部UNDOする
+        while true
+          if game_hand.last_action.taken?
+            game_hand.undo_action
+            game_hand.save!
+          else
+            break
+          end
+        end
+        # 最終アクションもUNDO
+        game_hand.undo_action
+      else
+        game_hand.undo_action
+      end
     when 'GAME_HAND_TAKE_POT'
       @amount = game_hand.create_taken_actions(player_id, current_state)
     else
@@ -107,14 +130,29 @@ class GameManager
     game_hand.save!
   end
 
+  # そのラウンドの最初のアクションかどうか
+  def round_first_action?
+    return true unless game_hand
+    return true unless game_hand.last_action
+    current_state != game_hand.last_action.state
+  end
+
   def broadcast_game_state
     game_hand_players_by_player_id = game_hand&.game_hand_players&.index_by(&:player_id) || {}
     dumped_actions = game_hand&.dump_actions || {}
     table_players = game_hand&.table_players || TablePlayer.where(table_id: table_id).to_a
 
+    total_bet_amount_in_current_round = 0
+
     players_data = table_players.sort_by(&:seat_no).map do |table_player|
       game_hand_player = game_hand_players_by_player_id[table_player.player_id]
       dumped_action = dumped_actions[table_player.player_id] || {}
+
+      bet_amount_in_state = round_first_action? ? 0 : dumped_action['bet_amount_in_state'] || 0
+      total_bet_amount_in_current_round += bet_amount_in_state
+
+      bb_option_usable =
+        game_hand && bb_seat_no == table_player.seat_no && !current_bb_used_option?
 
       {
         id: table_player.player.id,
@@ -124,19 +162,25 @@ class GameManager
         seat_no: table_player.seat_no,
         position: game_hand&.position_by_seat_no(table_player.seat_no),
         state: dumped_action['player_state'],
-        bet_amount_in_state: dumped_action['bet_amount_in_state'],
+        bet_amount_in_state: bet_amount_in_state,
         total_bet_amount: dumped_action['total_bet_amount'],
+        bb_option_usable: bb_option_usable,
       }
     end
 
+    # そのラウンドでベットされたチップはポットに含めない
+    pot_amount = dumped_actions.sum { |_, action| action['total_bet_amount'] }
+    pot_amount -= total_bet_amount_in_current_round
+
     data = {
       type: 'player_action',
-      pot: dumped_actions.sum { |_, action| action['total_bet_amount'] },
+      pot: pot_amount,
       game_hand_state: current_state,
       current_seat_no: current_seat_no,
       button_seat_no: game_hand&.button_seat_no,
       players: players_data,
       last_aggressive_seat_no: last_aggressive_seat_no,
+      undoable: GameHand.where(table_id: table_id).exists?,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
   end
@@ -181,28 +225,11 @@ class GameManager
     ActionCable.server.broadcast "chip_channel_#{game_hand.table_id}", data
   end
 
-  def broadcast_information
-    table_player = TablePlayer.find_by(player_id: player_id)
-    dumped_actions = game_hand&.dump_actions || {}
-    data = {
-      type: 'info',
-      info_type: 'player_action',
-      player_action_type: type,
-      time: Time.current.strftime('%Y/%m/%d %H:%M'),
-      table_id: table_id,
-      player_id: player_id,
-      nickname: table_player&.player&.nickname,
-      image_url: table_player&.player&.image_url,
-      amount: amount,
-      pot: dumped_actions.sum { |_, action| action['total_bet_amount'] },
-    }
-
-    ActionCable.server.broadcast "information_channel_#{table_id}", data
-  end
-
   def broadcast
     broadcast_game_state
-    broadcast_information
+    if type # TODO: 良い感じに分離
+      InformationBroadcaster.broadcast_info(game_hand, last_action_state, player_id, type, amount)
+    end
 
     # リバー終了時
     if current_state == 'result'
@@ -212,10 +239,14 @@ class GameManager
     end
   end
 
-  def take_seat(table_id, player_id, seat_no, buy_in_amount)
+  def self.take_seat(table_id, player_id, seat_no, buy_in_amount)
     game_hand = GameHand.where(table_id: table_id).order(id: :desc).first
 
-    raise 'already seated' if player_id.in?(game_hand.table_players.map(&:player_id))
+    if game_hand
+      if player_id.in?(game_hand.table_players.map(&:player_id))
+        raise 'already seated'
+      end
+    end
 
     TablePlayer.create!(
       table_id: table_id,
@@ -250,7 +281,7 @@ class GameManager
         end
       else
         position = game_hand.position_by_seat_no(game_hand.last_action_seat_no)
-        if game_hand.position_by_seat_no(calc_seat_no) < position
+        if calc_seat_no && game_hand.position_by_seat_no(calc_seat_no) < position
           return true
         end
       end
@@ -263,12 +294,12 @@ class GameManager
     # TODO: 使ってないかも。削除。
     return 'init' if game_hand.nil?
 
-    # 一人残して全員フォールドしている場合
-    return 'result' if game_hand.last_one_player?
-
     # 精算が終了した場合
     # ゲーム開始時にはブラインドが支払われているので、初期状態でfinishedになることはない。
     return 'finished' if game_hand.dump_actions.sum { |_, action| action['total_bet_amount'] } == 0
+
+    # 一人残して全員フォールドしている場合
+    return 'result' if game_hand.last_one_player?
 
     # 現在のラウンドが終了している場合
     if current_round_finished?
@@ -328,7 +359,7 @@ class GameManager
     return nil if current_round_finished?
 
     last_aggressive_player_id = game_hand.all_actions.select do |action|
-      action.action_type == 2 # bet
+      action.state == current_state && (action.bet? || action.blind?)
     end.last&.player_id
     game_hand.table_player_by_player_id(last_aggressive_player_id)&.seat_no
   end
