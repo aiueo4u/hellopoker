@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "state", null: false, unsigned: true
     t.integer "player_id", null: false, unsigned: true
     t.integer "action_type", null: false, unsigned: true
-    t.integer "amount", unsigned: true
+    t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_hand_id"], name: "index_game_actions_on_game_hand_id"

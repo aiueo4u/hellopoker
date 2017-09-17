@@ -6,21 +6,23 @@ class GameManager
     # ゲーム状態はプリプロップ
     game_hand = GameHand.new(table_id: table_id)
 
-    # この時点でテーブルに座っているプレイヤーを参加させる
-    game_hand.table_players.sort_by(&:seat_no).each do |table_player|
+    # スタックがあるプレイヤーのみ参加
+    playing_table_players = game_hand.table_players.select { |tp| tp.stack > 0 }
+
+    playing_table_players.sort_by(&:seat_no).each do |table_player|
       game_hand.game_hand_players.build(player_id: table_player.player_id)
     end
 
     # 前のゲームのボタンポジションを取得
     last_button_seat_no = GameHand.where(table_id: table_id).order(:id).last&.button_seat_no
     if last_button_seat_no
-      next_button_seat_no = GameUtils.sort_seat_nos(game_hand.table_players.map(&:seat_no), last_button_seat_no)[0]
+      next_button_seat_no = GameUtils.sort_seat_nos(playing_table_players.map(&:seat_no), last_button_seat_no)[0]
     else
-      next_button_seat_no = game_hand.table_players.last.seat_no
+      next_button_seat_no = playing_table_players.last.seat_no
     end
 
     # ボタン位置と最初のアクション位置を設定
-    sorted_seat_nos = GameUtils.sort_seat_nos(game_hand.table_players.map(&:seat_no), next_button_seat_no)
+    sorted_seat_nos = GameUtils.sort_seat_nos(playing_table_players.map(&:seat_no), next_button_seat_no)
     if sorted_seat_nos.size == 2
       sb_seat_no = sorted_seat_nos[1]
       bb_seat_no = sorted_seat_nos[0]
@@ -33,12 +35,12 @@ class GameManager
 
     # ブラインド徴収
     table = Table.find(table_id)
-    sb_table_player = game_hand.table_players.find { |table_player| table_player.seat_no == sb_seat_no }
+    sb_table_player = playing_table_players.find { |tp| tp.seat_no == sb_seat_no }
     sb_amount = table.sb_size
     sb_table_player.stack -= sb_amount # TODO: ショートのときの対応
     game_hand.build_blind_action(sb_table_player.player_id, sb_amount, 'preflop')
 
-    bb_table_player = game_hand.table_players.find { |table_player| table_player.seat_no == bb_seat_no }
+    bb_table_player = playing_table_players.find { |tp| tp.seat_no == bb_seat_no }
     bb_amount = table.bb_size
     bb_table_player.stack -= bb_amount # TODO: ショートのときの対応
     game_hand.build_blind_action(bb_table_player.player_id, bb_amount, 'preflop')
@@ -154,6 +156,12 @@ class GameManager
       bb_option_usable =
         game_hand && bb_seat_no == table_player.seat_no && !current_bb_used_option?
 
+      if game_hand&.next_state == 'finished'
+        player_state = nil
+      else
+        player_state = dumped_action['player_state']
+      end
+
       {
         id: table_player.player.id,
         nickname: table_player.player.nickname,
@@ -161,7 +169,7 @@ class GameManager
         stack: table_player.stack,
         seat_no: table_player.seat_no,
         position: game_hand&.position_by_seat_no(table_player.seat_no),
-        state: dumped_action['player_state'],
+        state: player_state,
         bet_amount_in_state: bet_amount_in_state,
         total_bet_amount: dumped_action['total_bet_amount'],
         bb_option_usable: bb_option_usable,
@@ -169,7 +177,7 @@ class GameManager
     end
 
     # そのラウンドでベットされたチップはポットに含めない
-    pot_amount = dumped_actions.sum { |_, action| action['total_bet_amount'] }
+    pot_amount = dumped_actions.sum { |_, action| action['effective_total_bet_amount'] }
     pot_amount -= total_bet_amount_in_current_round
 
     data = {
@@ -193,7 +201,7 @@ class GameManager
 
     pot_game_hand_players = game_hand.game_hand_players.select { |ghp|
       action = dumped_actions[ghp.player_id]
-      action && action['player_state'] != GameHand.player_states[:folded] && action['total_bet_amount'] > 0
+      action && action['player_state'] != GameHand.player_states[:folded] && action['effective_total_bet_amount'] > 0
     }
 
     players_data = game_hand.table_players.sort_by(&:seat_no).map do |table_player|
@@ -212,7 +220,7 @@ class GameManager
 
     data = {
       type: 'game_hand',
-      pot: dumped_actions.sum { |_, action| [action['total_bet_amount'], amount_by_one].min },
+      pot: dumped_actions.sum { |_, action| [action['effective_total_bet_amount'], amount_by_one].min },
       players: players_data,
     }
     ActionCable.server.broadcast "chip_channel_#{game_hand.table_id}", data
@@ -239,49 +247,51 @@ class GameManager
     end
   end
 
+  # バイインも兼ねている。。。
   def self.take_seat(table_id, player_id, seat_no, buy_in_amount)
-    game_hand = GameHand.where(table_id: table_id).order(id: :desc).first
-
-    if game_hand
-      if player_id.in?(game_hand.table_players.map(&:player_id))
-        raise 'already seated'
-      end
+    table_player = TablePlayer.find_by(table_id: table_id, player_id: player_id)
+    if table_player
+      table_player.stack += buy_in_amount
+      table_player.save!
+    else
+      TablePlayer.create!(
+        table_id: table_id,
+        player_id: player_id,
+        seat_no: seat_no,
+        stack: buy_in_amount
+      )
     end
-
-    TablePlayer.create!(
-      table_id: table_id,
-      player_id: player_id,
-      seat_no: seat_no,
-      stack: buy_in_amount
-    )
   end
 
   # TODO: private
 
   def current_round_finished?
     sorted_seat_nos = GameUtils.sort_seat_nos(game_hand.seat_nos, game_hand.last_action_seat_no)
-    calc_seat_no = sorted_seat_nos.find do |seat_no|
-      game_hand.active_player_by_seat_no?(seat_no) && game_hand.last_action_seat_no != seat_no
+    next_seat_no = sorted_seat_nos.find do |seat_no|
+      !game_hand.folded_player_by_seat_no?(seat_no)
     end
 
     current_round = game_hand.last_action.state
     current_round_actions = game_hand.all_actions.group_by(&:state)[current_round]
     last_aggressive_player_id = current_round_actions.select(&:bet?).last&.player_id
     last_aggressive_seat_no2 = game_hand.table_player_by_player_id(last_aggressive_player_id)&.seat_no
+
+    # ベットしたプレイヤーがいる場合orプリフロの場合
+    # プリフロではBBをアグレッシブプレイヤーとして扱う
     if last_aggressive_seat_no2
-      if calc_seat_no == last_aggressive_seat_no2
-        return true
-      end
+      # オリジナルレイザーorBBまでアクションが回ってきたとき
+      return true if next_seat_no == last_aggressive_seat_no2
+
     elsif current_round_actions.last.state == 'preflop' && current_bb_used_option?
       return true
     else
       if current_round_actions.last.state == 'preflop'
-        if calc_seat_no == bb_seat_no && !current_bb_used_option?
+        if next_seat_no == bb_seat_no && !current_bb_used_option?
           return false
         end
       else
         position = game_hand.position_by_seat_no(game_hand.last_action_seat_no)
-        if calc_seat_no && game_hand.position_by_seat_no(calc_seat_no) < position
+        if next_seat_no && game_hand.position_by_seat_no(next_seat_no) < position
           return true
         end
       end
@@ -296,10 +306,16 @@ class GameManager
 
     # 精算が終了した場合
     # ゲーム開始時にはブラインドが支払われているので、初期状態でfinishedになることはない。
-    return 'finished' if game_hand.dump_actions.sum { |_, action| action['total_bet_amount'] } == 0
+    return 'finished' if game_hand.dump_actions.sum { |_, action| action['effective_total_bet_amount'] } == 0
+
+    # まだ精算が完了していない場合
+    # - サイドポットがある場合
+    if game_hand.last_action.state == 'result' && game_hand.dump_actions.sum { |_, action| action['effective_total_bet_amount'] } > 0
+      return 'result'
+    end
 
     # 一人残して全員フォールドしている場合
-    return 'result' if game_hand.last_one_player?
+    return 'result' if game_hand.last_one_active_player?
 
     # 現在のラウンドが終了している場合
     if current_round_finished?
@@ -325,8 +341,8 @@ class GameManager
 
   def current_seat_no
     return nil if game_hand.nil?
-    return nil if game_hand.last_one_player?
-    return nil if game_hand.dump_actions.sum { |_, action| action['total_bet_amount'] } == 0
+    return nil if game_hand.last_one_active_player?
+    return nil if game_hand.dump_actions.sum { |_, action| action['effective_total_bet_amount'] } == 0
 
     # 現在のラウンドが終了している場合
     if current_round_finished?

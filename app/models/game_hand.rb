@@ -36,10 +36,6 @@ class GameHand < ApplicationRecord
     table_players.find { |tp| tp.seat_no == seat_no }&.player_id
   end
 
-  def last_one_player?
-    dump_actions.values.select { |action| action['player_state'] != self.class.player_states[:folded] }.size <= 1
-  end
-
   def last_one_active_player?
     dump_actions.values.select { |action| action['player_state'] == self.class.player_states[:active] }.size <= 1
   end
@@ -56,6 +52,18 @@ class GameHand < ApplicationRecord
   def active_player_by_seat_no?(seat_no)
     player_id = player_id_by_seat_no(seat_no)
     active_player?(player_id)
+  end
+
+  def folded_player_by_seat_no?(seat_no)
+    player_id = player_id_by_seat_no(seat_no)
+    folded_player?(player_id)
+  end
+
+  def folded_player?(player_id)
+    game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
+    return false unless game_hand_player
+    dumped_actions = dump_actions
+    !dumped_actions[player_id] || dumped_actions[player_id]['player_state'] == self.class.player_states[:folded]
   end
 
   def active_player?(player_id)
@@ -117,29 +125,40 @@ class GameHand < ApplicationRecord
     actions_by_player_id.each do |player_id, actions|
       next if player_id.nil?
 
+      # 現在のラウンドでのベット額
       bet_amount_in_state = 0
+      # 実際に賭けたトータルのベット額
       total_bet_amount = 0
+      # 他プレイヤーにテイクされていない実効ベット額
+      # - サイドポット発生時等に有効
+      effective_total_bet_amount = 0
       actions.each do |action|
         if action.action_type.in?(%w(blind call bet))
           total_bet_amount += action.amount
+          effective_total_bet_amount += action.amount
           if action.state == self.state
             bet_amount_in_state += action.amount
           end
-        elsif action.action_type == 'taken'
-          total_bet_amount -= action.amount
+        # 他プレイヤーにテイクされた分を実効ベット額から引く
+        elsif action.action_type == 'taken' && action.amount < 0
+          effective_total_bet_amount += action.amount
         end
       end
 
       last_action_type = actions.max_by(&:order_id).action_type
 
       game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
+
       table_player = table_player_by_player_id(player_id)
+      taken_amount = actions.select(&:result?).sum(&:amount)
+      is_allin = (table_player.stack - taken_amount) == 0
+
       player_state = nil
       if game_hand_player
         if last_action_type == 'fold'
           player_state = self.class.player_states[:folded]
         else
-          if table_player.stack == 0
+          if is_allin
             player_state = self.class.player_states[:allin]
           else
             player_state = self.class.player_states[:active]
@@ -152,6 +171,7 @@ class GameHand < ApplicationRecord
       dumped_actions[player_id] = {
         'bet_amount_in_state' => bet_amount_in_state,
         'total_bet_amount' => total_bet_amount,
+        'effective_total_bet_amount' => effective_total_bet_amount,
         'player_state' => player_state,
         'round' => round,
       }
@@ -225,15 +245,15 @@ class GameHand < ApplicationRecord
     last_action.mark_for_destruction
     if last_action.action_type.in?(%w(call bet blind))
       update_player_stack!(last_action.player_id, last_action.amount)
-    elsif last_action.action_type == 'taken'
+    elsif last_action.taken? && last_action.amount > 0
       update_player_stack!(last_action.player_id, -1 * last_action.amount)
     end
   end
 
   def min_total_bet_amount_in_not_folded_players
     dump_actions.values.select { |action|
-      action['player_state'] != self.class.player_states[:folded] && action['total_bet_amount'] > 0
-    }.min_by { |action| action['total_bet_amount'] }['total_bet_amount']
+      action['player_state'] != self.class.player_states[:folded] && action['effective_total_bet_amount'] > 0
+    }.min_by { |action| action['effective_total_bet_amount'] }['effective_total_bet_amount']
   end
 
   def update_player_stack!(player_id, amount)
@@ -242,24 +262,33 @@ class GameHand < ApplicationRecord
     table_player.save!
   end
 
-  def create_taken_actions(player_id, current_state)
+  def create_taken_actions(winning_player_id, current_state)
     total = 0
 
     min_total_bet_amount_in_not_folded_players = self.min_total_bet_amount_in_not_folded_players
 
-    dump_actions.each do |_, action|
-      total_bet_amount = action['total_bet_amount']
-      next unless total_bet_amount > 0
-      if total_bet_amount >= min_total_bet_amount_in_not_folded_players
+    dump_actions.each do |action_player_id, action|
+      eff_total_bet_amount = action['effective_total_bet_amount']
+      next unless eff_total_bet_amount > 0
+
+      # ポット獲得権利があるプレイヤー
+      if eff_total_bet_amount >= min_total_bet_amount_in_not_folded_players
         total += min_total_bet_amount_in_not_folded_players
-        self.build_taken_action(player_id, min_total_bet_amount_in_not_folded_players, current_state)
+        # 取得版
+        self.build_taken_action(winning_player_id, min_total_bet_amount_in_not_folded_players, current_state)
+        # 奪われた版
+        self.build_taken_action(action_player_id, -1 * min_total_bet_amount_in_not_folded_players, current_state)
+      # フォールド済みでポット獲得権利がないプレイヤー
       else
-        total += total_bet_amount
-        self.build_taken_action(player_id, total_bet_amount, current_state)
+        total += eff_total_bet_amount
+        # 取得版
+        self.build_taken_action(winning_player_id, eff_total_bet_amount, current_state)
+        # 奪われた版
+        self.build_taken_action(action_player_id, -1 * eff_total_bet_amount, current_state)
       end
     end
 
-    self.update_player_stack!(player_id, total)
+    self.update_player_stack!(winning_player_id, total)
     self.save!
 
     total
