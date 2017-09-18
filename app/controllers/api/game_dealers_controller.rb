@@ -4,7 +4,11 @@ class Api::GameDealersController < Api::ApplicationController
   # ゲームスタート
   def start
     table_id = params[:table_id].to_i
-    manager = GameManager.create_new_game(table_id, current_player)
+
+    manager = nil
+    GameHand.transaction do
+      manager = GameManager.create_new_game(table_id, current_player)
+    end
     manager.broadcast
 
     render json: {}
@@ -17,7 +21,9 @@ class Api::GameDealersController < Api::ApplicationController
     seat_no = params[:seat_no].to_i
     buy_in_amount = params[:buy_in_amount].to_i
 
-    GameManager.take_seat(table_id, player_id, seat_no, buy_in_amount)
+    GameHand.transaction do
+      GameManager.take_seat(table_id, player_id, seat_no, buy_in_amount)
+    end
 
     manager = GameManager.new(table_id, player_id, nil, nil, current_player.id)
     manager.broadcast_game_state
@@ -32,8 +38,11 @@ class Api::GameDealersController < Api::ApplicationController
     type = params[:type]
     amount = params[:amount].to_i
 
-    manager = GameManager.new(table_id, player_id, type, amount, current_player.id)
-    manager.do_action
+    manager = nil
+    GameHand.transaction do
+      manager = GameManager.new(table_id, player_id, type, amount, current_player.id)
+      manager.do_action
+    end
 
     # ゲーム開始直後にUNDOされた場合
     if manager.game_hand.destroyed?

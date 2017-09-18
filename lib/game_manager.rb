@@ -1,29 +1,29 @@
 class GameManager
   attr_reader :table_id, :game_hand, :player_id, :amount, :type, :last_action_state
 
+  # 新規ゲームの開始
   def self.create_new_game(table_id, player)
-    # 新規ゲームの開始
-    # ゲーム状態はプリプロップ
     game_hand = GameHand.new(table_id: table_id)
 
     # スタックがあるプレイヤーのみ参加
-    playing_table_players = game_hand.table_players.select { |tp| tp.stack > 0 }
-
-    playing_table_players.sort_by(&:seat_no).each do |table_player|
+    joining_table_players = game_hand.table_players.select { |tp| tp.stack > 0 }.sort_by(&:seat_no)
+    joining_table_players.each do |table_player|
       game_hand.game_hand_players.build(player_id: table_player.player_id)
     end
 
-    # 前のゲームのボタンポジションを取得
+    # 今回のボタンポジションを計算して設定
     last_button_seat_no = GameHand.where(table_id: table_id).order(:id).last&.button_seat_no
     if last_button_seat_no
-      next_button_seat_no = GameUtils.sort_seat_nos(playing_table_players.map(&:seat_no), last_button_seat_no)[0]
+      next_button_seat_no = GameUtils.sort_seat_nos(joining_table_players.map(&:seat_no), last_button_seat_no)[0]
     else
-      next_button_seat_no = playing_table_players.last.seat_no
+      # 初回の場合は適当にシート番号の若いプレイヤーをボタンにする
+      next_button_seat_no = joining_table_players[0].seat_no
     end
+    game_hand.button_seat_no = next_button_seat_no
 
-    # ボタン位置と最初のアクション位置を設定
-    sorted_seat_nos = GameUtils.sort_seat_nos(playing_table_players.map(&:seat_no), next_button_seat_no)
-    if sorted_seat_nos.size == 2
+    # SB,BBのシート番号を計算
+    sorted_seat_nos = GameUtils.sort_seat_nos(joining_table_players.map(&:seat_no), next_button_seat_no)
+    if sorted_seat_nos.size == 2 # Heads up
       sb_seat_no = sorted_seat_nos[1]
       bb_seat_no = sorted_seat_nos[0]
     else
@@ -31,24 +31,24 @@ class GameManager
       bb_seat_no = sorted_seat_nos[1]
     end
 
-    game_hand.button_seat_no = next_button_seat_no
-
-    # ブラインド徴収
+    # SB,BBからブラインド徴収
     table = Table.find(table_id)
-    sb_table_player = playing_table_players.find { |tp| tp.seat_no == sb_seat_no }
-    sb_amount = table.sb_size
-    sb_table_player.stack -= sb_amount # TODO: ショートのときの対応
-    game_hand.build_blind_action(sb_table_player.player_id, sb_amount, 'preflop')
+    sb_table_player = joining_table_players.find { |tp| tp.seat_no == sb_seat_no }
+    sb_amount = [table.sb_size, sb_table_player.stack].min
+    sb_table_player.stack -= sb_amount
+    game_hand.build_blind_action(sb_table_player.player_id, sb_amount)
 
-    bb_table_player = playing_table_players.find { |tp| tp.seat_no == bb_seat_no }
-    bb_amount = table.bb_size
-    bb_table_player.stack -= bb_amount # TODO: ショートのときの対応
-    game_hand.build_blind_action(bb_table_player.player_id, bb_amount, 'preflop')
+    bb_table_player = joining_table_players.find { |tp| tp.seat_no == bb_seat_no }
+    bb_amount = [table.bb_size, bb_table_player.stack].min
+    bb_table_player.stack -= bb_amount
+    game_hand.build_blind_action(bb_table_player.player_id, bb_amount)
 
+    # 保存
     sb_table_player.save!
     bb_table_player.save!
     game_hand.save!
-    self.new(table_id, player.id, 'GAME_START', 0, player.id)
+
+    self.new(table_id, player.id, nil, 0, player.id)
   end
 
   def initialize(table_id, player_id, type, amount, request_player)

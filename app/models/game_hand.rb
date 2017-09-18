@@ -193,10 +193,10 @@ class GameHand < ApplicationRecord
     )
   end
 
-  def build_blind_action(player_id, amount, state)
+  def build_blind_action(player_id, amount)
     game_actions.build(
       order_id: next_order_id,
-      state: state,
+      state: 'preflop',
       player_id: player_id,
       action_type: self.class.action_types[:blind],
       amount: amount
