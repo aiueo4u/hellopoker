@@ -1,0 +1,8 @@
+development:
+  redirect_url_after_login: 'http://localhost:3000'
+
+test:
+  redirect_url_after_login: 'http://localhost:3000'
+
+production:
+  redirect_url_after_login: 'http://localhost:3000'

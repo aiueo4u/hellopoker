@@ -29,5 +29,10 @@ module ChipCounterBackend
     config.generators.system_tests = nil
 
     config.autoload_paths += %W(#{config.root}/lib)
+
+    # load config/application.yml
+    config_for(:application).each do |key, value|
+      config.x.send("#{key}=", value)
+    end
   end
 end

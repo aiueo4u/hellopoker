@@ -15,6 +15,6 @@ class SessionsController < ApplicationController
 
     payload = { id: player.id }
     jwt = AuthToken.encode(payload)
-    redirect_to "http://localhost:3000?jwt=#{jwt}"
+    redirect_to "#{Rails.configuration.x.redirect_url_after_login}?jwt=#{jwt}"
   end
 end
