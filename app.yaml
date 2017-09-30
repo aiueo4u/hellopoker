@@ -1,3 +1,6 @@
 entrypoint: bundle exec rails server --port $PORT
 env: flex
 runtime: ruby
+
+beta_settings:
+  cloud_sql_instances: "chipmanager-180306:asia-east1:chipmanagerdb"
