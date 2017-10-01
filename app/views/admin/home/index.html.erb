@@ -1,9 +1,53 @@
+<div>
+  <% if @players %>
+    <table style="border: 1px solid black">
+      <tr>
+        <th>Nickname</th>
+        <th>Image</th>
+      </tr>
+      <% @players.each do |player| %>
+        <tr>
+          <td><%= player.nickname %></td>
+          <td><img src=<%= player.image_url %> /></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    no players
+  <% end %>
+</div>
+
+<hr>
+
+<div>
+  <% if @other_service_accounts %>
+    <table style="border: 1px solid black">
+      <tr>
+        <th>Player ID</th>
+        <th>Provider</th>
+        <th>UID</th>
+      </tr>
+      <% @other_service_accounts.each do |other_service_account| %>
+        <tr>
+          <td><%= other_service_account.player_id %></td>
+          <td><%= other_service_account.provider %></td>
+          <td><%= other_service_account.uid %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% else %>
+    連携済みユーザはいません。
+  <% end %>
+</div>
+
+<hr>
+
 <% if @tables.present? %>
   <ul>
     <% @tables.each do |table| %>
       <li><%= table.id %>: <%= table.name %></li>
     <% end %>
   </ul>
-<% elsif %>
+<% else %>
   テーブルはありません。
 <% end %>
