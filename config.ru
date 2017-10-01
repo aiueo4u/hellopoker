@@ -2,4 +2,6 @@
 
 require_relative 'config/environment'
 
+use Rack::Health, path: '/_ah/health'
+
 run Rails.application

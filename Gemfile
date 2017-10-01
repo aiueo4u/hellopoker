@@ -43,6 +43,7 @@ gem 'jwt'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem 'rack-health'
 
 # 元はdevelopment groupにあったがappengineが依存しているらしく、ここに移動した
 gem 'listen', '>= 3.0.5', '< 3.2'

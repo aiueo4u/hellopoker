@@ -102,6 +102,7 @@ GEM
       googleauth (~> 0.5.1)
       grpc (~> 1.0)
       rly (~> 0.2.3)
+    google-protobuf (3.4.1.1)
     google-protobuf (3.4.1.1-universal-darwin)
     googleapis-common-protos (1.3.6)
       google-protobuf (~> 3.0)
@@ -117,6 +118,10 @@ GEM
       multi_json (~> 1.11)
       os (~> 0.9)
       signet (~> 0.7)
+    grpc (1.6.2)
+      google-protobuf (~> 3.1)
+      googleapis-common-protos-types (~> 1.0.0)
+      googleauth (~> 0.5.1)
     grpc (1.6.2-universal-darwin)
       google-protobuf (~> 3.1)
       googleapis-common-protos-types (~> 1.0.0)
@@ -183,6 +188,8 @@ GEM
     puma (3.9.1)
     rack (2.0.3)
     rack-cors (1.0.1)
+    rack-health (0.1.2)
+      rack (>= 1.2.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.2)
@@ -303,6 +310,7 @@ DEPENDENCIES
   pry
   puma (~> 3.7)
   rack-cors
+  rack-health
   rails (~> 5.1.2)
   ridgepole
   rspec-rails
