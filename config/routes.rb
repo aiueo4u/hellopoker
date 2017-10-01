@@ -11,5 +11,9 @@ Rails.application.routes.draw do
 
   get '/', to: 'home#index'
 
+  namespace :admin do
+    get '/', to: 'home#index'
+  end
+
   get 'auth/:provider/callback', to: 'sessions#callback'
 end
