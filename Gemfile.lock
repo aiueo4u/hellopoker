@@ -151,6 +151,7 @@ GEM
     rb-fsevent (0.10.2)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    redis (3.3.5)
     ridgepole (0.7.0)
       activerecord (>= 5.0.1, < 6)
       diffy
@@ -231,6 +232,7 @@ DEPENDENCIES
   rack-cors
   rack-health
   rails (~> 5.1.2)
+  redis (~> 3.0)
   ridgepole
   rspec-rails
   sass-rails (~> 5.0)
