@@ -28,6 +28,7 @@ module ChipCounterBackend
     # Don't generate system test files.
     config.generators.system_tests = nil
 
+    config.eager_load_paths << Rails.root.join('lib')
     config.autoload_paths += %W(#{config.root}/lib)
 
     # load config/application.yml
