@@ -21,6 +21,11 @@ class Api::GameDealersController < Api::ApplicationController
     seat_no = params[:seat_no].to_i
     buy_in_amount = params[:buy_in_amount].to_i
 
+    # TODO
+    if player_id == 0
+      player_id = current_player.id
+    end
+
     GameHand.transaction do
       GameManager.take_seat(table_id, player_id, seat_no, buy_in_amount)
     end
