@@ -1,4 +1,4 @@
-entrypoint: RAILS_ENV=production bundle exec rackup -p 8080 -E production
+entrypoint: bundle exec rackup -p 8080 -E production
 env: flex
 runtime: ruby
 
