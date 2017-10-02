@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(version: 0) do
     t.index ["table_id"], name: "i1"
   end
 
-  create_table "other_service_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+  create_table "other_service_accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC" do |t|
     t.integer "player_id", null: false, unsigned: true
     t.integer "provider", null: false, unsigned: true
     t.string "uid", null: false
     t.index ["player_id", "provider"], name: "i1", unique: true
-    t.index ["uid"], name: "i2"
+    t.index ["uid"], name: "i2", unique: true
   end
 
   create_table "players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
