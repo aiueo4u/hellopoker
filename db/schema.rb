@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "provider", null: false, unsigned: true
     t.string "uid", null: false
     t.index ["player_id", "provider"], name: "i1", unique: true
-    t.index ["uid"], name: "i2", unique: true
+    t.index ["uid"], name: "i2"
   end
 
   create_table "players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
