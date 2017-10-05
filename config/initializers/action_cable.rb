@@ -5,5 +5,5 @@ Rails.application.config.action_cable.allowed_request_origins = %w(
   http://localhost:3000
   127.0.0.1
   ::1
-  https://frontend-service-dot-chipmanager-180306.appspot.com
+  https://obscure-everglades-32984.herokuapp.com
 )
