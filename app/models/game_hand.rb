@@ -36,6 +36,12 @@ class GameHand < ApplicationRecord
     table_players.find { |tp| tp.seat_no == seat_no }&.player_id
   end
 
+  # 一人以外全員フォールドしているかどうか
+  def folded_except_one?
+    actions = dump_actions.values
+    actions.select { |action| action['player_state'] == self.class.player_states[:folded] }.size == actions.size - 1
+  end
+
   def last_one_active_player?
     dump_actions.values.select { |action| action['player_state'] == self.class.player_states[:active] }.size <= 1
   end

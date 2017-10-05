@@ -61,7 +61,6 @@ class GameManager
   end
 
   def do_action
-    # TODO: 消したい・・・
     @last_action_state = current_state
 
     case self.type
@@ -69,7 +68,7 @@ class GameManager
       table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
 
-      game_hand.build_check_action(player_id, current_state)
+      game_hand.build_check_action(player_id, last_action_state)
     when 'PLAYER_ACTION_BET_CHIPS'
       table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
@@ -81,7 +80,7 @@ class GameManager
       table_player.save!
 
       # アクション生成
-      game_hand.build_bet_action(player_id, amount, current_state)
+      game_hand.build_bet_action(player_id, amount, last_action_state)
     when 'PLAYER_ACTION_CALL'
       table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
@@ -91,7 +90,7 @@ class GameManager
       amount_to_call = game_hand.amount_to_call_by_table_player(table_player)
 
       # アクション生成
-      game_hand.build_call_action(player_id, amount_to_call, current_state)
+      game_hand.build_call_action(player_id, amount_to_call, last_action_state)
 
       table_player.stack -= amount_to_call
       table_player.save!
@@ -100,7 +99,7 @@ class GameManager
       table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
 
-      game_hand.build_fold_action(self.player_id, current_state)
+      game_hand.build_fold_action(self.player_id, last_action_state)
     when 'UNDO_PLAYER_ACTION'
       if game_hand.game_actions.size == 2 # SB,BB
         # ゲーム開始直後
@@ -108,7 +107,7 @@ class GameManager
         game_hand.save!
         game_hand.undo_action
         game_hand.destroy!
-      elsif current_state == 'finished'
+      elsif last_action_state == 'finished'
         # 結果ラウンドはまとめて全部UNDOする
         while true
           if game_hand.last_action.taken?
@@ -124,7 +123,7 @@ class GameManager
         game_hand.undo_action
       end
     when 'GAME_HAND_TAKE_POT'
-      @amount = game_hand.create_taken_actions(player_id, current_state)
+      @amount = game_hand.create_taken_actions(player_id, last_action_state)
     else
       Rails.logger.warn("Unknown type: '#{type}'")
     end
@@ -315,7 +314,7 @@ class GameManager
     end
 
     # 一人残して全員フォールドしている場合
-    return 'result' if game_hand.last_one_active_player?
+    return 'result' if game_hand.folded_except_one?
 
     # 現在のラウンドが終了している場合
     if current_round_finished?
@@ -341,7 +340,7 @@ class GameManager
 
   def current_seat_no
     return nil if game_hand.nil?
-    return nil if game_hand.last_one_active_player?
+    return nil if game_hand.folded_except_one?
     return nil if game_hand.dump_actions.sum { |_, action| action['effective_total_bet_amount'] } == 0
 
     # 現在のラウンドが終了している場合
