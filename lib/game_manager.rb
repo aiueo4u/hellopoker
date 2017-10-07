@@ -179,6 +179,8 @@ class GameManager
     pot_amount = dumped_actions.sum { |_, action| action['effective_total_bet_amount'] }
     pot_amount -= total_bet_amount_in_current_round
 
+    game_hand_count = GameHand.where(table_id: table_id).count
+
     data = {
       type: 'player_action',
       pot: pot_amount,
@@ -188,6 +190,7 @@ class GameManager
       players: players_data,
       last_aggressive_seat_no: last_aggressive_seat_no,
       undoable: GameHand.where(table_id: table_id).exists?,
+      game_hand_count: game_hand_count,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
   end
