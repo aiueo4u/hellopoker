@@ -60,9 +60,21 @@ class GameHand < ApplicationRecord
     active_player?(player_id)
   end
 
+  def allin_player_by_seat_no?(seat_no)
+    player_id = player_id_by_seat_no(seat_no)
+    allin_player?(player_id)
+  end
+
   def folded_player_by_seat_no?(seat_no)
     player_id = player_id_by_seat_no(seat_no)
     folded_player?(player_id)
+  end
+
+  def allin_player?(player_id)
+    game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
+    return false unless game_hand_player
+    dumped_actions = dump_actions
+    !dumped_actions[player_id] || dumped_actions[player_id]['player_state'] == self.class.player_states[:allin]
   end
 
   def folded_player?(player_id)

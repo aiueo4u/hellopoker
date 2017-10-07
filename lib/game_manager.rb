@@ -270,7 +270,7 @@ class GameManager
   def current_round_finished?
     sorted_seat_nos = GameUtils.sort_seat_nos(game_hand.seat_nos, game_hand.last_action_seat_no)
     next_seat_no = sorted_seat_nos.find do |seat_no|
-      !game_hand.folded_player_by_seat_no?(seat_no)
+      !game_hand.folded_player_by_seat_no?(seat_no) && !game_hand.allin_player_by_seat_no?(seat_no)
     end
 
     current_round = game_hand.last_action.state
@@ -281,9 +281,16 @@ class GameManager
     # ベットしたプレイヤーがいる場合orプリフロの場合
     # プリフロではBBをアグレッシブプレイヤーとして扱う
     if last_aggressive_seat_no2
+      # オールインがはいって、他全員コールした場合
+      if game_hand.allin_player_by_seat_no?(last_aggressive_seat_no2)
+        next_seat_no = sorted_seat_nos.find do |seat_no|
+          !game_hand.folded_player_by_seat_no?(seat_no)
+        end
+        return true if next_seat_no == last_aggressive_seat_no2
+      end
+
       # オリジナルレイザーorBBまでアクションが回ってきたとき
       return true if next_seat_no == last_aggressive_seat_no2
-
     elsif current_round_actions.last.state == 'preflop' && current_bb_used_option?
       return true
     else
@@ -293,6 +300,7 @@ class GameManager
         end
       else
         position = game_hand.position_by_seat_no(game_hand.last_action_seat_no)
+        # フロップ以降、全員チェックで回ったとき？
         if next_seat_no && game_hand.position_by_seat_no(next_seat_no) < position
           return true
         end
