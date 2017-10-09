@@ -27,12 +27,19 @@ ActiveRecord::Schema.define(version: 0) do
   create_table "game_hand_players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.integer "game_hand_id", unsigned: true
     t.integer "player_id", unsigned: true
+    t.string "card1_id", limit: 2
+    t.string "card2_id", limit: 2
     t.index ["game_hand_id"], name: "i1"
   end
 
   create_table "game_hands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.integer "table_id", unsigned: true
     t.integer "button_seat_no", unsigned: true
+    t.string "board_card1_id", limit: 2
+    t.string "board_card2_id", limit: 2
+    t.string "board_card3_id", limit: 2
+    t.string "board_card4_id", limit: 2
+    t.string "board_card5_id", limit: 2
     t.index ["table_id"], name: "i1"
   end
 
@@ -63,6 +70,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "name", null: false
     t.integer "sb_size", null: false, unsigned: true
     t.integer "bb_size", null: false, unsigned: true
+    t.boolean "deal_cards", default: false
   end
 
 end

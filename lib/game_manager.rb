@@ -4,11 +4,29 @@ class GameManager
   # 新規ゲームの開始
   def self.create_new_game(table_id, player)
     game_hand = GameHand.new(table_id: table_id)
+    table = Table.find(table_id)
+
+    deck = Poker::Deck.new
 
     # スタックがあるプレイヤーのみ参加
+    #   - カードも配る
     joining_table_players = game_hand.table_players.select { |tp| tp.stack > 0 }.sort_by(&:seat_no)
     joining_table_players.each do |table_player|
-      game_hand.game_hand_players.build(player_id: table_player.player_id)
+      ghp_p = { player_id: table_player.player_id }
+      if table.deal_cards
+        ghp_p[:card1_id] = deck.draw.id
+        ghp_p[:card2_id] = deck.draw.id
+      end
+      game_hand.game_hand_players.build(ghp_p)
+    end
+
+    # ボードのカードを決める
+    if table.deal_cards
+      game_hand.board_card1_id = deck.draw.id
+      game_hand.board_card2_id = deck.draw.id
+      game_hand.board_card3_id = deck.draw.id
+      game_hand.board_card4_id = deck.draw.id
+      game_hand.board_card5_id = deck.draw.id
     end
 
     # 今回のボタンポジションを計算して設定
@@ -180,6 +198,42 @@ class GameManager
     pot_amount -= total_bet_amount_in_current_round
 
     game_hand_count = GameHand.where(table_id: table_id).count
+    table = Table.find(table_id)
+
+    board_cards = []
+    if game_hand && table.deal_cards
+      case current_state
+      when 'flop'
+        board_cards = [
+          game_hand.board_card1_id,
+          game_hand.board_card2_id,
+          game_hand.board_card3_id,
+        ]
+      when 'turn'
+        board_cards = [
+          game_hand.board_card1_id,
+          game_hand.board_card2_id,
+          game_hand.board_card3_id,
+          game_hand.board_card4_id,
+        ]
+      when 'river'
+        board_cards = [
+          game_hand.board_card1_id,
+          game_hand.board_card2_id,
+          game_hand.board_card3_id,
+          game_hand.board_card4_id,
+          game_hand.board_card5_id,
+        ]
+      when 'result'
+        board_cards = [
+          game_hand.board_card1_id,
+          game_hand.board_card2_id,
+          game_hand.board_card3_id,
+          game_hand.board_card4_id,
+          game_hand.board_card5_id,
+        ]
+      end
+    end
 
     data = {
       type: 'player_action',
@@ -191,8 +245,24 @@ class GameManager
       last_aggressive_seat_no: last_aggressive_seat_no,
       undoable: GameHand.where(table_id: table_id).exists?,
       game_hand_count: game_hand_count,
+      board_cards: board_cards,
+      deal_cards: table.deal_cards,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
+
+    table_players.each do |table_player|
+      game_hand_player = game_hand_players_by_player_id[table_player.player_id]
+      cards = if game_hand_player && table.deal_cards
+                [
+                  { rank: game_hand_player.card1_id[0], suit: game_hand_player.card1_id[1] },
+                  { rank: game_hand_player.card2_id[0], suit: game_hand_player.card2_id[1] },
+                ]
+              else
+                []
+              end
+      data = { player_id: table_player.player_id, cards: cards }
+      ActionCable.server.broadcast "dealt_card_channel_#{table_id}_#{table_player.player_id}", data
+    end
   end
 
   def broadcast_game_result
@@ -233,6 +303,13 @@ class GameManager
       type: 'game_hand_finished',
     }
     ActionCable.server.broadcast "chip_channel_#{game_hand.table_id}", data
+    game_hand.table_players.each do |table_player|
+      data = {
+        player_id: table_player.player_id,
+        cards: []
+      }
+      ActionCable.server.broadcast "dealt_card_channel_#{table_id}_#{table_player.player_id}", data
+    end
   end
 
   def broadcast
