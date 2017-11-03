@@ -369,6 +369,27 @@ class GameManager
 
     # 現在のラウンドが終了している場合
     if current_round_finished?
+
+      # カード配布モードでの結果ラウンドの場合、
+      if table.deal_cards && current_state == 'result'
+        # 二人目移行のハンドショウ
+        current_round_actions = game_hand.all_actions.group_by(&:state)['result']
+        if current_round_actions.present?
+          return GameUtils.sort_seat_nos(game_hand.seat_nos, game_hand.last_action_seat_no).find do |seat_no|
+            game_hand.active_player_by_seat_no?(seat_no)
+          end
+        end
+
+        # リバーでのアグレッサーからハンドショウ
+        last_aggressive_player_id = game_hand.all_actions.select do |action|
+          action.state == 'river' && action.bet?
+        end.last&.player_id
+
+        if last_aggressive_player_id
+          return game_hand.table_player_by_player_id(last_aggressive_player_id)&.seat_no
+        end
+      end
+
       if game_hand.last_one_active_player?
         # 残りアクティブプレイヤーが一人だったら結果ラウンドへ
         return nil
