@@ -1,4 +1,6 @@
 class GameAction < ApplicationRecord
+  include ActionType
+
   belongs_to :game_hand
 
   enum state: %i(
@@ -9,14 +11,5 @@ class GameAction < ApplicationRecord
     river
     result
     finished
-  )
-
-  enum action_type: %i(
-    blind
-    check
-    bet
-    call
-    fold
-    taken
   )
 end

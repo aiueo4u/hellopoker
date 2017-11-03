@@ -1,4 +1,6 @@
 class GameHand < ApplicationRecord
+  include ActionType
+
   has_many :game_hand_players
   has_many :game_actions, autosave: true
 
@@ -6,15 +8,6 @@ class GameHand < ApplicationRecord
     active
     folded
     allin
-  )
-
-  enum action_types: %i(
-    blind
-    check
-    bet
-    call
-    fold
-    taken
   )
 
   MAX_PLAYER_NUM = 10
@@ -47,12 +40,8 @@ class GameHand < ApplicationRecord
   end
   
   def next_state
-    if last_action.state == 'finished'
-      nil
-    else
-      i = GameAction.states[last_action.state] + 1
-      GameAction.states.keys[i]
-    end
+    next_state_index = GameAction.states[last_action.state] + 1
+    GameAction.states.keys[next_state_index]
   end
 
   def active_player_by_seat_no?(seat_no)
@@ -136,6 +125,21 @@ class GameHand < ApplicationRecord
     last_action.state
   end
 
+  def dump_result_actions
+    actions_by_player_id = self.game_actions.select(&:taken?).group_by(&:player_id)
+
+    dumped = {}
+
+    actions_by_player_id.each do |player_id, actions|
+      amount_diff = actions.sum(&:amount)
+      dumped[player_id] = {
+        'amount_diff' => amount_diff,
+      }
+    end
+
+    dumped
+  end
+
   def dump_actions
     actions_by_player_id = self.game_actions.group_by(&:player_id)
 
@@ -168,8 +172,8 @@ class GameHand < ApplicationRecord
       game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
 
       table_player = table_player_by_player_id(player_id)
-      taken_amount = actions.select(&:result?).sum(&:amount)
-      is_allin = (table_player.stack - taken_amount) == 0
+      taken_amount = actions.select(&:taken?).sum(&:amount)
+      is_allin = table_player.stack == 0 || (table_player.stack - taken_amount) == 0
 
       player_state = nil
       if game_hand_player
@@ -186,12 +190,17 @@ class GameHand < ApplicationRecord
 
       round = actions.last.state
 
+      show_hand = actions.any?(&:show?)
+      muck_hand = !show_hand && actions.any?(&:muck?)
+
       dumped_actions[player_id] = {
         'bet_amount_in_state' => bet_amount_in_state,
         'total_bet_amount' => total_bet_amount,
         'effective_total_bet_amount' => effective_total_bet_amount,
         'player_state' => player_state,
         'round' => round,
+        'show_hand' => show_hand,
+        'muck_hand' => muck_hand,
       }
     end
     dumped_actions
@@ -259,8 +268,29 @@ class GameHand < ApplicationRecord
     )
   end
 
+  def build_show_action(player_id, state)
+    game_actions.build(
+      order_id: next_order_id,
+      state: state,
+      player_id: player_id,
+      action_type: self.class.action_types[:show],
+    )
+  end
+
+  def build_muck_action(player_id, state)
+    game_actions.build(
+      order_id: next_order_id,
+      state: state,
+      player_id: player_id,
+      action_type: self.class.action_types[:muck],
+    )
+  end
+
   def undo_action
+    # saveでDELETEされるように削除フラグをセット
     last_action.mark_for_destruction
+
+    # スタックに更新が入るアクションだった場合のスタック調整
     if last_action.action_type.in?(%w(call bet blind))
       update_player_stack!(last_action.player_id, last_action.amount)
     elsif last_action.taken? && last_action.amount > 0
