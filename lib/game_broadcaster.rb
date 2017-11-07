@@ -127,6 +127,14 @@ module GameBroadcaster
       end
     end
 
+    reached_rounds = {}
+    if game_hand
+      game_hand.all_actions.map(&:state).uniq.each do |state|
+        reached_rounds[state] = true
+      end
+      reached_rounds[current_state] = true
+    end
+
     data = {
       type: 'player_action',
       pot: pot_amount,
@@ -140,6 +148,7 @@ module GameBroadcaster
       board_cards: board_cards,
       deal_cards: table.deal_cards,
       show_or_muck: current_state == 'result' && !player_hand_fixed?,
+      reached_rounds: reached_rounds,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
 
