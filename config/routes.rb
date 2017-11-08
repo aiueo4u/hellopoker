@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get '/', to: 'home#index'
+    resources :client_versions, only: %i(create)
   end
 
   get 'auth/:provider/callback', to: 'sessions#callback'

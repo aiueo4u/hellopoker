@@ -12,6 +12,12 @@
 
 ActiveRecord::Schema.define(version: 0) do
 
+  create_table "client_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
+    t.string "version", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "game_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.integer "game_hand_id", null: false, unsigned: true
     t.integer "order_id", null: false, unsigned: true

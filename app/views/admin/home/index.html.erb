@@ -1,4 +1,15 @@
 <div>
+  <ul>
+    <% @client_versions.each do |client_version| %>
+      <li><%= client_version.version %></li>
+    <% end %>
+  </ul>
+  <%= form_with url: admin_client_versions_path do |form| %>
+    <%= form.submit %>
+  <% end %>
+</div>
+
+<div>
   <% if @players %>
     <table style="border: 1px solid black">
       <tr>
