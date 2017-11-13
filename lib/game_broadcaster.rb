@@ -64,7 +64,7 @@ module GameBroadcaster
       {
         id: table_player.player.id,
         nickname: table_player.player.nickname,
-        image_url: table_player.player.image_url,
+        image_url: table_player.player.profile_image_url,
         stack: table_player.stack,
         seat_no: table_player.seat_no,
         position: game_hand&.position_by_seat_no(table_player.seat_no),
@@ -200,7 +200,7 @@ module GameBroadcaster
       {
         id: table_player.player.id,
         nickname: table_player.player.nickname,
-        image_url: table_player.player.image_url,
+        image_url: table_player.player.profile_image_url,
         seat_no: table_player.seat_no,
         position: game_hand&.position_by_seat_no(table_player.seat_no),
       }
@@ -223,7 +223,7 @@ module GameBroadcaster
       {
         id: table_player.player.id,
         nickname: table_player.player.nickname,
-        image_url: table_player.player.image_url,
+        image_url: table_player.player.profile_image_url,
         seat_no: table_player.seat_no,
         position: game_hand.position_by_seat_no(table_player.seat_no),
         stack_before: table_player.stack - action['amount_diff'],
