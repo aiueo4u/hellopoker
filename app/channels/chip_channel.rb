@@ -22,7 +22,7 @@ class ChipChannel < ApplicationCable::Channel
 
     Table.transaction do
       Table.lock.find(table_id)
-      if manager.game_hand.next_action_timeout?
+      if manager.game_hand&.next_action_timeout?
         c_seat_no = manager.current_seat_no
         player_id = manager.game_hand.player_id_by_seat_no(c_seat_no)
         type = manager.current_state == 'result' ? 'PLAYER_ACTION_MUCK_HAND' : 'PLAYER_ACTION_FOLD'
