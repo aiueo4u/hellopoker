@@ -16,6 +16,10 @@ class GameHand < ApplicationRecord
     game_actions.sort_by(&:order_id).last
   end
 
+  def next_action_timeout?
+    GameAction.timeout_from_last_action?(last_action)
+  end
+
   def last_action_seat_no
     table_players.find { |tp| tp.player_id == last_action.player_id }.seat_no
   end

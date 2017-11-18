@@ -44,9 +44,14 @@ class Api::GameDealersController < Api::ApplicationController
     amount = params[:amount].to_i
 
     manager = nil
-    GameHand.transaction do
-      manager = GameManager.new(table_id, player_id, type, amount, current_player.id)
-      manager.do_action
+    Table.transaction do
+      Table.lock.find(table_id)
+      GameHand.transaction do
+        manager = GameManager.new(table_id, player_id, type, amount, current_player.id)
+        if manager.next_action_player_id?(player_id)
+          manager.do_action
+        end
+      end
     end
 
     # ゲーム開始直後にUNDOされた場合

@@ -74,6 +74,8 @@ module GameBroadcaster
         bb_option_usable: bb_option_usable,
         hand_show: show_or_muck_by_player_id[table_player.player.id],
         cards: cards,
+        remain_time_to_action: GameAction::ACTION_TIMEOUT - (Time.current - game_hand.last_action.created_at),
+        max_remain_time_to_action: GameAction::ACTION_TIMEOUT,
       }
     end
 

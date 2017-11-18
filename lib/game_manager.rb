@@ -81,11 +81,30 @@ class GameManager
     @request_player = request_player
   end
 
+  def next_action_player_id?(target_player_id)
+    game_hand.player_id_by_seat_no(current_seat_no) == target_player_id
+  end
+
   def do_action
     @last_action_state = current_state
 
+    # タイムアウト処理
+    if game_hand.next_action_timeout?
+      Rails.logger.info("Player #{game_hand.last_action.player_id} time out.")
+      @next_action_timeout = true
+
+      if self.type == 'GAME_HAND_TAKE_POT'
+        # do nothing
+      elsif self.type == 'PLAYER_ACTION_SHOW_HAND'
+        @type = 'PLAYER_ACTION_MUCK_HAND'
+      else
+        @type = 'PLAYER_ACTION_FOLD'
+      end
+    end
+
     case self.type
     when 'PLAYER_ACTION_SHOW_HAND'
+      game_hand.build_muck_action(player_id, last_action_state)
       game_hand.build_show_action(player_id, last_action_state)
     when 'PLAYER_ACTION_MUCK_HAND'
       game_hand.build_muck_action(player_id, last_action_state)

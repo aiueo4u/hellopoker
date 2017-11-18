@@ -1,0 +1,18 @@
+div
+  table.table
+    tr
+      th 順番
+      th ラウンド
+      th プレイヤー名
+      th アクション
+      th 量
+      th 日付
+    - @game_hand.game_actions.order(:order_id).each do |gha|
+      - bg_color = gha.state == 'preflop' ? '#ffaaff' : gha.state == 'flop' ? '#ffffaa' : gha.state == 'turn' ? '#aaffff' : gha.state == 'river' ? '#ffaaaa' : '#888888'
+      tr style="background: #{bg_color}"
+        td= gha.order_id
+        td= gha.state
+        td= @players_by_id[gha.player_id].nickname
+        td= gha.action_type
+        td= gha.amount
+        td= gha.created_at
