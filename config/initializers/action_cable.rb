@@ -6,4 +6,5 @@ Rails.application.config.action_cable.allowed_request_origins = %w(
   127.0.0.1
   ::1
   https://obscure-everglades-32984.herokuapp.com
+  https://poker-webapp-frontend.herokuapp.com
 )
