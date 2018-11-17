@@ -11,7 +11,7 @@ class Api::GameDealersController < Api::ApplicationController
 
       # TODO: 雑に重複スターをチェック
       last_game_hand = GameHand.where(table_id: table_id).order(id: :desc).first
-      unless last_game_hand.game_actions.any?(&:result?)
+      if last_game_hand && !last_game_hand.game_actions.any?(&:result?)
         return render json: {}
       end
 
