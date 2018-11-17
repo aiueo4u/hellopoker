@@ -15,7 +15,7 @@ module Poker
 
     def initialize(id)
       unless id.in?(MASTERS)
-        raise "invalid id: '#{id}'"
+        raise ArgumentError, "invalid id: '#{id}'"
       end
 
       @id = id

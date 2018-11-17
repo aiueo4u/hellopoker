@@ -215,7 +215,14 @@ class GameManager
       Poker::Card.new(game_hand.board_card4_id),
       Poker::Card.new(game_hand.board_card5_id),
     ]
-    result = Poker::Hand.evaluate_cards(cards_by_player_id, board_cards)
+
+    # 各プレイヤーのハンドの強さを評価
+    result = {}
+    cards_by_player_id.each do |player_id, cards|
+      hand = Poker::HandEvaluator.new(cards + board_cards)
+      hand.evaluate # ハンドを評価
+      result[player_id] = { hand: hand }
+    end
 
     # logging
     result.each do |player_id, hash|
@@ -225,11 +232,13 @@ class GameManager
 
     best_player_id = cards_by_player_id.keys.first
 
+    # ハンドの強さに基づいて順位付け
+    # TODO: 引き分け対応
     cards_by_player_id.each do |player_id, cards|
       target_hand = result[player_id][:hand]
       best_hand = result[best_player_id][:hand]
 
-      if Poker::Hand.stronger?(target_hand, best_hand)
+      if target_hand.compare_with(best_hand) == 1
         best_player_id = player_id
       end
     end
