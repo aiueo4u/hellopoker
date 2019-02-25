@@ -20,6 +20,10 @@ class Api::GameDealersController < Api::ApplicationController
     end
     manager.broadcast
 
+    if !manager.current_state.in?(['init', 'finished'])
+      TimeKeeperJob.perform_later(manager.game_hand.id, table_id, current_player.id, manager.game_hand.last_action&.order_id)
+    end
+
     render json: {}
   end
 
@@ -69,6 +73,10 @@ class Api::GameDealersController < Api::ApplicationController
     end
 
     manager.broadcast
+
+    if !manager.current_state.in?(['init', 'finished'])
+      TimeKeeperJob.perform_later(manager.game_hand.id, table_id, current_player.id, manager.game_hand.last_action&.order_id)
+    end
 
     render json: {}
   end

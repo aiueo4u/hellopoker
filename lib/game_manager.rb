@@ -71,10 +71,14 @@ class GameManager
     self.new(table_id, player.id, nil, 0, player.id)
   end
 
-  def initialize(table_id, player_id, type, amount, request_player)
+  def initialize(table_id, player_id, type, amount, request_player, game_hand_id = nil)
     @table_id = table_id
     @table = Table.find(table_id)
-    @game_hand = GameHand.where(table_id: table_id).order(:id).last
+    if game_hand_id
+      @game_hand = GameHand.find(game_hand_id)
+    else
+      @game_hand = GameHand.where(table_id: table_id).order(:id).last
+    end
     @player_id = player_id
     @type = type
     @amount = amount
