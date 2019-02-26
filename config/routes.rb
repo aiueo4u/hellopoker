@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     get '/', to: 'home#index'
     resources :client_versions, only: %i(create)
     resources :game_hands
+    resources :tables
   end
 
   get 'auth/:provider/callback', to: 'sessions#callback'

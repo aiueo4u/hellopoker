@@ -56,7 +56,10 @@
 <% if @tables.present? %>
   <ul>
     <% @tables.each do |table| %>
-      <li><%= table.id %>: <%= table.name %></li>
+      <li>
+        <%= table.id %>: <%= table.name %>
+        <%= link_to 'Delete', admin_table_path(id: table.id), method: :delete %>
+      </li>
     <% end %>
   </ul>
 <% else %>
