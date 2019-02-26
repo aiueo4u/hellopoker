@@ -21,7 +21,11 @@ class Api::GameDealersController < Api::ApplicationController
     manager.broadcast
 
     if !manager.current_state.in?(['init', 'finished'])
-      TimeKeeperJob.perform_later(manager.game_hand.id, table_id, current_player.id, manager.game_hand.last_action&.order_id)
+      table_player = manager.game_hand.table_player_by_seat_no(manager.current_seat_no)
+      if table_player.auto_play?
+        NpcPlayerJob.perform_later(manager.game_hand.id, table_id, table_player.player_id)
+      end
+      TimeKeeperJob.perform_later(manager.game_hand.id, table_id, table_player.player_id, manager.game_hand.last_action.order_id)
     end
 
     render json: {}
@@ -44,6 +48,21 @@ class Api::GameDealersController < Api::ApplicationController
     end
 
     manager = GameManager.new(table_id, player_id, nil, nil, current_player.id)
+    manager.broadcast_game_state
+
+    render json: {}
+  end
+
+  # NPCプレイヤーの着席＆バイイン
+  def add_npc_player
+    table_id = params[:table_id].to_i
+    seat_no = params[:seat_no].to_i
+
+    GameHand.transaction do
+      GameManager.add_npc_player(table_id, seat_no)
+    end
+
+    manager = GameManager.new(table_id, current_player.id, nil, nil, current_player.id)
     manager.broadcast_game_state
 
     render json: {}
@@ -75,7 +94,11 @@ class Api::GameDealersController < Api::ApplicationController
     manager.broadcast
 
     if !manager.current_state.in?(['init', 'finished'])
-      TimeKeeperJob.perform_later(manager.game_hand.id, table_id, current_player.id, manager.game_hand.last_action&.order_id)
+      table_player = manager.game_hand.table_player_by_seat_no(manager.current_seat_no)
+      if table_player.auto_play?
+        NpcPlayerJob.perform_later(manager.game_hand.id, table_id, table_player.player_id)
+      end
+      TimeKeeperJob.perform_later(manager.game_hand.id, table_id, table_player.player_id, manager.game_hand.last_action.order_id)
     end
 
     render json: {}

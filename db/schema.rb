@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 0) do
     t.integer "player_id", null: false, unsigned: true
     t.integer "stack", default: 0, null: false, unsigned: true
     t.integer "seat_no", null: false, unsigned: true
+    t.boolean "auto_play", default: false, null: false
     t.index ["player_id"], name: "i1"
     t.index ["table_id", "player_id"], name: "i2", unique: true
     t.index ["table_id", "seat_no"], name: "i3", unique: true

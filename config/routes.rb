@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resource :game_dealer, only: %i(create) do
       post :start, on: :collection
       post :take_seat, on: :collection
+      post :add_npc_player, on: :collection
     end
   end
 

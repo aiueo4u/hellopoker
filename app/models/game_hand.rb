@@ -95,6 +95,10 @@ class GameHand < ApplicationRecord
     table_players.find { |table_player| table_player.player_id == player_id }
   end
 
+  def table_player_by_seat_no(seat_no)
+    table_players.find { |table_player| table_player.seat_no == seat_no  }
+  end
+
   def position_by_seat_no(seat_no)
     if seat_no > button_seat_no
       seat_no - button_seat_no
@@ -208,6 +212,10 @@ class GameHand < ApplicationRecord
       }
     end
     dumped_actions
+  end
+
+  def pot_amount
+    dump_actions.sum { |_, action| action['effective_total_bet_amount'] }
   end
 
   def next_order_id

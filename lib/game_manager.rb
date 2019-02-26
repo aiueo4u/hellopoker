@@ -92,15 +92,19 @@ class GameManager
   def do_action
     @last_action_state = current_state
 
+    table_player = game_hand.table_player_by_player_id(player_id)
+
     # タイムアウト処理
     if game_hand.next_action_timeout?
-      Rails.logger.info("Player #{game_hand.last_action.player_id} time out.")
+      Rails.logger.info("Player #{player_id} time out.")
       @next_action_timeout = true
 
       if self.type == 'GAME_HAND_TAKE_POT'
         # do nothing
       elsif self.type == 'PLAYER_ACTION_SHOW_HAND'
         @type = 'PLAYER_ACTION_MUCK_HAND'
+      elsif action_checkable?(table_player)
+        @type = 'PLAYER_ACTION_CHECK'
       else
         @type = 'PLAYER_ACTION_FOLD'
       end
@@ -113,24 +117,26 @@ class GameManager
     when 'PLAYER_ACTION_MUCK_HAND'
       game_hand.build_muck_action(player_id, last_action_state)
     when 'PLAYER_ACTION_CHECK'
-      table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
-
-      game_hand.build_check_action(player_id, last_action_state)
+      if action_checkable?(table_player)
+        game_hand.build_check_action(player_id, last_action_state)
+      else
+        Rails.logger.debug('cannot check; proceeding to action fold...')
+        game_hand.build_fold_action(self.player_id, last_action_state)
+      end
     when 'PLAYER_ACTION_BET_CHIPS'
-      table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
 
-      # TODO: 所持数チェック
+      # 所持チップ調整
+      adjusted_amount = [table_player.stack, amount].min
 
       # プレイヤーのスタックからポットへとチップを移す
-      table_player.stack -= amount
+      table_player.stack -= adjusted_amount
       table_player.save!
 
       # アクション生成
-      game_hand.build_bet_action(player_id, amount, last_action_state)
+      game_hand.build_bet_action(player_id, adjusted_amount, last_action_state)
     when 'PLAYER_ACTION_CALL'
-      table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
       check_your_amount!(table_player, amount) # 残高チェック
 
@@ -144,7 +150,6 @@ class GameManager
       table_player.save!
       @amount = amount_to_call
     when 'PLAYER_ACTION_FOLD'
-      table_player = game_hand.table_player_by_player_id(player_id)
       check_your_turn!(table_player) # 自分のターンかチェック
 
       game_hand.build_fold_action(self.player_id, last_action_state)
@@ -310,6 +315,20 @@ class GameManager
     end
   end
 
+  def self.add_npc_player(table_id, seat_no)
+    raise 'not empty seat' if TablePlayer.where(table_id: table_id, seat_no: seat_no).exists?
+    player = Player.create!(nickname: 'AI', image_url: '') # TODO
+    table = Table.find(table_id)
+    stack = table.bb_size * 100 # 100 BB Buy in
+    TablePlayer.create!(
+      table_id: table_id,
+      player_id: player.id,
+      seat_no: seat_no,
+      stack: stack,
+      auto_play: true,
+    )
+  end
+
   # TODO: private
 
   def current_round_finished?
@@ -332,6 +351,7 @@ class GameManager
           !game_hand.folded_player_by_seat_no?(seat_no)
         end
         return true if next_seat_no == last_aggressive_seat_no2
+        return true if game_hand.last_one_active_player?
       end
 
       # オリジナルレイザーorBBまでアクションが回ってきたとき
@@ -462,5 +482,23 @@ class GameManager
 
   def check_your_amount!(table_player, amount)
     raise "not enough stack to bet #{amount}" if table_player.stack < amount
+  end
+
+  def action_checkable?(table_player)
+    return false if current_state.in?(%w(init result finished))
+
+    current_round = current_state
+    current_round_actions = game_hand.all_actions.group_by(&:state)[current_round]
+
+    # Pre flop: BB option時のみ
+    # Post flop: 誰もベットしていない
+    if current_state == 'preflop'
+      bb_player_id = game_hand.player_id_by_seat_no(bb_seat_no)
+      # 自身がBBで、誰もベットしていない時、
+      return table_player.player_id == bb_player_id && current_round_actions.none?(&:bet?)
+    else
+      return current_round_actions.blank? ||  current_round_actions.none?(&:bet?)
+    end
+    false
   end
 end
