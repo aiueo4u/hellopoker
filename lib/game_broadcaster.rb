@@ -151,6 +151,7 @@ module GameBroadcaster
       deal_cards: table.deal_cards,
       show_or_muck: current_state == 'result' && !player_hand_fixed?,
       reached_rounds: reached_rounds,
+      last_action: game_hand.last_action,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
 
