@@ -36,6 +36,8 @@ module GameBroadcaster
       end
     end
 
+    result_by_player_id = game_hand ? game_hand.dump_result_actions : {}
+
     players_data = table_players.sort_by(&:seat_no).map do |table_player|
       game_hand_player = game_hand_players_by_player_id[table_player.player_id]
       dumped_action = dumped_actions[table_player.player_id] || {}
@@ -76,6 +78,7 @@ module GameBroadcaster
         cards: cards,
         remain_time_to_action: GameAction::ACTION_TIMEOUT - (Time.current - (game_hand&.last_action&.created_at || Time.current)),
         max_remain_time_to_action: GameAction::ACTION_TIMEOUT,
+        amount_diff: (result_by_player_id[table_player.player.id] || {})['amount_diff'],
       }
     end
 
@@ -130,11 +133,31 @@ module GameBroadcaster
     end
 
     reached_rounds = {}
+    reaching_rounds = []
     if game_hand
       game_hand.all_actions.map(&:state).uniq.each do |state|
         reached_rounds[state] = true
       end
       reached_rounds[current_state] = true
+
+      # オールイン勢が揃って、あとはボードをめくるだけのとき
+      is_allin = game_hand.game_hand_players.select { |ghp|
+        !game_hand.folded_player?(ghp.player_id)
+      }.size > 1 && current_state == 'finished' && type == 'PLAYER_ACTION_CALL'
+      if is_allin
+        if !reached_rounds['flop']
+          reaching_rounds << 'flop'
+          reached_rounds['flop'] = true
+        end
+        if !reached_rounds['turn']
+          reaching_rounds << 'turn'
+          reached_rounds['turn'] = true
+        end
+        if !reached_rounds['river']
+          reaching_rounds << 'river'
+          reached_rounds['river'] = true
+        end
+      end
     end
 
     data = {
@@ -151,7 +174,9 @@ module GameBroadcaster
       deal_cards: table.deal_cards,
       show_or_muck: current_state == 'result' && !player_hand_fixed?,
       reached_rounds: reached_rounds,
+      reaching_rounds: reaching_rounds,
       last_action: game_hand.game_actions.select { |action| !action.taken? }.sort_by(&:order_id).last,
+      just_actioned: type.present?,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
 

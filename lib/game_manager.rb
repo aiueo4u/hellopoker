@@ -351,7 +351,7 @@ class GameManager
           !game_hand.folded_player_by_seat_no?(seat_no)
         end
         return true if next_seat_no == last_aggressive_seat_no2
-        return true if game_hand.last_one_active_player?
+        # return true if game_hand.last_one_active_player?
       end
 
       # オリジナルレイザーorBBまでアクションが回ってきたとき
