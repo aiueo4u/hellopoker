@@ -182,6 +182,7 @@ module GameBroadcaster
       reaching_rounds: reaching_rounds,
       last_action: last_action,
       just_actioned: type.present?,
+      table_id: table_id,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
 
