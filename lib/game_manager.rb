@@ -333,40 +333,42 @@ class GameManager
 
   def current_round_finished?
     sorted_seat_nos = GameUtils.sort_seat_nos(game_hand.seat_nos, game_hand.last_action_seat_no)
-    next_seat_no = sorted_seat_nos.find do |seat_no|
-      !game_hand.folded_player_by_seat_no?(seat_no) && !game_hand.allin_player_by_seat_no?(seat_no)
-    end
+    next_active_seat_no = sorted_seat_nos.find { |seat_no| game_hand.active_player_by_seat_no?(seat_no) }
 
-    current_round = game_hand.last_action.state
-    current_round_actions = game_hand.all_actions.group_by(&:state)[current_round]
-    last_aggressive_player_id = current_round_actions.select(&:bet?).last&.player_id
+    last_action_round = game_hand.state
+    last_round_actions = game_hand.all_actions.group_by(&:state)[last_action_round]
+
+    last_aggressive_player_id = last_round_actions.select(&:bet?).sort_by(&:order_id).last&.player_id
     last_aggressive_seat_no2 = game_hand.table_player_by_player_id(last_aggressive_player_id)&.seat_no
 
-    # ベットしたプレイヤーがいる場合orプリフロの場合
-    # プリフロではBBをアグレッシブプレイヤーとして扱う
+    # ベットしたプレイヤーがいる場合（ブラインドはベットではない）
     if last_aggressive_seat_no2
-      # オールインがはいって、他全員コールした場合
+      # ベットしたプレイヤーがオールイン状態の場合
       if game_hand.allin_player_by_seat_no?(last_aggressive_seat_no2)
-        next_seat_no = sorted_seat_nos.find do |seat_no|
+        # ベットしたプレイヤーまで回ってきたら次のラウンド
+        next_non_folded_seat_no = sorted_seat_nos.find do |seat_no|
           !game_hand.folded_player_by_seat_no?(seat_no)
         end
-        return true if next_seat_no == last_aggressive_seat_no2
-        # return true if game_hand.last_one_active_player?
+        return true if next_non_folded_seat_no == last_aggressive_seat_no2
+      else
+        # ベットしたプレイヤーまで回ってきたら次のラウンド
+        return true if next_active_seat_no == last_aggressive_seat_no2
       end
-
-      # オリジナルレイザーorBBまでアクションが回ってきたとき
-      return true if next_seat_no == last_aggressive_seat_no2
-    elsif current_round_actions.last.state == 'preflop' && current_bb_used_option?
-      return true
     else
-      if current_round_actions.last.state == 'preflop'
-        if next_seat_no == bb_seat_no && !current_bb_used_option?
-          return false
+      if last_action_round == 'preflop'
+        # BBがオプションチェックをした直後
+        if current_bb_used_option?
+          return true
+        end
+
+        # BB以外全員フォールドしたとき
+        if next_active_seat_no == bb_seat_no && game_hand.folded_except_one?
+          return true
         end
       else
         position = game_hand.position_by_seat_no(game_hand.last_action_seat_no)
-        # フロップ以降、全員チェックで回ったとき？
-        if next_seat_no && game_hand.position_by_seat_no(next_seat_no) < position
+        # フロップ以降、全員チェックで回ったとき
+        if next_active_seat_no && game_hand.position_by_seat_no(next_active_seat_no) < position
           return true
         end
       end
@@ -376,7 +378,6 @@ class GameManager
 
   def current_state
     # ゲームが開始されていない場合
-    # TODO: 使ってないかも。削除。
     return 'init' if game_hand.nil?
 
     # 精算が終了した場合
@@ -414,6 +415,7 @@ class GameManager
     end
   end
 
+  # 現在のアクションのプレイヤーのシート番号を返す
   def current_seat_no
     return nil if game_hand.nil?
     return nil if game_hand.folded_except_one?

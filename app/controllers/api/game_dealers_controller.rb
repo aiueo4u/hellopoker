@@ -9,13 +9,12 @@ class Api::GameDealersController < Api::ApplicationController
     GameHand.transaction do
       Table.lock.find(table_id)
 
-      # TODO: 雑に重複スターをチェック
+      # 前回のゲームが終了状態になっているかチェック
       last_game_hand = GameHand.where(table_id: table_id).order(id: :desc).first
       if last_game_hand && !last_game_hand.game_actions.any?(&:result?)
         return render json: {}
       end
 
-      # 全開のゲームが終了状態になっているかチェック
       manager = GameManager.create_new_game(table_id, current_player)
     end
     manager.broadcast

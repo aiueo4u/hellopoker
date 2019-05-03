@@ -24,6 +24,7 @@ class GameHand < ApplicationRecord
     table_players.find { |tp| tp.player_id == last_action.player_id }.seat_no
   end
 
+  # このハンドに参加しているプレイヤーのシート番号の配列を返す
   def seat_nos
     game_hand_player_ids = game_hand_players.map(&:player_id)
     table_players.select { |tp| tp.player_id.in?(game_hand_player_ids) }.map(&:seat_no)
@@ -36,7 +37,7 @@ class GameHand < ApplicationRecord
   # 一人以外全員フォールドしているかどうか
   def folded_except_one?
     actions = dump_actions.values
-    actions.select { |action| action['player_state'] == self.class.player_states[:folded] }.size == actions.size - 1
+    actions.select { |action| action['player_state'] == self.class.player_states[:folded] }.size == game_hand_players.size - 1
   end
 
   def last_one_active_player?
@@ -67,20 +68,23 @@ class GameHand < ApplicationRecord
     game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
     return false unless game_hand_player
     dumped_actions = dump_actions
-    !dumped_actions[player_id] || dumped_actions[player_id]['player_state'] == self.class.player_states[:allin]
+    # 既に何かしらのアクションを実行した、かつ、オールイン状態かチェック
+    dumped_actions[player_id] && dumped_actions[player_id]['player_state'] == self.class.player_states[:allin]
   end
 
   def folded_player?(player_id)
     game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
     return false unless game_hand_player
     dumped_actions = dump_actions
-    !dumped_actions[player_id] || dumped_actions[player_id]['player_state'] == self.class.player_states[:folded]
+    # 既に何かしらのアクションを実行した、かつ、フォールド状態かをチェック
+    dumped_actions[player_id] && dumped_actions[player_id]['player_state'] == self.class.player_states[:folded]
   end
 
   def active_player?(player_id)
     game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
-    return false unless game_hand_player
+    return false unless game_hand_player # そもそもハンドに参加していない（例外投げても良いかも）
     dumped_actions = dump_actions
+    # まだ何もアクションを実行していない、または、アクティブ状態かをチェック
     !dumped_actions[player_id] || dumped_actions[player_id]['player_state'] == self.class.player_states[:active]
   end
 
@@ -153,8 +157,6 @@ class GameHand < ApplicationRecord
 
     dumped_actions = {}
     actions_by_player_id.each do |player_id, actions|
-      next if player_id.nil?
-
       # 現在のラウンドでのベット額
       bet_amount_in_state = 0
       # 実際に賭けたトータルのベット額
@@ -162,6 +164,7 @@ class GameHand < ApplicationRecord
       # 他プレイヤーにテイクされていない実効ベット額
       # - サイドポット発生時等に有効
       effective_total_bet_amount = 0
+
       actions.each do |action|
         if action.action_type.in?(%w(blind call bet))
           total_bet_amount += action.amount
@@ -183,20 +186,15 @@ class GameHand < ApplicationRecord
       taken_amount = actions.select(&:taken?).sum(&:amount)
       is_allin = table_player.stack == 0 || (table_player.stack - taken_amount) == 0
 
-      player_state = nil
-      if game_hand_player
-        if last_action_type == 'fold'
-          player_state = self.class.player_states[:folded]
+      if last_action_type == 'fold'
+        player_state = self.class.player_states[:folded]
+      else
+        if is_allin
+          player_state = self.class.player_states[:allin]
         else
-          if is_allin
-            player_state = self.class.player_states[:allin]
-          else
-            player_state = self.class.player_states[:active]
-          end
+          player_state = self.class.player_states[:active]
         end
       end
-
-      round = actions.last.state
 
       show_hand = actions.any?(&:show?)
       muck_hand = !show_hand && actions.any?(&:muck?)
@@ -206,7 +204,7 @@ class GameHand < ApplicationRecord
         'total_bet_amount' => total_bet_amount,
         'effective_total_bet_amount' => effective_total_bet_amount,
         'player_state' => player_state,
-        'round' => round,
+        'round' => self.state,
         'show_hand' => show_hand,
         'muck_hand' => muck_hand,
       }
