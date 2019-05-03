@@ -160,6 +160,11 @@ module GameBroadcaster
       end
     end
 
+    last_action = nil
+    if game_hand
+      last_action = game_hand.game_actions.select { |action| !action.taken? }.sort_by(&:order_id).last
+    end
+
     data = {
       type: 'player_action',
       pot: pot_amount,
@@ -175,7 +180,7 @@ module GameBroadcaster
       show_or_muck: current_state == 'result' && !player_hand_fixed?,
       reached_rounds: reached_rounds,
       reaching_rounds: reaching_rounds,
-      last_action: game_hand.game_actions.select { |action| !action.taken? }.sort_by(&:order_id).last,
+      last_action: last_action,
       just_actioned: type.present?,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
