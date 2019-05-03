@@ -178,7 +178,7 @@ class GameHand < ApplicationRecord
         end
       end
 
-      last_action_type = actions.max_by(&:order_id).action_type
+      is_folded = actions.any?(&:fold?)
 
       game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
 
@@ -186,7 +186,7 @@ class GameHand < ApplicationRecord
       taken_amount = actions.select(&:taken?).sum(&:amount)
       is_allin = table_player.stack == 0 || (table_player.stack - taken_amount) == 0
 
-      if last_action_type == 'fold'
+      if is_folded
         player_state = self.class.player_states[:folded]
       else
         if is_allin
