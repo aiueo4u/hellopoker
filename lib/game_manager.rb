@@ -61,10 +61,14 @@ class GameManager
     bb_table_player.stack -= bb_amount
     game_hand.build_blind_action(bb_table_player.player_id, bb_amount)
 
+    # スタックが無いプレイヤーはゲーム開始時に除外しておく
+    table_players_to_delete = game_hand.table_players.select { |tp| tp.stack == 0 }
+
     # 保存
     sb_table_player.save!
     bb_table_player.save!
     game_hand.save!
+    table_players_to_delete.each(&:destroy!)
 
     self.new(table_id, player.id, nil, 0, player.id)
   end
