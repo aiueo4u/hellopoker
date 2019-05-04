@@ -144,6 +144,7 @@ module GameBroadcaster
       is_allin = game_hand.game_hand_players.select { |ghp|
         !game_hand.folded_player?(ghp.player_id)
       }.size > 1 && current_state == 'finished' && type == 'PLAYER_ACTION_CALL'
+
       if is_allin
         if !reached_rounds['flop']
           reaching_rounds << 'flop'
