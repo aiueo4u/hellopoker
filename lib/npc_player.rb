@@ -31,8 +31,8 @@ class NpcPlayer
       # 誰かがベットしていたら
       else
         weights = [
-          ['PLAYER_ACTION_CALL', 80],
-          ['PLAYER_ACTION_FOLD', 20],
+          ['PLAYER_ACTION_CALL', 70],
+          ['PLAYER_ACTION_FOLD', 30],
         ]
         type = lot_by_weights(weights)
         case type
