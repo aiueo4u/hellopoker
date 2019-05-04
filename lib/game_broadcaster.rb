@@ -48,11 +48,7 @@ module GameBroadcaster
       bb_option_usable =
         game_hand && bb_seat_no == table_player.seat_no && !current_bb_used_option?
 
-      if game_hand&.next_state == 'finished'
-        player_state = nil
-      else
-        player_state = dumped_action['player_state']
-      end
+      player_state = dumped_action['player_state']
 
       if show_or_muck_by_player_id[table_player.player.id]
         cards = [
