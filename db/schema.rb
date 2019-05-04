@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(version: 0) do
     t.string "name", null: false
     t.integer "sb_size", null: false, unsigned: true
     t.integer "bb_size", null: false, unsigned: true
-    t.boolean "deal_cards", default: false
   end
 
 end

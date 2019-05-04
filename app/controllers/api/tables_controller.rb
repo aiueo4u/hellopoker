@@ -8,13 +8,10 @@ class Api::TablesController < Api::ApplicationController
   end
 
   def create
-    deal_cards = params[:deal_cards].present?
-
     @table = Table.create!(
       name: params[:table_name],
       sb_size: params[:sb].to_i,
       bb_size: params[:bb].to_i,
-      deal_cards: deal_cards,
     )
   end
 end

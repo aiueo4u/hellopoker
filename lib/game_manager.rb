@@ -14,22 +14,20 @@ class GameManager
     #   - カードも配る
     joining_table_players = game_hand.table_players.select { |tp| tp.stack > 0 }.sort_by(&:seat_no)
     joining_table_players.each do |table_player|
-      ghp_p = { player_id: table_player.player_id }
-      if table.deal_cards
-        ghp_p[:card1_id] = deck.draw.id
-        ghp_p[:card2_id] = deck.draw.id
-      end
+      ghp_p = {
+        player_id: table_player.player_id,
+        card1_id: deck.draw.id,
+        card2_id: deck.draw.id,
+      }
       game_hand.game_hand_players.build(ghp_p)
     end
 
     # ボードのカードを決める
-    if table.deal_cards
-      game_hand.board_card1_id = deck.draw.id
-      game_hand.board_card2_id = deck.draw.id
-      game_hand.board_card3_id = deck.draw.id
-      game_hand.board_card4_id = deck.draw.id
-      game_hand.board_card5_id = deck.draw.id
-    end
+    game_hand.board_card1_id = deck.draw.id
+    game_hand.board_card2_id = deck.draw.id
+    game_hand.board_card3_id = deck.draw.id
+    game_hand.board_card4_id = deck.draw.id
+    game_hand.board_card5_id = deck.draw.id
 
     # 今回のボタンポジションを計算して設定
     last_button_seat_no = GameHand.where(table_id: table_id).order(:id).last&.button_seat_no
@@ -253,8 +251,8 @@ class GameManager
   end
 
   def player_hand_fixed?
-    # カード配布モードで、結果ラウンドであることを確認
-    return false unless table.deal_cards && current_state == 'result'
+    # 結果ラウンドであることを確認
+    return false unless current_state == 'result'
 
     dumped_actions = game_hand.dump_actions
 
@@ -421,8 +419,8 @@ class GameManager
     # 現在のラウンドが終了している場合
     if current_round_finished?
 
-      # カード配布モードでの結果ラウンドの場合、
-      if table.deal_cards && current_state == 'result'
+      # 結果ラウンドの場合、
+      if current_state == 'result'
         # 二人目移行のハンドショウ
         current_round_actions = game_hand.all_actions.group_by(&:state)['result']
         if current_round_actions.present?

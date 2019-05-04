@@ -10,7 +10,7 @@ class DealtCardChannel < ApplicationCable::Channel
       game_hand_player = GameHandPlayer.find_by(game_hand_id: game_hand_id, player_id: current_player.id)
       table = Table.find(table_id)
 
-      if game_hand_player && table.deal_cards
+      if game_hand_player
         data = {
           player_id: current_player.id,
           cards: [
