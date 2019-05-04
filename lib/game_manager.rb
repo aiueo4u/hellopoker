@@ -199,9 +199,6 @@ class GameManager
   def calc_winning_player_id
     dumped_actions = game_hand.dump_actions
 
-    # メインポット→サイドポット１→サイドポット２・・・
-    amount_by_one = game_hand.min_total_bet_amount_in_not_folded_players
-
     # 結果ラウンドにいる、マックしていないポット獲得権利保有者
     #   - 自身とAll-in以外が全員マックした場合は権利ある
     game_hand_players_in_result = game_hand.game_hand_players.select { |ghp|

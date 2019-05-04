@@ -184,7 +184,12 @@ class GameHand < ApplicationRecord
 
       table_player = table_player_by_player_id(player_id)
       taken_amount = actions.select(&:taken?).sum(&:amount)
-      is_allin = table_player.stack == 0 || (table_player.stack - taken_amount) == 0
+
+      if actions.select(&:taken?).present?
+        is_allin = (table_player.stack - taken_amount - total_bet_amount) == 0
+      else
+        is_allin = table_player.stack == 0
+      end
 
       if is_folded
         player_state = self.class.player_states[:folded]
