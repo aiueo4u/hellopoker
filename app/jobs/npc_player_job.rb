@@ -11,7 +11,7 @@ class NpcPlayerJob < ApplicationJob
 
     sleep 2
 
-    type, amount = NpcPlayer.output(manager, game_hand, table_player)
+    type, amount = NpcPlayer.new(manager, game_hand, table_player).output
 
     ActiveRecord::Base.uncached do
       Table.transaction do
