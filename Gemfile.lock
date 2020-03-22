@@ -128,7 +128,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (3.9.1)
+    puma (3.12.4)
     rack (2.0.3)
     rack-cors (1.0.1)
     rack-health (0.1.2)
@@ -245,7 +245,7 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-twitter
   pry
-  puma (~> 3.7)
+  puma (~> 3.12)
   rack-cors
   rack-health
   rails (~> 5.1.2)
