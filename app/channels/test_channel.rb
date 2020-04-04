@@ -1,8 +1,8 @@
 class TestChannel < ApplicationCable::Channel
   def subscribed
     stream_from 'test_channel'
+  end
 
-    data = { from: current_player.id, name: current_player.nickname, type: 'JOIN_ROOM' }
-    ActionCable.server.broadcast 'test_channel', data
+  def unsubscribed
   end
 end
