@@ -1,6 +1,4 @@
 class Api::ApplicationController < ActionController::API
-  include ActionController::Cookies
-
   before_action :set_current_client_version_header
 
   private
@@ -26,6 +24,6 @@ class Api::ApplicationController < ActionController::API
   end
 
   def player_jwt
-    request.headers['HTTP_PLAYER_JWT']
+    session[:jwt]
   end
 end

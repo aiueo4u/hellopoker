@@ -7,4 +7,8 @@ class Api::SessionsController < Api::ApplicationController
     @nickname = nickname
     @player_id = player.id
   end
+
+  def destroy
+    session.clear
+  end
 end
