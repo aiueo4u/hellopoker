@@ -8,10 +8,12 @@ class Api::TablesController < Api::ApplicationController
   end
 
   def create
-    @table = Table.create!(
-      name: params[:table_name],
-      sb_size: params[:sb].to_i,
-      bb_size: params[:bb].to_i,
-    )
+    @table = Table.create!(new_params)
+  end
+
+  private
+
+  def new_params
+    params.require(:table).permit(:name, :sb_size, :bb_size)
   end
 end

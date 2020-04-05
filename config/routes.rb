@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api do
     resources :tests, only: %i(create)
-    resource :session, only: %i(create)
+    resource :session, only: %i(create destroy)
     resources :players
     resources :tables
     resource :game_dealer, only: %i(create) do
