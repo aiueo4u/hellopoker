@@ -13,9 +13,15 @@ module ApplicationCable
     private
 
     def find_verified_player
-      jwt = request.params['jwt']
+      jwt = session['jwt']
       payload = AuthToken.decode(jwt)
-      Player.find(payload['id']) || reject_unauthorized_connection
+      Player.find(payload['id'])
+    rescue
+      reject_unauthorized_connection
+    end
+
+    def session
+      @session ||= cookies.encrypted[Rails.application.config.session_options[:key]]
     end
   end
 end

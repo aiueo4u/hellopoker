@@ -4,6 +4,7 @@ class Api::SessionsController < Api::ApplicationController
     player = Player.find_or_create_by(nickname: nickname)
     payload = { id: player.id }
     @jwt = AuthToken.encode(payload)
+    session[:jwt] = @jwt
     @nickname = nickname
     @player_id = player.id
   end
