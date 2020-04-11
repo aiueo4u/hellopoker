@@ -1,4 +1,6 @@
 class Api::ApplicationController < ActionController::API
+  include ActionController::Cookies
+
   before_action :set_current_client_version_header
 
   private
