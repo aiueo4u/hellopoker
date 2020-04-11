@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:3000', 'https://poker-webapp-frontend.herokuapp.com'
+    origins 'localhost:3000', 'https://poker-webapp-frontend.herokuapp.com', '192.168.100.101:3000'
 
     resource '*',
       headers: :any,
