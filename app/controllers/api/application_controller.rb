@@ -26,6 +26,6 @@ class Api::ApplicationController < ActionController::API
   end
 
   def player_jwt
-    session[:jwt]
+    cookies.encrypted[Rails.application.config.session_options[:key]]['jwt']
   end
 end
