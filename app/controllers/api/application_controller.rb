@@ -15,7 +15,7 @@ class Api::ApplicationController < ActionController::API
 
   def check_jwt
     begin
-      @decoded = JWT.decode(player_jwt, nil, false)
+      @decoded = JWT.decode(session[:jwt], nil, false)
     rescue => e
       return render json: {}, status: :unauthorized
     end
@@ -23,9 +23,5 @@ class Api::ApplicationController < ActionController::API
 
   def current_player
     @current_player ||= Player.find(@decoded[0]['id'])
-  end
-
-  def player_jwt
-    cookies.encrypted[Rails.application.config.session_options[:key]]['jwt']
   end
 end

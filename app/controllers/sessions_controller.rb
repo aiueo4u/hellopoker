@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
     jwt = ::AuthToken.encode(payload)
     session[:jwt] = jwt
 
-    redirect_to Rails.configuration.x.redirect_url_after_login
+    redirect_to root_path
   end
 
   private
