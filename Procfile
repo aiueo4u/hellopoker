@@ -1,1 +1,1 @@
-release: bundle exec rails ridgepole:apply; yarn run build
+release: bundle exec rails ridgepole:apply

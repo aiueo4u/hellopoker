@@ -65,7 +65,7 @@
     "build": "webpack --mode=production --app-mode=production",
     "lint": "npx eslint frontend/javascript",
     "lint:fix": "npx eslint --fix frontend/javascript",
-    "postinstall": "yarn run build"
+    "postinstall": "yarn && yarn run build"
   },
   "version": "1.0.0",
   "main": "index.js",
