@@ -1,0 +1,37 @@
+/* ボックスのサイズを計算しやすくする */
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* 文字選択を不可にする */
+* {
+  -ms-user-select: none; /* IE 10+ */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* iOSでテキスト入力可能にする */
+textarea,input {
+  -ms-user-select: auto; /* IE 10+ */
+  -moz-user-select: -moz-auto;
+  -khtml-user-select: auto;
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+html, body, .wrapper {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  width: 100vw;
+  height: calc(var(--vh, 1vh) * 100);
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}

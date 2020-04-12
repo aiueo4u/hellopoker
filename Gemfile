@@ -41,6 +41,7 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'rack-health'
+gem 'rack-proxy', require: false
 gem 'bootstrap'
 gem 'jquery-rails'
 gem 'slim'

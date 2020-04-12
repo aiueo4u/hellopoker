@@ -1,0 +1,127 @@
+.poker-card {
+  position: relative;
+  display: inline-block;
+  /*
+  left: -1.9375em;
+  top: -2.75em;
+  */
+  /*width: 3.875em;*/
+  width: 36px;
+  /*height: 5.5em;*/
+  height: 51px;
+  padding: 0.1em;
+  background-color: #fff;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  cursor: default;
+  will-change: transform;
+  border: 1px solid #bbbbbb;
+}
+
+.poker-card:before,
+.poker-card:after {
+  position: absolute;
+  font-size: .9em;
+  text-align: center;
+  line-height: .9em;
+  font-family: 'Ubuntu Condensed', sans-serif;
+  white-space: pre-line;
+  width: 0.55em;
+  letter-spacing: -0.1em;
+}
+.poker-card:before {
+  top: 0.2em;
+  left: 0.2em;
+}
+/*
+.poker-card:after {
+  bottom: 0.2em;
+  right: 0.2em;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+*/
+
+.poker-card .poker-card-face {
+  height: 100%;
+  background-position: 50% 50%;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.poker-card-face-suit {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+}
+
+.poker-card .poker-card-back {
+  position: absolute;
+  background-image: url("./faces/back.png");
+  background-position: 50% 50%;
+  -webkit-background-size: 100% 100%;
+  -moz-background-size: 100% 100%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.poker-card.spades,
+.poker-card.clubs {
+  color: #000;
+}
+.poker-card.hearts,
+.poker-card.diamonds {
+  color: #d40000;
+}
+
+.poker-card.rank1:before {
+  content: "A";
+}
+.poker-card.rank2:before {
+  content: "2";
+}
+.poker-card.rank3:before {
+  content: "3";
+}
+.poker-card.rank4:before {
+  content: "4";
+}
+.poker-card.rank5:before {
+  content: "5";
+}
+.poker-card.rank6:before {
+  content: "6";
+}
+.poker-card.rank7:before {
+  content: "7";
+}
+.poker-card.rank8:before {
+  content: "8";
+}
+.poker-card.rank9:before {
+  content: "9";
+}
+.poker-card.rank10:before {
+  content: "10";
+}
+.poker-card.rank11:before {
+  content: "J";
+}
+.poker-card.rank12:before {
+  content: "Q";
+}
+.poker-card.rank13:before {
+  content: "K";
+}

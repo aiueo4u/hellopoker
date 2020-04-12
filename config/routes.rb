@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   end
 
   get '/', to: 'home#index'
+  get '/login', to: 'home#index'
+  resources :tables, to: 'home#index'
 
   namespace :admin do
     get '/', to: 'home#index'

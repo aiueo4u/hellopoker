@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ChipCounterBackend</title>
-    <%= csrf_meta_tags %>
-
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= javascript_include_tag 'application' %>
+    <title>Poker</title>
+    <%= javascript_webpack_tag('index') %>
   </head>
 
   <body>
-    <%= yield %>
+    <div id="root" />
   </body>
 </html>
