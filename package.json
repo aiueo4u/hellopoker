@@ -64,7 +64,8 @@
     "devserver": "webpack-dev-server --mode=development",
     "build": "webpack --mode=production --app-mode=production",
     "lint": "npx eslint frontend/javascript",
-    "lint:fix": "npx eslint --fix frontend/javascript"
+    "lint:fix": "npx eslint --fix frontend/javascript",
+    "postinstall": "yarn run build"
   },
   "version": "1.0.0",
   "main": "index.js",
@@ -133,5 +134,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "engines": {
+    "yarn": "1.x"
   }
 }
