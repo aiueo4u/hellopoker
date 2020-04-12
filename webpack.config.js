@@ -29,26 +29,18 @@ module.exports = (env, argv) => {
   const mode = argv.mode && argv.mode === 'development' ? 'development' : 'production';
   const appMode = mode === 'development' ? mode : (argv['app-mode'] || 'production');
 
-  let chunkFilename, domain, filename, publicPath;
+  let chunkFilename, filename, publicPath;
 
   switch (appMode) {
     case 'development':
       chunkFilename = 'js/[name]-[hash].chunk.js';
-      domain = 'localhost:3000';
       filename = 'js/[name]-[hash].js';
       publicPath = '/webpacks/';
       break;
-    case 'sandbox':
-      chunkFilename = 'js/[name]-[chunkhash].chunk.js';
-      domain = 'sandbox.internal.youtrust.jp';
-      filename = 'js/[name]-[chunkhash].js';
-      publicPath = 'https://d2pyseqaljkoal.cloudfront.net/webpacks/';
-      break;
     default: // production
       chunkFilename = 'js/[name]-[chunkhash].chunk.js';
-      domain = 'youtrust.jp';
       filename = 'js/[name]-[chunkhash].js';
-      publicPath = 'https://daxgddo8oz9ps.cloudfront.net/webpacks/';
+      publicPath = '/webpacks/';
       break;
   }
 
@@ -210,12 +202,6 @@ module.exports = (env, argv) => {
       },
       watchOptions: { ignored: '**/node_modules/**' },
     };
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env.ACTIONCABLE_ENDPOINT': JSON.stringify(`ws://${domain}/cable`),
-        'process.env.BASE_URL': JSON.stringify(`http://${domain}`),
-      })
-    );
     config.module.rules.push({
       enforce: 'pre',
       test: /\.(js|jsx)$/i,
@@ -245,12 +231,6 @@ module.exports = (env, argv) => {
           inline: false,
           annotation: true,
         },
-      })
-    );
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env.ACTIONCABLE_ENDPOINT': JSON.stringify(`wss://${domain}/cable`),
-        'process.env.BASE_URL': JSON.stringify(`https://${domain}`),
       })
     );
     config.optimization.splitChunks = {
