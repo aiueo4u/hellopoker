@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  root 'home#index'
+
+  get '/', to: 'home#index'
+  get '/login', to: 'home#index'
+  resources :tables, to: 'home#index'
+
   namespace :api do
     resources :tests, only: %i(create)
     resource :session, only: %i(create destroy)
@@ -10,10 +16,6 @@ Rails.application.routes.draw do
       post :add_npc_player, on: :collection
     end
   end
-
-  get '/', to: 'home#index'
-  get '/login', to: 'home#index'
-  resources :tables, to: 'home#index'
 
   namespace :admin do
     get '/', to: 'home#index'
