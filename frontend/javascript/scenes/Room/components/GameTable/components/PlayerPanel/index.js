@@ -34,14 +34,7 @@ const readableActionType = actionType => {
   }
 };
 
-const PlayerPanel = ({
-  tableId,
-  leftSideStyle,
-  rightSideStyle,
-  position,
-  topRightSideStyle,
-  player
-}) => {
+const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRightSideStyle, player }) => {
   const classes = useStyles({ position });
 
   /*
@@ -79,8 +72,7 @@ const PlayerPanel = ({
   const [isOpen, openDialog, closeDialog] = useDialogState();
 
   // 空席の場合
-  if (!player.id)
-    return <EmptySeat tableId={tableId} seatNo={player.seat_no} />;
+  if (!player.id) return <EmptySeat tableId={tableId} seatNo={player.seat_no} />;
 
   const isPlayerTurn = player.seat_no === gameTable.currentSeatNo;
 
@@ -96,41 +88,29 @@ const PlayerPanel = ({
       </div>
       <div className={classes.statusCard}>
         {player.actionType ? (
-          <Typography
-            variant="caption"
-            style={{ fontSize: "0.625rem", color: "white" }}
-          >
+          <Typography variant="caption" style={{ fontSize: '0.625rem', color: 'white' }}>
             {readableActionType(player.actionType)}
           </Typography>
         ) : (
           <>
             <div className={classes.nickname}>{player.nickname}</div>
-            <div className={classes.stackSize}>
-              {player.stack - (player.betSize || 0)}
-            </div>
+            <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
             {isPlayerTurn && (
               <LinearProgress
                 variant="determinate"
-                value={
-                  (player.remain_time_to_action /
-                    player.max_remain_time_to_action) *
-                  100
-                }
+                value={(player.remain_time_to_action / player.max_remain_time_to_action) * 100}
               />
             )}
           </>
         )}
       </div>
 
-      {gameTable.inGame &&
-        !player.hand_show &&
-        player.state !== null &&
-        player.state !== 1 && (
-          <Box display="flex" justifyContent="center">
-            <PokerCard invisible={!showHand} />
-            <PokerCard invisible={!showHand} />
-          </Box>
-        )}
+      {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
+        <Box display="flex" justifyContent="center">
+          <PokerCard invisible={!showHand} />
+          <PokerCard invisible={!showHand} />
+        </Box>
+      )}
 
       {player.hand_show && player.state !== null && player.state !== 1 && (
         <Box display="flex" justifyContent="center">
@@ -146,7 +126,7 @@ const PlayerPanel = ({
       )}
 
       {/* チップ増減結果 */}
-      {gameTable.gameHandState === "finished" && player.amount_diff && (
+      {gameTable.gameHandState === 'finished' && player.amount_diff && (
         <div className={classes.betAmount}>
           {player.amount_diff > 0 && <span>+</span>}
           {player.amount_diff}
@@ -157,19 +137,11 @@ const PlayerPanel = ({
       {gameTable.inGame && (player.bet_amount_in_state || player.betSize) && (
         <div className={classes.betAmount}>
           {player.betSize
-            ? `${player.bet_amount_in_state ||
-                0} → ${player.bet_amount_in_state + player.betSize}`
-            : `${
-                player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ""
-              }`}
+            ? `${player.bet_amount_in_state || 0} → ${player.bet_amount_in_state + player.betSize}`
+            : `${player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ''}`}
         </div>
       )}
-      <PlayerMenuDialog
-        isOpen={isOpen}
-        onClose={closeDialog}
-        player={player}
-        tableId={tableId}
-      />
+      <PlayerMenuDialog isOpen={isOpen} onClose={closeDialog} player={player} tableId={tableId} />
     </Box>
   );
 };

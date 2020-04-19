@@ -13,11 +13,11 @@ const styles = theme => ({
     left: 0,
     right: 0,
     backgroundColor: theme.palette.common.white,
-    borderRadius: theme.spacing(1)
+    borderRadius: theme.spacing(1),
   },
   formGroup: {
-    marginBottom: theme.spacing(2)
-  }
+    marginBottom: theme.spacing(2),
+  },
 });
 
 export default styles;

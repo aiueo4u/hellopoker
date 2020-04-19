@@ -9,7 +9,7 @@ const styles = theme => ({
     top: '25%',
     left: '50%',
     transform: 'translate(-50%, 0)',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   container: {
     position: 'relative',
@@ -19,7 +19,7 @@ const styles = theme => ({
     margin: 'auto',
     backgroundImage: `url(${Image})`,
     backgroundColor: '#338c00',
-    borderRadius: '0%'
+    borderRadius: '0%',
   },
   playerChipBetArea: {
     height: '80px',
@@ -27,7 +27,7 @@ const styles = theme => ({
     position: 'absolute',
     bottom: '150px',
     left: '50%',
-    transform: 'translate(-50%, 0)'
+    transform: 'translate(-50%, 0)',
     //border: `1px solid white`,
   },
   heroPlayerContainer: {
@@ -36,7 +36,7 @@ const styles = theme => ({
     position: 'absolute',
     bottom: 0,
     left: '50%',
-    transform: 'translate(-50%, 0)'
+    transform: 'translate(-50%, 0)',
     //border: `1px solid white`,
   },
   playerContainer1: {
@@ -44,14 +44,14 @@ const styles = theme => ({
     width: '25%',
     //backgroundColor: 'yellow',
     position: 'absolute',
-    top: '400px'
+    top: '400px',
   },
   playerContainer2: {
     height: '20%',
     width: '25%',
     //backgroundColor: 'blue',
     position: 'absolute',
-    top: '150px'
+    top: '150px',
   },
   playerContainer3: {
     height: '20%',
@@ -59,7 +59,7 @@ const styles = theme => ({
     //backgroundColor: 'blue',
     position: 'absolute',
     left: '50%',
-    transform: 'translate(-50%, 0)'
+    transform: 'translate(-50%, 0)',
   },
   playerContainer4: {
     height: '20%',
@@ -67,7 +67,7 @@ const styles = theme => ({
     //backgroundColor: 'blue',
     position: 'absolute',
     top: '150px',
-    right: 0
+    right: 0,
   },
   playerContainer5: {
     height: '20%',
@@ -75,8 +75,8 @@ const styles = theme => ({
     //backgroundColor: 'yellow',
     position: 'absolute',
     top: '400px',
-    right: 0
-  }
+    right: 0,
+  },
 });
 
 export default styles;

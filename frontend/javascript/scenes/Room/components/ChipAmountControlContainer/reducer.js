@@ -1,5 +1,5 @@
 const initialState = {
-  betSize: 0
+  betSize: 0,
 };
 
 const PlayerReducer = (state = initialState, action) => {
@@ -15,7 +15,7 @@ const PlayerReducer = (state = initialState, action) => {
       return Object.assign({}, player, { actionType: action.actionType });
     case 'PROGRESS_PLAYER_ACTION_TIMER':
       return Object.assign({}, player, {
-        remain_time_to_action: action.remainTimeToAction
+        remain_time_to_action: action.remainTimeToAction,
       });
     case 'CHANGE_BET_AMOUNT':
       return Object.assign({}, player, { betSize: action.amount });
@@ -39,7 +39,7 @@ const PlayerReducer = (state = initialState, action) => {
     case 'CHECK_ACTION':
       return Object.assign({}, player, {
         isFetching: true,
-        isHiddenPanel: true
+        isHiddenPanel: true,
       });
     case 'CHECK_ACTION_COMPLETED':
       return Object.assign({}, player, { isFetching: false });
@@ -48,7 +48,7 @@ const PlayerReducer = (state = initialState, action) => {
     case 'BET_ACTION':
       return Object.assign({}, player, {
         isFetching: true,
-        isHiddenPanel: true
+        isHiddenPanel: true,
       });
     case 'BET_ACTION_COMPLETED':
       return Object.assign({}, player, { isFetching: false });
@@ -57,7 +57,7 @@ const PlayerReducer = (state = initialState, action) => {
     case 'CALL_ACTION':
       return Object.assign({}, player, {
         isFetching: true,
-        isHiddenPanel: true
+        isHiddenPanel: true,
       });
     case 'CALL_ACTION_COMPLETED':
       return Object.assign({}, player, { isFetching: false });
@@ -66,7 +66,7 @@ const PlayerReducer = (state = initialState, action) => {
     case 'FOLD_ACTION':
       return Object.assign({}, player, {
         isFetching: true,
-        isHiddenPanel: true
+        isHiddenPanel: true,
       });
     case 'FOLD_ACTION_COMPLETED':
       return Object.assign({}, player, { isFetching: false });
@@ -96,7 +96,7 @@ const PlayersReducer = (state = [], action) => {
           ...player,
           cards: actionPlayer.cards,
           hand_show: actionPlayer.hand_show,
-          state: actionPlayer.state
+          state: actionPlayer.state,
         };
       });
     case 'CHANGE_BET_AMOUNT':

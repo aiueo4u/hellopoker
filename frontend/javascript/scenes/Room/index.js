@@ -26,9 +26,7 @@ const gameStartButtonClicked = tableId => {
 };
 
 const gameStartable = gameHandState => {
-  return (
-    !gameHandState || gameHandState === 'finished' || gameHandState === 'init'
-  );
+  return !gameHandState || gameHandState === 'finished' || gameHandState === 'init';
 };
 
 class Room extends Component {
@@ -40,7 +38,7 @@ class Room extends Component {
       onGameHandFinishedReceived,
       onGameHandActionReceived,
       onPlayerActionReceived,
-      onDealtCardsReceived
+      onDealtCardsReceived,
     } = this.props;
 
     // action cable setup
@@ -98,7 +96,7 @@ class Room extends Component {
         },
         rejected(data) {
           //console.debug('DealtCardChannel rejected', data);
-        }
+        },
       }
     );
 
@@ -125,19 +123,13 @@ class Room extends Component {
       players,
       tableId,
       tableName,
-      onBetAction
+      onBetAction,
     } = this.props;
 
-    const isSeated = players.find(
-      player => player.id === playerSession.playerId
-    )
-      ? true
-      : false;
+    const isSeated = players.find(player => player.id === playerSession.playerId) ? true : false;
     const inGame = !gameStartable(gameTable.gameHandState);
 
-    const currentPlayer = players.find(
-      player => player.id === playerSession.playerId
-    );
+    const currentPlayer = players.find(player => player.id === playerSession.playerId);
 
     /* ゲームデータのローディング */
     if (!gameTable.isReady) {
@@ -146,9 +138,9 @@ class Room extends Component {
 
     return (
       <div
-        id='baseWrapper'
+        id="baseWrapper"
         style={{
-          background: '#003300'
+          background: '#003300',
         }}
       >
         {/* ネットワーク接続中のダイアログ */}
@@ -161,18 +153,10 @@ class Room extends Component {
 
         {/* 画面右上部の情報バー */
         (inGame || players.length > 1) && gameTable.round !== 'init' && (
-          <TopInfobar
-            handCount={gameTable.gameHandCount}
-            round={gameTable.round}
-          />
+          <TopInfobar handCount={gameTable.gameHandCount} round={gameTable.round} />
         )}
 
-        <Box
-          display='flex'
-          height='100%'
-          flexDirection='column'
-          alignItems='center'
-        >
+        <Box display="flex" height="100%" flexDirection="column" alignItems="center">
           <div style={{ height: 'calc(100% - 80px)', width: '100%' }}>
             <GameTable
               tableName={tableName}
@@ -217,7 +201,7 @@ const mapStateToProps = (state, ownProps) => {
     gameTable: Room.GameTable,
     onBetAction: (playerId, amount) => {
       return betAction(tableId, playerId, amount);
-    }
+    },
   };
 };
 
@@ -245,7 +229,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onActionCableDisconnected: () => {
       dispatch({ type: 'ACTION_CABLE_DISCONNECTED' });
-    }
+    },
   };
 };
 

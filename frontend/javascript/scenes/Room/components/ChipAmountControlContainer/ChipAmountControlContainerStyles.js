@@ -5,8 +5,8 @@ const styles = theme => ({
     fontWeight: theme.typography.fontWeightBold,
     minWidth: '80px',
     '&:hover': {
-      backgroundColor: theme.palette.common.white
-    }
+      backgroundColor: theme.palette.common.white,
+    },
   },
   container: {
     position: 'relative',
@@ -14,8 +14,8 @@ const styles = theme => ({
     //border: `1px solid white`,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-around'
-  }
+    justifyContent: 'space-around',
+  },
 });
 
 export default styles;

@@ -1,16 +1,7 @@
-import ActionCable from "actioncable";
-import { camelizeKeys } from "humps";
-import { eventChannel, END } from "redux-saga";
-import {
-  all,
-  cancelled,
-  call,
-  race,
-  put,
-  select,
-  take,
-  takeEvery
-} from "redux-saga/effects";
+import ActionCable from 'actioncable';
+import { camelizeKeys } from 'humps';
+import { eventChannel, END } from 'redux-saga';
+import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
 
 import {
   fetchCurrentUser,
@@ -18,18 +9,18 @@ import {
   startToGameDealer,
   takeSeatToGameDealer,
   addNpcPlayer,
-  postTest
-} from "./api";
+  postTest,
+} from './api';
 
 function* handleCheckAction(action) {
   const { tableId, playerId } = action;
 
   try {
-    yield call(actionToGameDealer, "PLAYER_ACTION_CHECK", tableId, playerId);
-    yield put({ type: "CHECK_ACTION_COMPLETED", tableId, playerId });
+    yield call(actionToGameDealer, 'PLAYER_ACTION_CHECK', tableId, playerId);
+    yield put({ type: 'CHECK_ACTION_COMPLETED', tableId, playerId });
   } catch (error) {
     console.log(error);
-    yield put({ type: "CHECK_ACTION_FAILED", tableId, playerId });
+    yield put({ type: 'CHECK_ACTION_FAILED', tableId, playerId });
   }
 }
 
@@ -37,16 +28,11 @@ function* handleMuckHandAction(action) {
   const { tableId, playerId } = action;
 
   try {
-    yield call(
-      actionToGameDealer,
-      "PLAYER_ACTION_MUCK_HAND",
-      tableId,
-      playerId
-    );
-    yield put({ type: "MUCK_HAND_ACTION_COMPLETED", tableId, playerId });
+    yield call(actionToGameDealer, 'PLAYER_ACTION_MUCK_HAND', tableId, playerId);
+    yield put({ type: 'MUCK_HAND_ACTION_COMPLETED', tableId, playerId });
   } catch (error) {
     console.log(error);
-    yield put({ type: "MUCK_HAND_ACTION_FAILED", tableId, playerId });
+    yield put({ type: 'MUCK_HAND_ACTION_FAILED', tableId, playerId });
   }
 }
 
@@ -54,16 +40,11 @@ function* handleShowHandAction(action) {
   const { tableId, playerId } = action;
 
   try {
-    yield call(
-      actionToGameDealer,
-      "PLAYER_ACTION_SHOW_HAND",
-      tableId,
-      playerId
-    );
-    yield put({ type: "SHOW_HAND_ACTION_COMPLETED", tableId, playerId });
+    yield call(actionToGameDealer, 'PLAYER_ACTION_SHOW_HAND', tableId, playerId);
+    yield put({ type: 'SHOW_HAND_ACTION_COMPLETED', tableId, playerId });
   } catch (error) {
     console.log(error);
-    yield put({ type: "SHOW_HAND_ACTION_FAILED", tableId, playerId });
+    yield put({ type: 'SHOW_HAND_ACTION_FAILED', tableId, playerId });
   }
 }
 
@@ -71,11 +52,11 @@ function* handleFoldAction(action) {
   const { tableId, playerId } = action;
 
   try {
-    yield call(actionToGameDealer, "PLAYER_ACTION_FOLD", tableId, playerId);
-    yield put({ type: "FOLD_ACTION_COMPLETED", tableId, playerId });
+    yield call(actionToGameDealer, 'PLAYER_ACTION_FOLD', tableId, playerId);
+    yield put({ type: 'FOLD_ACTION_COMPLETED', tableId, playerId });
   } catch (error) {
     console.log(error);
-    yield put({ type: "FOLD_ACTION_FAILED", tableId, playerId, error });
+    yield put({ type: 'FOLD_ACTION_FAILED', tableId, playerId, error });
   }
 }
 
@@ -83,11 +64,11 @@ function* handleCallAction(action) {
   const { tableId, playerId } = action;
 
   try {
-    yield call(actionToGameDealer, "PLAYER_ACTION_CALL", tableId, playerId);
-    yield put({ type: "CALL_ACTION_COMPLETED", tableId, playerId });
+    yield call(actionToGameDealer, 'PLAYER_ACTION_CALL', tableId, playerId);
+    yield put({ type: 'CALL_ACTION_COMPLETED', tableId, playerId });
   } catch (error) {
     console.log(error);
-    yield put({ type: "CALL_ACTION_FAILED", tableId, playerId, error });
+    yield put({ type: 'CALL_ACTION_FAILED', tableId, playerId, error });
   }
 }
 
@@ -95,18 +76,12 @@ function* handleBetAction(action) {
   const { tableId, playerId, amount } = action;
 
   try {
-    const response = yield call(
-      actionToGameDealer,
-      "PLAYER_ACTION_BET_CHIPS",
-      tableId,
-      playerId,
-      amount
-    );
+    const response = yield call(actionToGameDealer, 'PLAYER_ACTION_BET_CHIPS', tableId, playerId, amount);
     const { pot } = response.data;
-    yield put({ type: "BET_ACTION_COMPLETED", tableId, playerId, amount, pot });
+    yield put({ type: 'BET_ACTION_COMPLETED', tableId, playerId, amount, pot });
   } catch (error) {
     console.log(error);
-    yield put({ type: "BET_ACTION_FAILED", tableId, playerId, error });
+    yield put({ type: 'BET_ACTION_FAILED', tableId, playerId, error });
   }
 }
 
@@ -114,23 +89,18 @@ function* handleTakePotAction(action) {
   const { tableId, playerId } = action;
 
   try {
-    const response = yield call(
-      actionToGameDealer,
-      "GAME_HAND_TAKE_POT",
-      tableId,
-      playerId
-    );
+    const response = yield call(actionToGameDealer, 'GAME_HAND_TAKE_POT', tableId, playerId);
     const { pot, playerStack } = camelizeKeys(response.data);
     yield put({
-      type: "TAKE_POT_ACTION_COMPLETED",
+      type: 'TAKE_POT_ACTION_COMPLETED',
       tableId,
       playerId,
       pot,
-      playerStack
+      playerStack,
     });
   } catch (error) {
     console.log(error);
-    yield put({ type: "TAKE_POT_ACTION_FAILED", tableId, playerId, error });
+    yield put({ type: 'TAKE_POT_ACTION_FAILED', tableId, playerId, error });
   }
 }
 
@@ -138,28 +108,22 @@ function* handlePlayerTakeSeat(action) {
   const { amount, tableId, playerId, seatNo, buyInAmount } = action;
 
   try {
-    const response = yield call(
-      takeSeatToGameDealer,
-      tableId,
-      playerId,
-      seatNo,
-      buyInAmount
-    );
+    const response = yield call(takeSeatToGameDealer, tableId, playerId, seatNo, buyInAmount);
     const data = response.data;
     yield put({
-      type: "PLAYER_ACTION_TAKE_SEAT_COMPLETED",
+      type: 'PLAYER_ACTION_TAKE_SEAT_COMPLETED',
       tableId,
       playerId,
       amount,
-      pot: data.pot
+      pot: data.pot,
     });
   } catch (error) {
     console.log(error);
     yield put({
-      type: "PLAYER_ACTION_TAKE_SEAT_FAILED",
+      type: 'PLAYER_ACTION_TAKE_SEAT_FAILED',
       tableId,
       playerId,
-      error
+      error,
     });
   }
 }
@@ -169,9 +133,9 @@ function* handleAddNpcPlayer(action) {
 
   try {
     yield call(addNpcPlayer, tableId, seatNo);
-    yield put({ type: "ON_SUCCESS_ADD_NPC_PLAYER" });
+    yield put({ type: 'ON_SUCCESS_ADD_NPC_PLAYER' });
   } catch (error) {
-    yield put({ type: "ON_FAILURE_ADD_NPC_PLAYER" });
+    yield put({ type: 'ON_FAILURE_ADD_NPC_PLAYER' });
   }
 }
 
@@ -180,11 +144,11 @@ function* handleFetchPlayer() {
     const response = yield call(fetchCurrentUser);
     const data = response.data;
     const user = camelizeKeys(data);
-    yield put({ type: "FETCH_PLAYER_SUCCEEDED", ...user });
+    yield put({ type: 'FETCH_PLAYER_SUCCEEDED', ...user });
   } catch (error) {
     // ログイン成功後のリダイレクト先を保存
-    sessionStorage.setItem("redirectTo", window.location.href);
-    yield put({ type: "FETCH_PLAYER_FAILED" });
+    sessionStorage.setItem('redirectTo', window.location.href);
+    yield put({ type: 'FETCH_PLAYER_FAILED' });
   }
 }
 
@@ -193,10 +157,10 @@ function* handleGameStartButtonClicked(action) {
 
   try {
     yield call(startToGameDealer, tableId);
-    yield put({ type: "GAME_START_COMPLETED", tableId });
+    yield put({ type: 'GAME_START_COMPLETED', tableId });
   } catch (error) {
     console.log(error);
-    yield put({ type: "GAME_START_FAILED", tableId });
+    yield put({ type: 'GAME_START_FAILED', tableId });
   }
 }
 
@@ -218,9 +182,9 @@ function* openBoardCard(reachedRounds, boardCards, time) {
     yield take(channel);
   } finally {
     yield put({
-      type: "OPEN_BOARD_CARD_BY_ROUND",
+      type: 'OPEN_BOARD_CARD_BY_ROUND',
       reachedRounds,
-      boardCards
+      boardCards,
     });
   }
 }
@@ -228,17 +192,13 @@ function* openBoardCard(reachedRounds, boardCards, time) {
 function* handleBeforePlayerActionReceived(action) {
   // ALLIN時のボードオープン用
   if (action.justActioned && action.reachingRounds.length > 0) {
-    yield put({ type: "SHOW_ACTIVE_PLAYER_CARDS", players: action.players });
+    yield put({ type: 'SHOW_ACTIVE_PLAYER_CARDS', players: action.players });
 
     let reachedRounds = {};
-    if (!action.reachingRounds.includes("flop")) {
+    if (!action.reachingRounds.includes('flop')) {
       reachedRounds = {
-        flop:
-          action.reachingRounds.includes("turn") ||
-          action.reachingRounds.includes("river"),
-        turn:
-          !action.reachingRounds.includes("turn") &&
-          action.reachingRounds.includes("river")
+        flop: action.reachingRounds.includes('turn') || action.reachingRounds.includes('river'),
+        turn: !action.reachingRounds.includes('turn') && action.reachingRounds.includes('river'),
       };
       yield call(openBoardCard, reachedRounds, action.boardCards, 0);
     }
@@ -246,12 +206,7 @@ function* handleBeforePlayerActionReceived(action) {
       action.reachingRounds.map((round, i) => {
         reachedRounds = Object.assign({}, reachedRounds);
         reachedRounds[round] = true;
-        return call(
-          openBoardCard,
-          reachedRounds,
-          action.boardCards,
-          (i + 1) * 2
-        );
+        return call(openBoardCard, reachedRounds, action.boardCards, (i + 1) * 2);
       })
     );
 
@@ -259,25 +214,21 @@ function* handleBeforePlayerActionReceived(action) {
       const channel = yield call(sleepTimer, 2);
       yield take(channel);
     } finally {
-      yield put(Object.assign({}, action, { type: "PLAYER_ACTION_RECEIVED" }));
+      yield put(Object.assign({}, action, { type: 'PLAYER_ACTION_RECEIVED' }));
       yield put({
-        type: "SETUP_GAME_START_TIMER",
+        type: 'SETUP_GAME_START_TIMER',
         tableId: action.tableId,
-        seconds: 10
+        seconds: 10,
       });
       return;
     }
   }
 
-  if (
-    action.lastAction &&
-    action.lastAction.action_type !== "blind" &&
-    action.lastAction.action_type !== "taken"
-  ) {
+  if (action.lastAction && action.lastAction.action_type !== 'blind' && action.lastAction.action_type !== 'taken') {
     yield put({
-      type: "OTHER_PLAYER_ACTION",
+      type: 'OTHER_PLAYER_ACTION',
       actionType: action.lastAction.action_type,
-      playerId: action.lastAction.player_id
+      playerId: action.lastAction.player_id,
     });
 
     try {
@@ -285,27 +236,27 @@ function* handleBeforePlayerActionReceived(action) {
       yield take(channel);
     } finally {
       const object = Object.assign({}, action, {
-        type: "PLAYER_ACTION_RECEIVED"
+        type: 'PLAYER_ACTION_RECEIVED',
       });
       yield put(object);
-      if (action.gameHandState === "finished") {
+      if (action.gameHandState === 'finished') {
         yield put({
-          type: "SETUP_GAME_START_TIMER",
+          type: 'SETUP_GAME_START_TIMER',
           tableId: action.tableId,
-          seconds: 10
+          seconds: 10,
         });
       }
     }
   } else {
     const object = Object.assign({}, action, {
-      type: "PLAYER_ACTION_RECEIVED"
+      type: 'PLAYER_ACTION_RECEIVED',
     });
     yield put(object);
-    if (action.gameHandState === "finished") {
+    if (action.gameHandState === 'finished') {
       yield put({
-        type: "SETUP_GAME_START_TIMER",
+        type: 'SETUP_GAME_START_TIMER',
         tableId: action.tableId,
-        seconds: 10
+        seconds: 10,
       });
     }
   }
@@ -335,27 +286,23 @@ function* startCountdown(action) {
     if (yield cancelled()) {
       channel.close();
     } else {
-      yield put({ type: "GAME_START_BUTTON_CLICKED", tableId: action.tableId });
+      yield put({ type: 'GAME_START_BUTTON_CLICKED', tableId: action.tableId });
     }
   }
 }
 
 function* handleSetupGameStartTimer(action) {
-  yield race([
-    call(startCountdown, action),
-    take("GAME_START_BUTTON_CLICKED"),
-    take("PLAYER_ACTION_RECEIVED")
-  ]);
+  yield race([call(startCountdown, action), take('GAME_START_BUTTON_CLICKED'), take('PLAYER_ACTION_RECEIVED')]);
 }
 
 function* handleInitialize() {
   // ログイン前のページへとリダイレクトさせる
-  const redirectTo = sessionStorage.getItem("redirectTo");
-  sessionStorage.removeItem("redirectTo");
+  const redirectTo = sessionStorage.getItem('redirectTo');
+  sessionStorage.removeItem('redirectTo');
   if (redirectTo) {
     window.location = redirectTo;
   } else {
-    yield put({ type: "FETCH_PLAYER" });
+    yield put({ type: 'FETCH_PLAYER' });
   }
 }
 
@@ -368,24 +315,22 @@ function initializeWebRTC() {
     .getUserMedia({
       audio: true,
       video: {
-        width: "320",
-        height: "240"
-      }
+        width: '320',
+        height: '240',
+      },
     })
     .then(stream => {
       localstream = stream;
-      const localVideo = document.getElementById("local-video");
+      const localVideo = document.getElementById('local-video');
       localVideo.srcObject = stream;
     })
-    .catch(error => console.log("Error!: ", error));
+    .catch(error => console.log('Error!: ', error));
   // }
   // };
 }
 
-const jwt = localStorage.getItem("playerSession.jwt");
-const cable = ActionCable.createConsumer(
-  `/cable?jwt=${jwt}`
-);
+const jwt = localStorage.getItem('playerSession.jwt');
+const cable = ActionCable.createConsumer(`/cable?jwt=${jwt}`);
 let session;
 let playerId;
 
@@ -394,30 +339,30 @@ function* handleJoinSession() {
   playerId = `${playerId}`;
 
   session = yield cable.subscriptions.create(
-    { channel: "TestChannel" },
+    { channel: 'TestChannel' },
     {
       connected: () => {
-        console.log("ActionCable connected.");
+        console.log('ActionCable connected.');
         broadcastData({
-          type: "JOIN_ROOM",
-          from: playerId
+          type: 'JOIN_ROOM',
+          from: playerId,
         });
       },
       received: data => {
         if (data.from === playerId) return;
-        console.log("ActionCable received: ", data);
+        console.log('ActionCable received: ', data);
         switch (data.type) {
-          case "JOIN_ROOM":
+          case 'JOIN_ROOM':
             return joinRoom(data);
-          case "EXCHANGE":
+          case 'EXCHANGE':
             if (data.to !== playerId) return;
             return exchange(data);
-          case "REMOVE_USER":
+          case 'REMOVE_USER':
             return removeUser(data);
           default:
             return;
         }
-      }
+      },
     }
   );
 }
@@ -432,14 +377,12 @@ function handleLeaveSession() {
 
   session.unsubscribe();
 
-  const remoteVideoContainer = document.getElementById(
-    `video-players-${playerId}`
-  );
-  remoteVideoContainer.innerHTML = "";
+  const remoteVideoContainer = document.getElementById(`video-players-${playerId}`);
+  remoteVideoContainer.innerHTML = '';
 
   broadcastData({
-    type: "REMOVE_USER",
-    from: playerId
+    type: 'REMOVE_USER',
+    from: playerId,
   });
 }
 
@@ -448,13 +391,13 @@ const joinRoom = data => {
 };
 
 const removeUser = data => {
-  console.log("Removing user", data.from);
+  console.log('Removing user', data.from);
   const video = document.getElementById(`remoteVideoContainer+${data.from}`);
   video && video.remove();
   delete pcPeers[data.from];
 };
 
-const ice = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] };
+const ice = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
 
 function createPC(userId, isOffer) {
   const pc = new RTCPeerConnection(ice);
@@ -472,10 +415,10 @@ function createPC(userId, isOffer) {
       })
       .then(() => {
         broadcastData({
-          type: "EXCHANGE",
+          type: 'EXCHANGE',
           from: playerId,
           to: userId,
-          sdp: JSON.stringify(pc.localDescription)
+          sdp: JSON.stringify(pc.localDescription),
         });
       })
       .catch(logError);
@@ -483,19 +426,19 @@ function createPC(userId, isOffer) {
   pc.onicecandidate = event => {
     event.candidate &&
       broadcastData({
-        type: "EXCHANGE",
+        type: 'EXCHANGE',
         from: playerId,
         to: userId,
-        candidate: JSON.stringify(event.candidate)
+        candidate: JSON.stringify(event.candidate),
       });
   };
 
   pc.ontrack = event => {
-    if (event.track.kind === "video") {
+    if (event.track.kind === 'video') {
       const element = document.getElementById(`video-player-${userId}`);
       //const element = document.createElement('video');
       //element.id = `remoteVideoContainer+${userId}`;
-      element.autoplay = "autoplay";
+      element.autoplay = 'autoplay';
       element.srcObject = event.streams[0];
 
       //remoteVideoContainer.appendChild(element);
@@ -503,11 +446,11 @@ function createPC(userId, isOffer) {
   };
 
   pc.oniceconnectionstatechange = event => {
-    if (pc.iceConnectionState === "disconnected") {
-      console.log("Disconnected: ", userId);
+    if (pc.iceConnectionState === 'disconnected') {
+      console.log('Disconnected: ', userId);
       broadcastData({
-        type: "REMOVE_USER",
-        from: userId
+        type: 'REMOVE_USER',
+        from: userId,
       });
     }
   };
@@ -526,7 +469,7 @@ const exchange = data => {
 
   if (data.candidate) {
     pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)))
-      .then(() => console.log("Ice candidate added"))
+      .then(() => console.log('Ice candidate added'))
       .catch(logError);
   }
 
@@ -534,17 +477,17 @@ const exchange = data => {
     const sdp = JSON.parse(data.sdp);
     pc.setRemoteDescription(new RTCSessionDescription(sdp))
       .then(() => {
-        if (sdp.type === "offer") {
+        if (sdp.type === 'offer') {
           pc.createAnswer()
             .then(answer => {
               return pc.setLocalDescription(answer);
             })
             .then(() => {
               broadcastData({
-                type: "EXCHANGE",
+                type: 'EXCHANGE',
                 from: playerId,
                 to: data.from,
-                sdp: JSON.stringify(pc.localDescription)
+                sdp: JSON.stringify(pc.localDescription),
               });
             });
         }
@@ -560,28 +503,25 @@ function broadcastData(data) {
 const logError = error => console.log(error);
 
 export default function* rootSage() {
-  yield takeEvery("FETCH_PLAYER", handleFetchPlayer);
-  yield takeEvery("BET_ACTION", handleBetAction);
-  yield takeEvery("CALL_ACTION", handleCallAction);
-  yield takeEvery("FOLD_ACTION", handleFoldAction);
-  yield takeEvery("CHECK_ACTION", handleCheckAction);
-  yield takeEvery("MUCK_HAND_ACTION", handleMuckHandAction);
-  yield takeEvery("SHOW_HAND_ACTION", handleShowHandAction);
-  yield takeEvery("GAME_START_BUTTON_CLICKED", handleGameStartButtonClicked);
-  yield takeEvery("TAKE_POT_ACTION", handleTakePotAction);
-  yield takeEvery("PLAYER_TAKE_SEAT", handlePlayerTakeSeat);
-  yield takeEvery("ADD_NPC_PLAYER", handleAddNpcPlayer);
-  yield takeEvery(
-    "BEFORE_PLAYER_ACTION_RECEIVED",
-    handleBeforePlayerActionReceived
-  );
+  yield takeEvery('FETCH_PLAYER', handleFetchPlayer);
+  yield takeEvery('BET_ACTION', handleBetAction);
+  yield takeEvery('CALL_ACTION', handleCallAction);
+  yield takeEvery('FOLD_ACTION', handleFoldAction);
+  yield takeEvery('CHECK_ACTION', handleCheckAction);
+  yield takeEvery('MUCK_HAND_ACTION', handleMuckHandAction);
+  yield takeEvery('SHOW_HAND_ACTION', handleShowHandAction);
+  yield takeEvery('GAME_START_BUTTON_CLICKED', handleGameStartButtonClicked);
+  yield takeEvery('TAKE_POT_ACTION', handleTakePotAction);
+  yield takeEvery('PLAYER_TAKE_SEAT', handlePlayerTakeSeat);
+  yield takeEvery('ADD_NPC_PLAYER', handleAddNpcPlayer);
+  yield takeEvery('BEFORE_PLAYER_ACTION_RECEIVED', handleBeforePlayerActionReceived);
 
   // TODO: 観戦時にはこれを無効にしたい
-  yield takeEvery("SETUP_GAME_START_TIMER", handleSetupGameStartTimer);
+  yield takeEvery('SETUP_GAME_START_TIMER', handleSetupGameStartTimer);
 
   yield call(handleInitialize);
 
-  yield takeEvery("HANDLE_JOIN_SESSION", handleJoinSession);
+  yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
-  yield takeEvery("INITIALIZE_WEBRTC", initializeWebRTC);
+  yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
 }

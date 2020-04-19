@@ -1,19 +1,19 @@
-import React from "react";
-import { Grid, Typography } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   plate: {
-    width: "24px",
-    margin: "0 auto",
+    width: '24px',
+    margin: '0 auto',
     background: theme.palette.common.white,
-    textAlign: "center",
-    borderRadius: "50%",
-    boxShadow: "1px 1px 1px 1px black"
+    textAlign: 'center',
+    borderRadius: '50%',
+    boxShadow: '1px 1px 1px 1px black',
   },
   label: {
-    lineHeight: "24px"
-  }
+    lineHeight: '24px',
+  },
 });
 
 const DealerButtonPlate = ({ classes }) => (

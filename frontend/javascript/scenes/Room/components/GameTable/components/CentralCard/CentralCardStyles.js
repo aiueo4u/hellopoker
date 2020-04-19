@@ -10,7 +10,7 @@ const styles = theme => ({
     //border: `1px solid white`, // TODO
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   pot: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
@@ -18,8 +18,8 @@ const styles = theme => ({
     padding: theme.spacing(1),
     width: '100px',
     margin: '16px auto',
-    borderRadius: '2px'
-  }
+    borderRadius: '2px',
+  },
 });
 
 export default styles;

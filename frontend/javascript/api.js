@@ -3,9 +3,9 @@ import axios from 'axios';
 const ApiClient = axios.create({
   baseURL: '/api',
   headers: {
-    Accept: 'application/json'
+    Accept: 'application/json',
   },
-  withCredentials: true
+  withCredentials: true,
 });
 
 ApiClient.interceptors.response.use(response => {
@@ -25,12 +25,7 @@ export const postTest = data => {
   return ApiClient.post('tests', body);
 };
 
-export const takeSeatToGameDealer = (
-  tableId,
-  playerId,
-  seatNo,
-  buyInAmount
-) => {
+export const takeSeatToGameDealer = (tableId, playerId, seatNo, buyInAmount) => {
   const body = new FormData();
   body.append('type', 'PLAYER_ACTION_TAKE_SEAT');
   body.append('table_id', tableId);

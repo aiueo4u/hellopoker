@@ -1,1 +1,1 @@
-export { default } from "./BuyInDialog";
+export { default } from './BuyInDialog';

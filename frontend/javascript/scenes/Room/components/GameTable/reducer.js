@@ -6,7 +6,7 @@ const initialState = {
   dealtCards: [],
   buyInAmount: '',
   isOpenGameStartCountdown: false,
-  timeToStart: 0
+  timeToStart: 0,
 };
 
 const GameTableReducer = (state = initialState, action) => {
@@ -15,25 +15,25 @@ const GameTableReducer = (state = initialState, action) => {
       return {
         ...state,
         isOpenGameStartCountdown: true,
-        timeToStart: action.seconds
+        timeToStart: action.seconds,
       };
     case 'GAME_START_COMPLETED':
       return { ...state, isOpenGameStartCountdown: false };
     case 'ON_CHANGE_BUY_IN_AMOUNT':
       return Object.assign({}, state, {
-        buyInAmount: action.amount
+        buyInAmount: action.amount,
       });
     case 'DEALT_CARD_RECEIVED':
       const dealtCards = Object.assign({}, state.dealtCards);
       dealtCards[action.playerId] = action.cards;
       return Object.assign({}, state, {
         dealtCards,
-        isOpenGameStartCountdown: false
+        isOpenGameStartCountdown: false,
       });
     case 'OPEN_BOARD_CARD_BY_ROUND':
       return Object.assign({}, state, {
         reachedRounds: action.reachedRounds,
-        boardCards: action.boardCards
+        boardCards: action.boardCards,
       });
     case 'PLAYER_ACTION_RECEIVED':
       return Object.assign({}, state, {
@@ -48,41 +48,41 @@ const GameTableReducer = (state = initialState, action) => {
         gameHandCount: action.gameHandCount,
         boardCards: action.boardCards,
         showOrMuck: action.showOrMuck,
-        reachedRounds: action.reachedRounds
+        reachedRounds: action.reachedRounds,
       });
     case 'OPEN_PLAYER_MENU_DIALOG':
       return Object.assign({}, state, {
-        openingPlayerMenuDialogPlayerId: action.playerId
+        openingPlayerMenuDialogPlayerId: action.playerId,
       });
     case 'CLOSE_PLAYER_MENU_DIALOG':
       return Object.assign({}, state, {
-        openingPlayerMenuDialogPlayerId: null
+        openingPlayerMenuDialogPlayerId: null,
       });
     case 'OPEN_BUY_IN_DIALOG':
       return Object.assign({}, state, {
         isOpenedBuyInDialog: true,
         selectingSeatNo: action.seatNo,
-        buyInPlayerId: action.playerId
+        buyInPlayerId: action.playerId,
       });
     case 'CLOSE_BUY_IN_DIALOG':
       return Object.assign({}, state, {
         isOpenedBuyInDialog: false,
         selectingSeatNo: null,
-        buyInAmount: ''
+        buyInAmount: '',
       });
     case 'PLAYER_TAKE_SEAT':
       return Object.assign({}, state, {
-        buyInAmount: ''
+        buyInAmount: '',
       });
     case 'PLAYER_ACTION_TAKE_SEAT_COMPLETED':
       return Object.assign({}, state, {
         isOpenedBuyInDialog: false,
-        selectingSeatNo: null
+        selectingSeatNo: null,
       });
     case 'PLAYER_ACTION_TAKE_SEAT_FAILED':
       return Object.assign({}, state, {
         isOpenedBuyInDialog: false,
-        selectingSeatNo: null
+        selectingSeatNo: null,
       });
     case 'ACTION_CABLE_CONNECTED':
       return Object.assign({}, state, { reconnectingActionCable: false });

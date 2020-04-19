@@ -15,7 +15,7 @@ export const betAction = (tableId, playerId, amount) => {
     type: 'BET_ACTION',
     tableId,
     playerId,
-    amount
+    amount,
   };
 };
 
@@ -24,7 +24,7 @@ export const dealtCardsReceived = data => {
   return {
     type: 'DEALT_CARD_RECEIVED',
     cards,
-    playerId: player_id
+    playerId: player_id,
   };
 };
 
@@ -44,7 +44,7 @@ export const playerActionReceived = data => {
     reaching_rounds,
     last_action,
     just_actioned,
-    table_id
+    table_id,
   } = data;
 
   return {
@@ -64,7 +64,7 @@ export const playerActionReceived = data => {
     lastAction: last_action,
     reachingRounds: reaching_rounds,
     justActioned: just_actioned,
-    tableId: table_id
+    tableId: table_id,
   };
 };
 

@@ -4,31 +4,31 @@ const styles = theme => ({
     top: '50%',
     transform: 'translate(-50%, -50%)',
     textTransform: 'none',
-    width: '80px'
+    width: '80px',
   },
   leftButton: {
-    left: 'calc(50% - 120px)'
+    left: 'calc(50% - 120px)',
   },
   rightButton: {
-    left: 'calc(50% + 120px)'
+    left: 'calc(50% + 120px)',
   },
   nickname: {
     color: theme.palette.common.white,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
   },
   heroHoleCard1: {
     position: 'absolute',
     top: '50px',
     left: 'calc(50% - 15px)',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
   },
   heroHoleCard2: {
     position: 'absolute',
     top: '50px',
     left: 'calc(50% + 15px)',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
   },
   panelContainer: ({ player }) => ({
     position: 'relative',
@@ -37,10 +37,10 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     textAlign: 'center',
-    filter: player && player.state === 1 ? 'grayscale(100%)' : ''
+    filter: player && player.state === 1 ? 'grayscale(100%)' : '',
   }),
   stackSize: {
-    color: 'orange'
+    color: 'orange',
   },
   statusCard: {
     display: 'flex',
@@ -49,8 +49,8 @@ const styles = theme => ({
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     margin: '8px auto',
     padding: theme.spacing(1 / 2),
-    borderRadius: '2px'
-  }
+    borderRadius: '2px',
+  },
 });
 
 export default styles;

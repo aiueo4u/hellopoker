@@ -1,6 +1,6 @@
 const styles = theme => ({
   button: {
-    width: '200px'
+    width: '200px',
   },
   container: {
     display: 'flex',
@@ -15,11 +15,11 @@ const styles = theme => ({
     bottom: 0,
     left: 0,
     right: 0,
-    borderRadius: theme.spacing(1)
+    borderRadius: theme.spacing(1),
   },
   link: {
-    textDecoration: 'none'
-  }
+    textDecoration: 'none',
+  },
 });
 
 export default styles;

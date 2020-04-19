@@ -13,8 +13,8 @@ const styles = theme => ({
     left: 0,
     right: 0,
     background: 'rgba(200, 200, 200, 0.3)',
-    borderRadius: '30px'
-  }
+    borderRadius: '30px',
+  },
 });
 
 export default styles;
