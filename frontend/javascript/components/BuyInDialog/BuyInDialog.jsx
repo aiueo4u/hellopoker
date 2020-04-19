@@ -26,7 +26,6 @@ const BuyInDialog = ({ isOpen, onClose, seatNo, tableId }) => {
           <TextField
             label="スタック"
             autoFocus
-            placeholder="10000"
             onChange={onChange}
             value={amount}
           />

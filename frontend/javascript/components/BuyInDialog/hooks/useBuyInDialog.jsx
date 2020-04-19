@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 const useBuyInDialog = (tableId, seatNo) => {
   const dispatch = useDispatch();
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState(10000);
 
   const onSubmitTakeSeat = () => {
     dispatch({ type: 'PLAYER_TAKE_SEAT', tableId, seatNo, buyInAmount: amount })

@@ -12,7 +12,6 @@ import EmptySeat from 'components/EmptySeat';
 import PlayerAvatar from 'components/PlayerAvatar';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
-import WebRTCTest from 'components/WebRTCTest';
 
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
@@ -75,10 +74,7 @@ const HeroPlayerPanel = ({
     <div>
       <div className={classes.panelContainer}>
         <Box display="flex" justifyContent="center">
-          {
-            //<PlayerAvatar player={player} isTurn={isHeroTurn} />
-          }
-          <WebRTCTest player={player} local />
+          <PlayerAvatar player={player} isTurn={isHeroTurn} />
         </Box>
         <div className={classes.statusCard} onClick={openDialog}>
           <div className={classes.nickname}>{player.nickname}</div>
