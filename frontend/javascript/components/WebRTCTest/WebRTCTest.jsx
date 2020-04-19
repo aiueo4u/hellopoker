@@ -15,9 +15,11 @@ function WebRTCTest({ player, local }) {
     dispatch({ type: 'INITIALIZE_WEBRTC' });
   }, [dispatch]);
 
+  if (!player) return null;
+
   return (
     <div className={classes.container}>
-      <Button onClick={() => dispatch({ type: 'HANDLE_JOIN_SESSION' })}>Join</Button>
+      <Button style={{ zIndex: 1000 }} onClick={() => dispatch({ type: 'HANDLE_JOIN_SESSION' })}>Join</Button>
       <Button onClick={() => dispatch({ type: 'HANDLE_LEAVE_SESSION' })}>Leave</Button>
       {local ? (
         <video id='local-video' autoPlay playsInline className={classes.video}></video>

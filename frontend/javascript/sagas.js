@@ -307,8 +307,21 @@ function* handleInitialize() {
 }
 
 let localstream;
+let remoteStreams = {};
+let currentStreamPlayerId = null;
 
-function initializeWebRTC() {
+function* handleChangedPlayerTurn(action) {
+  const { player } = action;
+
+  const localVideo = document.getElementById('local-video');
+
+  if (currentStreamPlayerId !== player.id) {
+    currentStreamPlayerId = player.id;
+    localVideo.srcObject = remoteStreams[player.id] || localstream;
+  }
+}
+
+function* initializeWebRTC() {
   //document.onreadystatechange = () => {
   //if (document.readyState === 'interactive') {
   navigator.mediaDevices
@@ -325,6 +338,8 @@ function initializeWebRTC() {
       localVideo.srcObject = stream;
     })
     .catch(error => console.log('Error!: ', error));
+
+  //yield call(handleJoinSession);
   // }
   // };
 }
@@ -435,11 +450,14 @@ function createPC(userId, isOffer) {
 
   pc.ontrack = event => {
     if (event.track.kind === 'video') {
+      /*
       const element = document.getElementById(`video-player-${userId}`);
       //const element = document.createElement('video');
       //element.id = `remoteVideoContainer+${userId}`;
       element.autoplay = 'autoplay';
       element.srcObject = event.streams[0];
+      */
+      remoteStreams[userId] = event.streams[0];
 
       //remoteVideoContainer.appendChild(element);
     }
@@ -524,4 +542,5 @@ export default function* rootSage() {
   yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
   yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
+  yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
 }

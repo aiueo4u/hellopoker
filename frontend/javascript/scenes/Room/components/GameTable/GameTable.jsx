@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/styles';
 
 import EmptySeat from 'components/EmptySeat';
+import WebRTCTest from 'components/WebRTCTest';
 
 import CentralCard from './components/CentralCard';
 import PlayerPanel from './components/PlayerPanel';
@@ -26,9 +28,17 @@ function GameTable({
   const sortedPlayers = selectSortedPlayers(players, playerSession.playerId);
   const playerPanelProps = index => ({ player: sortedPlayers[index], tableId });
   const playerOnTurn = players.find(player => player.seat_no === gameTable.currentSeatNo)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (playerOnTurn) {
+      dispatch({ type: "CHANGED_PLAYER_TURN", player: playerOnTurn });
+    }
+  }, [playerOnTurn]);
 
   return (
     <div className={classes.container}>
+      <WebRTCTest player={playerOnTurn} local />
       <CentralCard />
 
       <div className={classes.playerChipBetArea}>
