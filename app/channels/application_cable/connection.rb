@@ -19,5 +19,9 @@ module ApplicationCable
     rescue
       reject_unauthorized_connection
     end
+
+    def session
+      @session ||= cookies.encrypted[Rails.application.config.session_options[:key]]
+    end
   end
 end
