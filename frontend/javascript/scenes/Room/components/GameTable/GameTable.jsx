@@ -39,7 +39,7 @@ function GameTable({
         {sortedPlayers[0].id ? (
           <HeroPlayerPanel {...playerPanelProps(0)} playerOnTurn={playerOnTurn} />
         ) : (
-          <EmptySeat tableId={tableId} seatNo={1} />
+          <EmptySeat tableId={tableId} seatNo={sortedPlayers[0].seat_no} />
         )}
       </div>
 
@@ -47,7 +47,7 @@ function GameTable({
         {sortedPlayers[1].id ? (
           <PlayerPanel {...playerPanelProps(1)} position="left" />
         ) : (
-          <EmptySeat tableId={tableId} seatNo={2} />
+          <EmptySeat tableId={tableId} seatNo={sortedPlayers[1].seat_no} />
         )}
       </div>
 
@@ -55,7 +55,7 @@ function GameTable({
         {sortedPlayers[2].id ? (
           <PlayerPanel {...playerPanelProps(2)} position="left" />
         ) : (
-          <EmptySeat tableId={tableId} seatNo={3} />
+          <EmptySeat tableId={tableId} seatNo={sortedPlayers[2].seat_no} />
         )}
       </div>
 
@@ -63,7 +63,7 @@ function GameTable({
         {sortedPlayers[3].id ? (
           <PlayerPanel {...playerPanelProps(3)} position="top" />
         ) : (
-          <EmptySeat tableId={tableId} seatNo={4} />
+          <EmptySeat tableId={tableId} seatNo={sortedPlayers[3].seat_no} />
         )}
       </div>
 
@@ -71,7 +71,7 @@ function GameTable({
         {sortedPlayers[4].id ? (
           <PlayerPanel {...playerPanelProps(4)} position="right" />
         ) : (
-          <EmptySeat tableId={tableId} seatNo={5} />
+          <EmptySeat tableId={tableId} seatNo={sortedPlayers[4].seat_no} />
         )}
       </div>
 
@@ -79,7 +79,7 @@ function GameTable({
         {sortedPlayers[5].id ? (
           <PlayerPanel {...playerPanelProps(5)} position="right" />
         ) : (
-          <EmptySeat tableId={tableId} seatNo={6} />
+          <EmptySeat tableId={tableId} seatNo={sortedPlayers[5].seat_no} />
         )}
       </div>
     </div>

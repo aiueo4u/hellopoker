@@ -32,20 +32,11 @@ function CentralCard() {
     dispatch({ type: 'GAME_START_BUTTON_CLICKED', tableId });
   };
 
-  if (!gameTable.inGame) {
+  if (players.length === 1) {
     return (
       <div className={classes.container}>
         <Box textAlign="center">
-          {players.length === 1 ? (
-            <div>他のプレイヤーの参加を待っています...</div>
-          ) : isSeated ? (
-            <Button variant="contained" color="primary" onClick={onGameStart}>開始</Button>
-          ) : null}
-          {gameTable.isOpenGameStartCountdown && isSeated && (
-            <Box mt={2}>
-              <GameStartCountdown count={gameTable.timeToStart}/>
-            </Box>
-          )}
+          <div>他のプレイヤーの参加を待っています...</div>
         </Box>
       </div>
     );
@@ -54,12 +45,16 @@ function CentralCard() {
   return (
     <div className={classes.container}>
       <Box textAlign="center">
-        {gameTable.round !== 'init' && (
-          <>
-            <div className={classes.pot}>{gameTable.pot}</div>
-            <BoardCardArea gameTable={gameTable} />
-          </>
+        {gameTable.isOpenGameStartCountdown && isSeated && (
+          <Box mt={2}>
+            <GameStartCountdown count={gameTable.timeToStart}/>
+          </Box>
         )}
+        {!gameTable.inGame && isSeated && (
+          <Button variant="contained" color="primary" onClick={onGameStart}>開始</Button>
+        )}
+        {gameTable.inGame && <div className={classes.pot}>{gameTable.pot}</div>}
+        <BoardCardArea gameTable={gameTable} />
       </Box>
     </div>
   );
