@@ -2,6 +2,8 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/styles';
 
+import EmptySeat from 'components/EmptySeat';
+
 import CentralCard from './components/CentralCard';
 import PlayerPanel from './components/PlayerPanel';
 import HeroPlayerPanel from './components/HeroPlayerPanel';
@@ -27,34 +29,59 @@ function GameTable({
 
   return (
     <div className={classes.container}>
+      <CentralCard />
+
       <div className={classes.playerChipBetArea}>
         <PlayerChipBetArea />
       </div>
 
-      <div className={classes.heroPlayerContainer}>
-        <HeroPlayerPanel {...playerPanelProps(0)} playerOnTurn={playerOnTurn} />
+      <div className={useStyles({ position: 0 }).playerContainer}>
+        {sortedPlayers[0].id ? (
+          <HeroPlayerPanel {...playerPanelProps(0)} playerOnTurn={playerOnTurn} />
+        ) : (
+          <EmptySeat tableId={tableId} seatNo={1} />
+        )}
       </div>
 
-      <div className={classes.playerContainer1}>
-        <PlayerPanel {...playerPanelProps(1)} position="left" />
+      <div className={useStyles({ position: 1 }).playerContainer}>
+        {sortedPlayers[1].id ? (
+          <PlayerPanel {...playerPanelProps(1)} position="left" />
+        ) : (
+          <EmptySeat tableId={tableId} seatNo={2} />
+        )}
       </div>
 
-      <div className={classes.playerContainer2}>
-        <PlayerPanel {...playerPanelProps(2)} position="left" />
+      <div className={useStyles({ position: 2 }).playerContainer}>
+        {sortedPlayers[2].id ? (
+          <PlayerPanel {...playerPanelProps(2)} position="left" />
+        ) : (
+          <EmptySeat tableId={tableId} seatNo={3} />
+        )}
       </div>
 
-      <div className={classes.playerContainer3}>
-        <PlayerPanel {...playerPanelProps(3)} position="top" />
+      <div className={useStyles({ position: 3 }).playerContainer}>
+        {sortedPlayers[3].id ? (
+          <PlayerPanel {...playerPanelProps(3)} position="top" />
+        ) : (
+          <EmptySeat tableId={tableId} seatNo={4} />
+        )}
       </div>
 
-      <div className={classes.playerContainer4}>
-        <PlayerPanel {...playerPanelProps(4)} position="right" />
-      </div>
-      <div className={classes.playerContainer5}>
-        <PlayerPanel {...playerPanelProps(5)} position="right" />
+      <div className={useStyles({ position: 4 }).playerContainer}>
+        {sortedPlayers[4].id ? (
+          <PlayerPanel {...playerPanelProps(4)} position="right" />
+        ) : (
+          <EmptySeat tableId={tableId} seatNo={5} />
+        )}
       </div>
 
-      <CentralCard />
+      <div className={useStyles({ position: 5 }).playerContainer}>
+        {sortedPlayers[5].id ? (
+          <PlayerPanel {...playerPanelProps(5)} position="right" />
+        ) : (
+          <EmptySeat tableId={tableId} seatNo={6} />
+        )}
+      </div>
     </div>
   );
 };

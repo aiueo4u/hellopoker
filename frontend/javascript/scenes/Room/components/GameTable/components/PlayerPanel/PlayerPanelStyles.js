@@ -21,19 +21,19 @@ const styles = theme => ({
           bottom: '-32px', // ディーラーボタンのサイズ
           transform: 'translate(-50%, 100%)',
         };
-      case 'left':
-        return {
-          ...base,
-          top: '50%',
-          right: 0,
-          transform: 'translate(100%, 0%)',
-        };
       case 'right':
         return {
           ...base,
           top: '50%',
           left: 0,
           transform: 'translate(-100%, 0%)',
+        };
+      case 'left':
+        return {
+          ...base,
+          top: '50%',
+          right: 0,
+          transform: 'translate(100%, 0%)',
         };
       default:
         return base;
@@ -80,11 +80,11 @@ const styles = theme => ({
     textOverflow: 'ellipsis',
   },
   panelContainer: ({ player }) => ({
-    position: 'relative',
-    //border: `1px solid white`, // TODO
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    //border: `1px solid yellow`, // TODO
     textAlign: 'center',
     filter: player && player.state === 1 ? 'grayscale(100%)' : '',
   }),
@@ -95,11 +95,11 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '140px',
-    width: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    margin: '8px auto',
-    padding: theme.spacing(1 / 2),
+    marginTop: theme.spacing(1),
+    padding: theme.spacing(1, 2),
     borderRadius: '2px',
+    //border: `1px solid red`,
   },
   '@keyframes onPlayerTurnAvatarBlinkAnimation': {
     '50%': {

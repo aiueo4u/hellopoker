@@ -19,9 +19,7 @@ const EmptySeat = ({ seatNo, tableId }) => {
   const [isSeated] = useEmptySeat();
 
   return isSeated ? (
-    <Box className={classes.container}>
-      <AddNpcCard tableId={tableId} seatNo={seatNo} />
-    </Box>
+    <AddNpcCard tableId={tableId} seatNo={seatNo} />
   ) : (
     <>
       <Button

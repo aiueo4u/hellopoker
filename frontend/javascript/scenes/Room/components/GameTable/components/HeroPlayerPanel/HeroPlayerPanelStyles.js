@@ -31,11 +31,11 @@ const styles = theme => ({
     transform: 'translate(-50%, -50%)',
   },
   panelContainer: ({ player }) => ({
-    position: 'relative',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     //border: `1px solid white`, // TODO
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
     textAlign: 'center',
     filter: player && player.state === 1 ? 'grayscale(100%)' : '',
   }),

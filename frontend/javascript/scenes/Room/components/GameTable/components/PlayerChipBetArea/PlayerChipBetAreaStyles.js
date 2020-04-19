@@ -5,12 +5,13 @@ const styles = theme => ({
     borderRadius: '15px',
     lineHeight: '30px',
   },
-  playerChipBetArea: {
+  container: {
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
     textAlign: 'center',
+    //border: `1px solid yellow`,
   },
   betArea: {
     background: 'rgba(0, 0, 0, 0.4)',

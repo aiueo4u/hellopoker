@@ -6,11 +6,9 @@ import { Typography } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/styles';
 
-import EmptySeat from 'components/EmptySeat';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
-import WebRTCTest from 'components/WebRTCTest';
 
 import useGameTableState from 'hooks/useGameTableState';
 import useDialogState from 'hooks/useDialogState';
@@ -71,9 +69,6 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
   const gameTable = useGameTableState();
   const [isOpen, openDialog, closeDialog] = useDialogState();
 
-  // 空席の場合
-  if (!player.id) return <EmptySeat tableId={tableId} seatNo={player.seat_no} />;
-
   const isPlayerTurn = player.seat_no === gameTable.currentSeatNo;
 
   const showHand = player.hand_show;
@@ -81,10 +76,20 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
   return (
     <Box className={classes.panelContainer} onClick={openDialog}>
       <div>
-        {
-          //<Avatar src={player.image_url} className={classes.avatar} alt="" />
-        }
-        <WebRTCTest player={player} />
+        <Avatar src={player.image_url} className={classes.avatar} alt="" />
+        {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
+          <Box display="flex" justifyContent="center">
+            <PokerCard invisible={!showHand} />
+            <PokerCard invisible={!showHand} />
+          </Box>
+        )}
+
+        {player.hand_show && player.state !== null && player.state !== 1 && (
+          <Box display="flex" justifyContent="center">
+            <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
+            <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
+          </Box>
+        )}
       </div>
       <div className={classes.statusCard}>
         {player.actionType ? (
@@ -104,20 +109,6 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
           </>
         )}
       </div>
-
-      {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
-        <Box display="flex" justifyContent="center">
-          <PokerCard invisible={!showHand} />
-          <PokerCard invisible={!showHand} />
-        </Box>
-      )}
-
-      {player.hand_show && player.state !== null && player.state !== 1 && (
-        <Box display="flex" justifyContent="center">
-          <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
-          <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
-        </Box>
-      )}
 
       {player.seat_no === gameTable.buttonSeatNo && (
         <div className={classes.dealerButton}>

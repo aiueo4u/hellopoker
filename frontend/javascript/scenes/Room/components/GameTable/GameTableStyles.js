@@ -22,10 +22,8 @@ const styles = theme => ({
     borderRadius: '0%',
   },
   playerChipBetArea: {
-    height: '80px',
-    width: '25%',
     position: 'absolute',
-    bottom: '150px',
+    bottom: '21%',
     left: '50%',
     transform: 'translate(-50%, 0)',
     //border: `1px solid white`,
@@ -39,43 +37,39 @@ const styles = theme => ({
     transform: 'translate(-50%, 0)',
     //border: `1px solid white`,
   },
-  playerContainer1: {
-    height: '20%',
-    width: '25%',
-    //backgroundColor: 'yellow',
-    position: 'absolute',
-    top: '400px',
-  },
-  playerContainer2: {
-    height: '20%',
-    width: '25%',
-    //backgroundColor: 'blue',
-    position: 'absolute',
-    top: '150px',
-  },
-  playerContainer3: {
-    height: '20%',
-    width: '25%',
-    //backgroundColor: 'blue',
-    position: 'absolute',
-    left: '50%',
-    transform: 'translate(-50%, 0)',
-  },
-  playerContainer4: {
-    height: '20%',
-    width: '25%',
-    //backgroundColor: 'blue',
-    position: 'absolute',
-    top: '150px',
-    right: 0,
-  },
-  playerContainer5: {
-    height: '20%',
-    width: '25%',
-    //backgroundColor: 'yellow',
-    position: 'absolute',
-    top: '400px',
-    right: 0,
+  playerContainer: ({ position }) => {
+    const base = {
+      position: 'absolute',
+      height: '20%',
+      width: '25%',
+      //border: `1px solid yellow`, // TODO
+    };
+
+    switch (position) {
+      case 0:
+        return {
+          ...base,
+          bottom: 0,
+          left: '50%',
+          transform: 'translate(-50%, 0)',
+        };
+      case 1:
+        return { ...base, top: '60%' };
+      case 2:
+        return { ...base, top: '20%' };
+      case 3:
+        return {
+          ...base,
+          left: '50%',
+          transform: 'translate(-50%, 0)',
+        };
+      case 4:
+        return { ...base, top: '20%', right: 0 };
+      case 5:
+        return { ...base, top: '60%', right: 0 };
+      default:
+        return base;
+    }
   },
 });
 
