@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import Box from '@material-ui/core/Box';
@@ -15,6 +15,7 @@ import PokerCard from 'components/PokerCard';
 
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
+import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
 
 import styles from './HeroPlayerPanelStyles';
 
@@ -32,32 +33,13 @@ const HeroPlayerPanel = ({
   player,
   tableId,
 }) => {
-  /*
-  componentDidMount() {
-    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timer);
-  }
-
-  progressTimer(mSecond) {
-    const { player, gameTable, inGame, playerOnTurn } = this.props;
-    let isHeroTurn = player && player.seat_no === gameTable.currentSeatNo
-
-    if (isHeroTurn && inGame && playerOnTurn) {
-      this.props.dispatchProgressTimer(mSecond)
-    }
-    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
-  }
-  */
-
+  const dispatch = useDispatch();
   const gameTable = useGameTableState();
+  const isHeroTurn = player && player.seat_no === gameTable.currentSeatNo;
+  const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const [isOpen, openDialog, closeDialog] = useDialogState();
 
   const classes = useStyles({ player });
-
-  let isHeroTurn = player && player.seat_no === gameTable.currentSeatNo
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false
   const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === playerOnTurn.seat_no
@@ -79,8 +61,8 @@ const HeroPlayerPanel = ({
         <div className={classes.statusCard} onClick={openDialog}>
           <div className={classes.nickname}>{player.nickname}</div>
           <div className={classes.stackSize}>{player.betSize ? player.stack - player.betSize : player.stack}</div>
-          {isHeroTurn && (
-            <LinearProgress variant="determinate" value={player.remain_time_to_action / player.max_remain_time_to_action * 100} />
+          {isHeroTurn && remainTimePercentage > 0 && (
+            <LinearProgress variant="determinate" value={remainTimePercentage} />
           )}
         </div>
 
@@ -215,14 +197,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         tableId: tableId,
         playerId: playerOnTurn.id,
       })
-    },
-    dispatchProgressTimer: (mSecond) => {
-      dispatch({
-        type: "PROGRESS_PLAYER_ACTION_TIMER",
-        tableId: tableId,
-        playerId: playerOnTurn.id,
-        remainTimeToAction: playerOnTurn.remain_time_to_action - mSecond / 1000,
-      });
     },
   }
 }

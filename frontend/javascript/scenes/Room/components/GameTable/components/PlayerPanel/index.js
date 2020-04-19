@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
@@ -12,6 +13,7 @@ import DealerButtonPlate from 'components/DealerButtonPlate';
 
 import useGameTableState from 'hooks/useGameTableState';
 import useDialogState from 'hooks/useDialogState';
+import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
 
 import styles from './PlayerPanelStyles';
 
@@ -33,27 +35,13 @@ const readableActionType = actionType => {
 };
 
 const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRightSideStyle, player }) => {
+  const dispatch = useDispatch();
   const classes = useStyles({ position });
+  const gameTable = useGameTableState();
+  const [isOpen, openDialog, closeDialog] = useDialogState();
 
-  /*
-  componentDidMount() {
-    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.timer);
-  }
-
-  progressTimer(mSecond) {
-    const { currentSeatNo, inGame, player } = this.props;
-    let isPlayerTurn = player.seat_no === currentSeatNo;
-
-    if (isPlayerTurn && inGame && player) {
-      this.props.dispatchProgressTimer(mSecond)
-    }
-    this.timer = setTimeout(() => { this.progressTimer(1000) }, 1000);
-  }
-  */
+  const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
+  const isPlayerTurn = player.seat_no === gameTable.currentSeatNo;
 
   // TODO
   /*
@@ -65,11 +53,6 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
     player.bet_amount_in_state = 1234;
   }
   */
-
-  const gameTable = useGameTableState();
-  const [isOpen, openDialog, closeDialog] = useDialogState();
-
-  const isPlayerTurn = player.seat_no === gameTable.currentSeatNo;
 
   const showHand = player.hand_show;
 
@@ -100,10 +83,10 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
           <>
             <div className={classes.nickname}>{player.nickname}</div>
             <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
-            {isPlayerTurn && (
+            {isPlayerTurn && remainTimePercentage && (
               <LinearProgress
                 variant="determinate"
-                value={(player.remain_time_to_action / player.max_remain_time_to_action) * 100}
+                value={remainTimePercentage}
               />
             )}
           </>
@@ -136,21 +119,5 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
     </Box>
   );
 };
-
-/*
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const { player, tableId } = ownProps;
-  return {
-    dispatchProgressTimer: (mSecond) => {
-      dispatch({
-        type: "PROGRESS_PLAYER_ACTION_TIMER",
-        tableId: tableId,
-        playerId: player.id,
-        remainTimeToAction: player.remain_time_to_action - mSecond / 1000,
-      });
-    },
-  }
-}
-*/
 
 export default PlayerPanel;
