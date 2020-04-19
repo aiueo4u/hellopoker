@@ -3,9 +3,11 @@ const styles = theme => ({
     textTransform: 'none',
   },
   container: {
-    height: '100%',
-    width: '100%',
-    border: `1px solid blue`,
+    //border: `1px solid blue`,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
   },
 });
 

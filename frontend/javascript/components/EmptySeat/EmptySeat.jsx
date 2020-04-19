@@ -18,20 +18,24 @@ const EmptySeat = ({ seatNo, tableId }) => {
   const [isOpen, openDialog, closeDialog] = useDialogState();
   const [isSeated] = useEmptySeat();
 
-  return isSeated ? (
-    <AddNpcCard tableId={tableId} seatNo={seatNo} />
-  ) : (
-    <>
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        onClick={openDialog}
-      >
-        座る
-      </Button>
-      <BuyInDialog tableId={tableId} seatNo={seatNo} isOpen={isOpen} onClose={closeDialog} />
-    </>
+  return (
+    <div className={classes.container}>
+      {isSeated ? (
+        <AddNpcCard tableId={tableId} seatNo={seatNo} />
+      ) : (
+        <>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={openDialog}
+          >
+            座る
+          </Button>
+          <BuyInDialog tableId={tableId} seatNo={seatNo} isOpen={isOpen} onClose={closeDialog} />
+        </>
+      )}
+    </div>
   );
 };
 

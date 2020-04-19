@@ -25,7 +25,7 @@ const AddNpcCard = ({ tableId, seatNo }) => {
 
   return (
     <>
-      <IconButton onClick={openDialog}>
+      <IconButton className={classes.button} onClick={openDialog}>
         <PersonAddIcon />
       </IconButton>
 
