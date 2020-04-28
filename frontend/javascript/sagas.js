@@ -328,8 +328,18 @@ function* initializeWebRTC() {
     .getUserMedia({
       audio: true,
       video: {
-        width: '320',
-        height: '240',
+        width: {
+          min: 320,
+          max: 640,
+        },
+        height: {
+          min: 240,
+          max: 480,
+        },
+        frameRate: {
+          min: 10,
+          max: 30,
+        },
       },
     })
     .then(stream => {
