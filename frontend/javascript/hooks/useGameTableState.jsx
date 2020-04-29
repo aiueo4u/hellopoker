@@ -5,7 +5,7 @@ const gameStartable = gameHandState => {
 }
 
 const useGameTableState = () => {
-  const { GameTable: gameTable } = useSelector(state => state.scenes.Tables.Room);
+  const gameTable = useSelector(state => state.gameTable);
 
   const inGame = !gameStartable(gameTable.gameHandState);
 

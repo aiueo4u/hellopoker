@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
+import usePlayersState from 'hooks/usePlayersState';
 
 const useEmptySeat = () => {
   const { playerSession } = useSelector(state => state.data);
-  const { Room } = useSelector(state => state.scenes.Tables);
-  const players = Room.Players;
+  const players = usePlayersState();
 
   const isSeated = players.some(player => player.id === playerSession.playerId);
   return [isSeated];

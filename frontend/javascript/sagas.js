@@ -551,6 +551,6 @@ export default function* rootSage() {
 
   yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
-  yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
+  //yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
   yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
 }

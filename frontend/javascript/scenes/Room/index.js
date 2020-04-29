@@ -190,15 +190,16 @@ class Room extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { Room } = state.scenes.Tables;
   const tableId = ownProps.match.params.id;
+  const players = state.players;
+  const gameTable = state.gameTable;
 
   return {
     tableId,
     tableName: tableId, // TODO
-    players: Room.Players,
+    players,
     playerSession: state.data.playerSession,
-    gameTable: Room.GameTable,
+    gameTable,
     onBetAction: (playerId, amount) => {
       return betAction(tableId, playerId, amount);
     },
