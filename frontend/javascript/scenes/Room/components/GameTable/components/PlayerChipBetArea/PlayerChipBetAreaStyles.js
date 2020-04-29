@@ -14,14 +14,14 @@ const styles = theme => ({
     //border: `1px solid yellow`,
   },
   betArea: {
-    background: 'rgba(0, 0, 0, 0.4)',
     borderRadius: theme.spacing(1 / 4),
     color: theme.palette.common.white,
-    padding: theme.spacing(1 / 4),
+    fontSize: theme.typography.caption.fontSize,
+    padding: theme.spacing(1 / 4, 1 / 2),
   },
   result: ({ player }) => ({
-    background: 'rgba(0, 0, 0, 0.4)',
     borderRadius: '4px',
+    fontSize: theme.typography.caption.fontSize,
     color: player && player.amount_diff > 0 ? 'orange' : 'white',
     padding: theme.spacing(1),
   }),

@@ -15,6 +15,7 @@ const styles = theme => ({
   },
   nickname: {
     color: theme.palette.common.white,
+    fontSize: theme.typography.caption.fontSize,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -41,16 +42,18 @@ const styles = theme => ({
     filter: player && player.state === 1 ? 'grayscale(100%)' : '',
   }),
   stackSize: {
+    display: 'inline-block',
     color: 'orange',
+    fontSize: theme.typography.caption.fontSize,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    padding: theme.spacing(1/ 4, 1 / 2),
+    borderRadius: '4px',
   },
   statusCard: {
     display: 'flex',
     flexDirection: 'column',
     width: '140px',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    margin: '8px auto',
-    padding: theme.spacing(1 / 2),
-    borderRadius: '2px',
+    margin: '4px auto',
   },
 });
 

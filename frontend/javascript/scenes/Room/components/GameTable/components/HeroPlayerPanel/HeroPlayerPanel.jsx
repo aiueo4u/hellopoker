@@ -55,12 +55,14 @@ const HeroPlayerPanel = ({
   return (
     <div>
       <div className={classes.panelContainer}>
-        <Box display="flex" justifyContent="center">
+        <div className={classes.nickname}>{player.nickname}</div>
+        <Box display="flex" justifyContent="center" mt={1 / 2}>
           <PlayerAvatar player={player} isTurn={isHeroTurn} />
         </Box>
         <div className={classes.statusCard} onClick={openDialog}>
-          <div className={classes.nickname}>{player.nickname}</div>
-          <div className={classes.stackSize}>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+          <div>
+            <div className={classes.stackSize}>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+          </div>
           {isHeroTurn && remainTimePercentage > 0 && (
             <LinearProgress variant="determinate" value={remainTimePercentage} />
           )}

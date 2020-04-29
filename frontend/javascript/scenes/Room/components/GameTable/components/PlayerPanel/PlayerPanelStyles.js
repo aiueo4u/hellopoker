@@ -9,9 +9,9 @@ const styles = theme => ({
     const base = {
       position: 'absolute',
       borderRadius: theme.spacing(1 / 4),
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+      fontSize: theme.typography.caption.fontSize,
       color: theme.palette.common.white,
-      padding: theme.spacing(1 / 2, 1),
+      padding: theme.spacing(1 / 4, 1 / 2),
     };
     switch (position) {
       case 'top':
@@ -75,9 +75,16 @@ const styles = theme => ({
   },
   nickname: {
     color: theme.palette.common.white,
+    fontSize: theme.typography.caption.fontSize,
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+  },
+  handContainer: {
+    position: 'absolute',
+    top: '42px',
+    left: '50%',
+    transform: 'translate(-50%, 0%)',
   },
   panelContainer: ({ player }) => ({
     position: 'absolute',
@@ -89,17 +96,18 @@ const styles = theme => ({
     filter: player && player.state === 1 ? 'grayscale(100%)' : '',
   }),
   stackSize: {
+    display: 'inline',
     color: 'orange',
+    fontSize: theme.typography.caption.fontSize,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    padding: theme.spacing(1 / 4, 1 / 2),
+    borderRadius: '2px',
   },
   statusCard: {
     display: 'flex',
     flexDirection: 'column',
     maxWidth: '140px',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    marginTop: theme.spacing(1),
-    padding: theme.spacing(1, 2),
-    borderRadius: '2px',
-    //border: `1px solid red`,
+    marginTop: theme.spacing(1 / 2),
   },
   '@keyframes onPlayerTurnAvatarBlinkAnimation': {
     '50%': {

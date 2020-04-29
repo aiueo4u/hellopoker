@@ -58,30 +58,31 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
 
   return (
     <Box className={classes.panelContainer} onClick={openDialog}>
-      <div>
+      <div className={classes.nickname}>{player.nickname}</div>
+      <Box mt={1 / 2}>
         <Avatar src={player.image_url} className={classes.avatar} alt="" />
-        {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
-          <Box display="flex" justifyContent="center">
-            <PokerCard invisible={!showHand} />
-            <PokerCard invisible={!showHand} />
-          </Box>
-        )}
+      </Box>
+      {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
+        <Box display="flex" justifyContent="center" className={classes.handContainer}>
+          <PokerCard invisible={!showHand} size="small" />
+          <PokerCard invisible={!showHand} size="small" />
+        </Box>
+      )}
 
-        {player.hand_show && player.state !== null && player.state !== 1 && (
-          <Box display="flex" justifyContent="center">
-            <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
-            <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
-          </Box>
-        )}
-      </div>
+      {player.hand_show && player.state !== null && player.state !== 1 && (
+        <Box display="flex" justifyContent="center" className={classes.handContainer}>
+          <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
+          <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
+        </Box>
+      )}
+
       <div className={classes.statusCard}>
         {player.actionType ? (
           <Typography variant="caption" style={{ fontSize: '0.625rem', color: 'white' }}>
             {readableActionType(player.actionType)}
           </Typography>
         ) : (
-          <>
-            <div className={classes.nickname}>{player.nickname}</div>
+          <div>
             <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
             {isPlayerTurn && remainTimePercentage && (
               <LinearProgress
@@ -89,7 +90,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
                 value={remainTimePercentage}
               />
             )}
-          </>
+          </div>
         )}
       </div>
 
