@@ -1,12 +1,9 @@
 import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/styles';
 
 import useGameStartCountdown from './hooks/useGameStartCountdown';
-import styles from './GameStartCountdownStyles';
-
-const useStyles = makeStyles(styles);
+import useStyles from './GameStartCountdownStyles';
 
 function GameStartCountdown({ count }) {
   const classes = useStyles();

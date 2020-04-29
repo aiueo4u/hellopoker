@@ -4,7 +4,6 @@ import { useRouteMatch } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
-import { makeStyles } from '@material-ui/styles';
 
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
@@ -13,9 +12,7 @@ import usePlayersState from 'hooks/usePlayersState';
 import BoardCardArea from '../BoardCardArea';
 import GameStartCountdown from '../GameStartCountdown'
 
-import styles from './CentralCardStyles';
-
-const useStyles = makeStyles(styles);
+import useStyles from './CentralCardStyles';
 
 function CentralCard() {
   const classes = useStyles();
