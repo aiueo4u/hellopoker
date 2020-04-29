@@ -4,6 +4,7 @@ const styles = theme => ({
     fontSize: theme.typography.subtitle1.fontSize,
     fontWeight: theme.typography.fontWeightBold,
     minWidth: '80px',
+    touchAction: 'manipulation',
     '&:hover': {
       backgroundColor: theme.palette.common.white,
     },

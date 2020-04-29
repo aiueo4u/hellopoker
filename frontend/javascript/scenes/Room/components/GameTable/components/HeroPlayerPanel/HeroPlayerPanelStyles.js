@@ -5,6 +5,7 @@ const styles = theme => ({
     transform: 'translate(-50%, -50%)',
     textTransform: 'none',
     width: '80px',
+    touchAction: 'manipulation',
   },
   leftButton: {
     left: 'calc(50% - 120px)',
