@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/styles';
@@ -8,10 +9,14 @@ import styles from './PlayerAvatarStyles';
 const useStyles = makeStyles(styles);
 
 const PlayerAvatar = ({ isTurn, player }) => {
-  const classes = useStyles({ isTurn });
+  const classes = useStyles();
 
   return (
-    <Avatar src={player.image_url} className={classes.avatar} alt="" />
+    <Avatar
+      src={player.image_url}
+      className={classNames(classes.avatar, { [classes.inTurn]: isTurn })}
+      alt=""
+    />
   );
 };
 

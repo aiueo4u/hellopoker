@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import classNames from 'classnames';
 
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/styles';
 
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
@@ -36,12 +37,12 @@ const readableActionType = actionType => {
 
 const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRightSideStyle, player }) => {
   const dispatch = useDispatch();
-  const classes = useStyles({ position });
   const gameTable = useGameTableState();
   const [isOpen, openDialog, closeDialog] = useDialogState();
 
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const isPlayerTurn = player.seat_no === gameTable.currentSeatNo;
+  const classes = useStyles({ position, isPlayerTurn });
 
   // TODO
   /*
@@ -59,8 +60,16 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
   return (
     <Box className={classes.panelContainer} onClick={openDialog}>
       <div className={classes.nickname}>{player.nickname}</div>
-      <Box mt={1 / 2}>
-        <Avatar src={player.image_url} className={classes.avatar} alt="" />
+      <Box mt={1 / 2} position="relative">
+        <Avatar src={player.image_url} className={classNames(classes.avatar, { [classes.avatarInTurn]: isPlayerTurn })} alt="" />
+        {isPlayerTurn && remainTimePercentage && (
+          <CircularProgress
+            className={classes.progress}
+            variant="static"
+            value={remainTimePercentage}
+            thickness={2.4}
+          />
+        )}
       </Box>
       {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
         <Box display="flex" justifyContent="center" className={classes.handContainer}>
@@ -84,12 +93,6 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
         ) : (
           <div>
             <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
-            {isPlayerTurn && remainTimePercentage && (
-              <LinearProgress
-                variant="determinate"
-                value={remainTimePercentage}
-              />
-            )}
           </div>
         )}
       </div>

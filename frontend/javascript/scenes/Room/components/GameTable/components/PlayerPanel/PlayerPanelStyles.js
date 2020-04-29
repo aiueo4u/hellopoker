@@ -1,9 +1,10 @@
 const styles = theme => ({
   activePanel: {},
   avatar: {
-    margin: 'auto',
     border: `1px solid ${theme.palette.common.white}`,
-    animation: ({ isTurn }) => (isTurn ? 'onPlayerTurnAvatarBlinkAnimation 1s infinite' : ''),
+  },
+  avatarInTurn: {
+    animation: '$onPlayerTurnAvatarBlinkAnimation 1s infinite',
   },
   betAmount: ({ position }) => {
     const base = {
@@ -95,6 +96,12 @@ const styles = theme => ({
     textAlign: 'center',
     filter: player && player.state === 1 ? 'grayscale(100%)' : '',
   }),
+  progress: {
+    color: theme.palette.primary.main,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
   stackSize: {
     display: 'inline',
     color: 'orange',
