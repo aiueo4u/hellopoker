@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -11,6 +11,15 @@ import TableList from './scenes/TableList';
 import Room from './scenes/Room';
 
 function App() {
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      const vh = window.innerHeight * 0.01;
+      window.document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+    const vh = window.innerHeight * 0.01;
+    window.document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }, []);
+
   const { isReady } = useSelector(state => state.data.playerSession);
 
   if (!isReady) return <Loading />;

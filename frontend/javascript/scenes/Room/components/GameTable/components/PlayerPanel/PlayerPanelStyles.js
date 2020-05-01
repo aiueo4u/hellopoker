@@ -83,7 +83,7 @@ const styles = theme => ({
   },
   handContainer: {
     position: 'absolute',
-    top: '42px',
+    top: '65px',
     left: '50%',
     transform: 'translate(-50%, 0%)',
   },
@@ -92,7 +92,7 @@ const styles = theme => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    //border: `1px solid yellow`, // TODO
+    //border: `1px solid red`, // TODO
     textAlign: 'center',
     filter: player && player.state === 1 ? 'grayscale(100%)' : '',
   }),

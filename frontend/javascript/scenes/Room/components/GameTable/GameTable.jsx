@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 
 import EmptySeat from 'components/EmptySeat';
-import WebRTCTest from 'components/WebRTCTest';
 
 import CentralCard from './components/CentralCard';
 import PlayerPanel from './components/PlayerPanel';
@@ -17,18 +16,19 @@ import styles from './GameTableStyles';
 const useStyles = makeStyles(styles);
 
 function GameTable({
-  tableId,
   gameTable,
-  isSeated,
-  playerSession,
   players,
-  onGameStart,
+  playerSession,
+  tableId,
 }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const sortedPlayers = selectSortedPlayers(players, playerSession.playerId);
   const playerPanelProps = index => ({ player: sortedPlayers[index], tableId });
   const playerOnTurn = players.find(player => player.seat_no === gameTable.currentSeatNo)
-  const dispatch = useDispatch();
+
+  const isSeated = players.find(player => player.id === playerSession.playerId) ? true : false;
 
   useEffect(() => {
     if (playerOnTurn) {
@@ -38,7 +38,6 @@ function GameTable({
 
   return (
     <div className={classes.container}>
-      <WebRTCTest player={playerOnTurn} local />
       <CentralCard />
 
       <div className={classes.playerChipBetArea}>

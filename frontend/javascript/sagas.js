@@ -321,9 +321,9 @@ function* handleChangedPlayerTurn(action) {
   }
 }
 
-function* initializeWebRTC() {
-  //document.onreadystatechange = () => {
-  //if (document.readyState === 'interactive') {
+function* initializeWebRTC(action) {
+  const { onSuccess } = action.payload;
+
   navigator.mediaDevices
     .getUserMedia({
       audio: true,
@@ -344,14 +344,9 @@ function* initializeWebRTC() {
     })
     .then(stream => {
       localstream = stream;
-      const localVideo = document.getElementById('local-video');
-      localVideo.srcObject = stream;
+      if (onSuccess) onSuccess();
     })
     .catch(error => console.log('Error!: ', error));
-
-  //yield call(handleJoinSession);
-  // }
-  // };
 }
 
 const jwt = localStorage.getItem('playerSession.jwt');
@@ -362,6 +357,11 @@ let playerId;
 function* handleJoinSession() {
   playerId = yield select(state => state.data.playerSession.playerId);
   playerId = `${playerId}`;
+
+  const element = document.getElementById(`video-player-${playerId}`);
+  element.id = `remoteVideoContainer+${playerId}`;
+  element.autoplay = 'autoplay';
+  element.srcObject = localstream;
 
   session = yield cable.subscriptions.create(
     { channel: 'TestChannel' },
@@ -460,16 +460,11 @@ function createPC(userId, isOffer) {
 
   pc.ontrack = event => {
     if (event.track.kind === 'video') {
-      /*
       const element = document.getElementById(`video-player-${userId}`);
-      //const element = document.createElement('video');
-      //element.id = `remoteVideoContainer+${userId}`;
+      element.id = `remoteVideoContainer+${userId}`;
       element.autoplay = 'autoplay';
       element.srcObject = event.streams[0];
-      */
       remoteStreams[userId] = event.streams[0];
-
-      //remoteVideoContainer.appendChild(element);
     }
   };
 
@@ -551,6 +546,6 @@ export default function* rootSage() {
 
   yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
-  //yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
-  yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
+  yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
+  //yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
 }

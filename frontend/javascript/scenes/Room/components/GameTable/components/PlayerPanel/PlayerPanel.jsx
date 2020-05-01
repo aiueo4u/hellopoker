@@ -8,6 +8,7 @@ import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/styles';
 
+import PlayerAvatar from 'components/PlayerAvatar';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
@@ -61,13 +62,14 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
     <Box className={classes.panelContainer} onClick={openDialog}>
       <div className={classes.nickname}>{player.nickname}</div>
       <Box mt={1 / 2} position="relative">
-        <Avatar src={player.image_url} className={classNames(classes.avatar, { [classes.avatarInTurn]: isPlayerTurn })} alt="" />
+        <PlayerAvatar player={player} isTurn={isPlayerTurn} />
         {isPlayerTurn && remainTimePercentage && (
           <CircularProgress
             className={classes.progress}
             variant="static"
             value={remainTimePercentage}
             thickness={2.4}
+            size={80}
           />
         )}
       </Box>

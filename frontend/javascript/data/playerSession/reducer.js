@@ -1,4 +1,10 @@
-const initialState = {};
+const initialState = {
+  isReady: false,
+  isLoggedIn: false,
+  nickname: null,
+  playerId: null,
+  imageUrl: null,
+};
 
 const playerSession = (state = initialState, action) => {
   switch (action.type) {
