@@ -38,11 +38,9 @@ function GameTable({
 
   return (
     <div className={classes.container}>
-      {/*
       <div style={{ height: '100vh', width: '100vw' }}>
         <video id="bg-video" playsInline autoPlay style={{ height: '100vh', width: '100vw', objectFit: 'cover' }} />
       </div>
-        */}
 
       <CentralCard />
 

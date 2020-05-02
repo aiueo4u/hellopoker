@@ -332,10 +332,10 @@ function* initializeWebRTC(action) {
       },
       video: {
         width: {
-          max: 180,
+          max: 320,
         },
         height: {
-          max: 120,
+          max: 320,
         },
         frameRate: {
           max: 10,
@@ -547,5 +547,5 @@ export default function* rootSage() {
   yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
   yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
-  //yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
+  yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
 }
