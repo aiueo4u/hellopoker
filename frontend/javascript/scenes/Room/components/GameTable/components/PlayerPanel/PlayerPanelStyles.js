@@ -83,7 +83,7 @@ const styles = theme => ({
   },
   handContainer: {
     position: 'absolute',
-    top: '65px',
+    top: '45px',
     left: '50%',
     transform: 'translate(-50%, 0%)',
   },
@@ -102,6 +102,9 @@ const styles = theme => ({
     top: 0,
     left: 0,
   },
+  result: ({ player }) => ({
+    color: player.amount_diff > 0 ? 'orange' : 'white',
+  }),
   stackSize: {
     display: 'inline',
     color: 'orange',
@@ -113,6 +116,7 @@ const styles = theme => ({
   statusCard: {
     display: 'flex',
     flexDirection: 'column',
+    height: '30px',
     maxWidth: '140px',
     marginTop: theme.spacing(1 / 2),
   },

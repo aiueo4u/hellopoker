@@ -41,17 +41,23 @@ function CentralCard() {
 
   return (
     <div className={classes.container}>
-      <Box textAlign="center">
+      <Box textAlign="center" className={classes.inner}>
         {gameTable.isOpenGameStartCountdown && isSeated && (
           <Box mt={2}>
             <GameStartCountdown count={gameTable.timeToStart}/>
           </Box>
         )}
-        {!gameTable.inGame && isSeated && (
-          <Button variant="contained" color="primary" onClick={onGameStart}>開始</Button>
-        )}
         {gameTable.inGame && <div className={classes.pot}>{gameTable.pot}</div>}
-        <BoardCardArea gameTable={gameTable} />
+
+        <Box className={classes.board}>
+          <BoardCardArea gameTable={gameTable} />
+        </Box>
+
+        {!gameTable.inGame && isSeated && (
+          <Box className={classes.buttonContainer}>
+            <Button variant="contained" color="primary" onClick={onGameStart}>開始</Button>
+          </Box>
+        )}
       </Box>
     </div>
   );

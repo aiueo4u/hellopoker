@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const styles = theme => ({
   container: {
     position: 'relative',
+    height: '60px',
   },
   card1: {
     position: 'absolute',

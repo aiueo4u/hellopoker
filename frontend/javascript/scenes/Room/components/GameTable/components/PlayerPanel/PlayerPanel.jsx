@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
+//import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/styles';
 
 import PlayerAvatar from 'components/PlayerAvatar';
@@ -43,7 +44,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
 
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const isPlayerTurn = player.seat_no === gameTable.currentSeatNo;
-  const classes = useStyles({ position, isPlayerTurn });
+  const classes = useStyles({ player, position, isPlayerTurn });
 
   // TODO
   /*
@@ -60,10 +61,15 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
 
   return (
     <Box className={classes.panelContainer} onClick={openDialog}>
-      <div className={classes.nickname}>{player.nickname}</div>
-      <Box mt={1 / 2} position="relative">
+      {/*<div className={classes.nickname}>{player.nickname}</div>*/}
+      <Box mt={1 / 2} position="relative" height="60px">
         <PlayerAvatar player={player} isTurn={isPlayerTurn} />
         {isPlayerTurn && remainTimePercentage && (
+          <LinearProgress
+            variant="determinate"
+            value={remainTimePercentage}
+          />
+          /*
           <CircularProgress
             className={classes.progress}
             variant="static"
@@ -71,6 +77,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
             thickness={2.4}
             size={80}
           />
+            */
         )}
       </Box>
       {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
@@ -108,8 +115,10 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
       {/* チップ増減結果 */}
       {gameTable.gameHandState === 'finished' && player.amount_diff && (
         <div className={classes.betAmount}>
-          {player.amount_diff > 0 && <span>+</span>}
-          {player.amount_diff}
+          <span className={classes.result}>
+            {player.amount_diff > 0 && <span>+</span>}
+            {player.amount_diff}
+          </span>
         </div>
       )}
 

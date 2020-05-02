@@ -1,4 +1,5 @@
 import Image from 'assets/climpek.png';
+import { green } from '@material-ui/core/colors';
 
 const styles = theme => ({
   centralContainer: {
@@ -18,7 +19,7 @@ const styles = theme => ({
     maxWidth: '640px',
     margin: 'auto',
     backgroundImage: `url(${Image})`,
-    backgroundColor: '#338c00',
+    backgroundColor: green['600'],
     borderRadius: '0%',
   },
   playerChipBetArea: {

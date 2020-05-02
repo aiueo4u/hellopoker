@@ -6,8 +6,8 @@ const styles = theme => ({
     const base = {
       position: 'relative',
       display: 'inline-block',
-      width: size === 'small' ? '24px' : '36px',
-      height: size === 'small' ? '34px' : '51px',
+      width: size === 'small' ? '12px' : '36px',
+      height: size === 'small' ? '17px' : '51px',
       backgroundColor: theme.palette.common.white,
       borderRadius: size === 'small' ? '2px' : '4px',
       boxShadow: `0 1px 1px rgba(0, 0, 0, 0.15)`,

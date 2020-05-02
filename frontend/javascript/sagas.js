@@ -326,19 +326,19 @@ function* initializeWebRTC(action) {
 
   navigator.mediaDevices
     .getUserMedia({
-      audio: true,
+      audio: {
+        sampleSize: 8,
+        echoCancellation: true,
+      },
       video: {
         width: {
-          min: 320,
-          max: 640,
+          max: 180,
         },
         height: {
-          min: 240,
-          max: 480,
+          max: 120,
         },
         frameRate: {
-          min: 10,
-          max: 30,
+          max: 10,
         },
       },
     })

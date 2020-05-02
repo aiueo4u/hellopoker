@@ -22,14 +22,14 @@ const styles = theme => ({
   },
   heroHoleCard1: {
     position: 'absolute',
-    top: '75px',
-    left: 'calc(50% - 15px)',
+    top: '40px',
+    left: 'calc(50% + 30px)',
     transform: 'translate(-50%, -50%)',
   },
   heroHoleCard2: {
     position: 'absolute',
-    top: '75px',
-    left: 'calc(50% + 15px)',
+    top: '40px',
+    left: 'calc(50% + 60px)',
     transform: 'translate(-50%, -50%)',
   },
   panelContainer: ({ player }) => ({
@@ -50,8 +50,10 @@ const styles = theme => ({
     borderRadius: '4px',
   },
   statusCard: {
+    //border: '1px solid red', // TODO
     display: 'flex',
     flexDirection: 'column',
+    height: '30px',
     width: '140px',
     margin: '4px auto',
   },

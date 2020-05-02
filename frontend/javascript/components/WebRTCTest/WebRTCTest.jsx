@@ -24,7 +24,9 @@ function WebRTCTest({ player, local }) {
 
   return (
     <div className={classes.container} onClick={onClick}>
-      <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video}></video>
+      <div className={classes.videoContainer}>
+        <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video}></video>
+      </div>
     </div>
   );
 };

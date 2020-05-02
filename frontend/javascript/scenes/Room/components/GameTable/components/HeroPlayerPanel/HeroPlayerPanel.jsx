@@ -55,8 +55,8 @@ const HeroPlayerPanel = ({
   return (
     <div>
       <div className={classes.panelContainer}>
-        <div className={classes.nickname}>{player.nickname}</div>
-        <Box display="flex" justifyContent="center" mt={1 / 2}>
+        {/*<div className={classes.nickname}>{player.nickname}</div>*/}
+        <Box textAlign="center">
           <PlayerAvatar player={player} isTurn={isHeroTurn} />
         </Box>
         <div className={classes.statusCard} onClick={openDialog}>
