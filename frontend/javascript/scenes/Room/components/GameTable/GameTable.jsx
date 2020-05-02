@@ -38,8 +38,8 @@ function GameTable({
 
   return (
     <div className={classes.container}>
-      <div style={{ height: '100vh', width: '100vw' }}>
-        <video id="bg-video" playsInline autoPlay style={{ height: '100vh', width: '100vw', objectFit: 'cover' }} />
+      <div style={{ height: 'calc(--vh, 1vh) * 100', width: 'calc(--vw, 1vw) * 100' }}>
+        <video id="bg-video" playsInline autoPlay style={{ height: 'calc(--vh, 1vh) * 100', width: 'calc(--vw, 1vw) * 100', objectFit: 'cover' }} />
       </div>
 
       <CentralCard />
