@@ -14,7 +14,7 @@ function TableList() {
 
   if (!isReady) {
     return (
-      <div style={{ height: 'calc(--vh, 1vh) * 100' }}>
+      <div style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
         <Loading />
       </div>
     );
