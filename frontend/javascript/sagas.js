@@ -313,7 +313,7 @@ let currentStreamPlayerId = null;
 function* handleChangedPlayerTurn(action) {
   const { player } = action;
 
-  const localVideo = document.getElementById('local-video');
+  const localVideo = document.getElementById('bg-video');
 
   if (currentStreamPlayerId !== player.id) {
     currentStreamPlayerId = player.id;

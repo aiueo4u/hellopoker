@@ -105,14 +105,14 @@ const styles = theme => ({
   result: ({ player }) => ({
     color: player.amount_diff > 0 ? 'orange' : 'white',
   }),
-  stackSize: {
+  stackSize: ({ player }) => ({
     display: 'inline',
-    color: 'orange',
+    color: player && player.state === 1 ? theme.palette.grey['500'] : 'orange',
     fontSize: theme.typography.caption.fontSize,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: theme.spacing(1 / 4, 1 / 2),
     borderRadius: '2px',
-  },
+  }),
   statusCard: {
     display: 'flex',
     flexDirection: 'column',
