@@ -335,7 +335,7 @@ function* initializeWebRTC(action) {
           max: 320,
         },
         height: {
-          max: 320,
+          max: 240,
         },
         frameRate: {
           max: 10,
