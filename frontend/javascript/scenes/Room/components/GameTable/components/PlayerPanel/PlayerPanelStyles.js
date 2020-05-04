@@ -14,6 +14,7 @@ const styles = theme => ({
       color: theme.palette.common.white,
       padding: theme.spacing(1 / 4, 1 / 2),
     };
+
     switch (position) {
       case 'top':
         return {
@@ -25,15 +26,15 @@ const styles = theme => ({
       case 'right':
         return {
           ...base,
-          top: '40%',
-          left: '-8px',
+          top: '45%',
+          left: '-12px',
           transform: 'translate(-100%, 0%)',
         };
       case 'left':
         return {
           ...base,
-          top: '40%',
-          right: '8px',
+          top: '45%',
+          right: '12px',
           transform: 'translate(100%, 0%)',
         };
       default:
@@ -56,15 +57,15 @@ const styles = theme => ({
       case 'left':
         return {
           ...base,
-          top: '50%',
-          right: 0,
+          top: '40%',
+          right: '5px',
           transform: 'translate(100%, -100%)',
         };
       case 'right':
         return {
           ...base,
-          top: '50%',
-          left: 0,
+          top: '40%',
+          left: '-5px',
           transform: 'translate(-100%, -100%)',
         };
       default:
