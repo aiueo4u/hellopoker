@@ -47,12 +47,12 @@ const Room = () => {
       isShowInformationBar && <TopInfobar handCount={gameTable.gameHandCount} round={gameTable.round} />}
 
       <Box display="flex" height="100%" flexDirection="column" alignItems="center">
-        <div style={{ height: 'calc(100% - 80px)', width: '100%' }}>
+        <div className={classes.gameTable}>
           <GameTable gameTable={gameTable} players={players} playerSession={playerSession} tableId={tableId} />
         </div>
 
         {/* チップ量調整エリア */}
-        <div style={{ height: '80px', maxWidth: '640px', width: '100%' }}>
+        <div className={classes.control}>
           {currentPlayer &&
             gameTable.inGame &&
             !gameTable.showOrMuck &&

@@ -32,9 +32,7 @@ function CentralCard() {
   if (players.length === 1) {
     return (
       <div className={classes.container}>
-        <Box textAlign="center">
-          <div>他のプレイヤーの参加を待っています...</div>
-        </Box>
+        <div className={classes.message}>他のプレイヤーの参加を待っています...</div>
       </div>
     );
   }

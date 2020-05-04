@@ -1,6 +1,11 @@
 const styles = theme => ({
   button: {
     textTransform: 'none',
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    color: theme.palette.common.white,
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    },
   },
   container: {
     //border: `1px solid blue`,

@@ -1,4 +1,5 @@
-import Image from 'assets/climpek.png';
+//import Image from 'assets/climpek.png';
+import Image from 'assets/background.jpg';
 import { green } from '@material-ui/core/colors';
 
 const styles = theme => ({
@@ -19,7 +20,11 @@ const styles = theme => ({
     maxWidth: '640px',
     margin: 'auto',
     backgroundImage: `url(${Image})`,
-    backgroundColor: green['600'],
+    backgroundSize: 'cover',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundBlendMode: 'darken',
+    //backgroundColor: green['700'],
+    //backgroundColor: theme.palette.grey['900'],
     borderRadius: '0%',
   },
   playerChipBetArea: {
@@ -47,27 +52,27 @@ const styles = theme => ({
     };
 
     switch (position) {
-      case 0:
+      case 0: // bottom
         return {
           ...base,
           bottom: 0,
           left: '50%',
           transform: 'translate(-50%, 0)',
         };
-      case 1:
+      case 1: // bottom left
         return { ...base, top: '60%' };
-      case 2:
+      case 2: // top left
         return { ...base, top: '20%' };
-      case 3:
+      case 3: // top
         return {
           ...base,
           top: 0,
           left: '50%',
           transform: 'translate(-50%, 0)',
         };
-      case 4:
+      case 4: // top right
         return { ...base, top: '20%', right: 0 };
-      case 5:
+      case 5: // bottom right
         return { ...base, top: '60%', right: 0 };
       default:
         return base;

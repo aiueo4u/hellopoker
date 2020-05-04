@@ -17,6 +17,7 @@ const styles = theme => ({
     borderRadius: theme.spacing(1 / 4),
     color: theme.palette.common.white,
     fontSize: theme.typography.caption.fontSize,
+    marginBottom: theme.spacing(1),
     padding: theme.spacing(1 / 4, 1 / 2),
   },
   result: ({ player }) => ({

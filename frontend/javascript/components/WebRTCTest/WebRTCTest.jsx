@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import useStyles from './WebRTCTestStyles';
 
 function WebRTCTest({ player, local }) {
-  const classes = useStyles();
+  const classes = useStyles({ player });
   const dispatch = useDispatch();
   const videoState = useSelector(state => state.data.video);
 

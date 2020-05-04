@@ -26,8 +26,7 @@ const EmptySeat = ({ seatNo, tableId }) => {
         <>
           <Button
             className={classes.button}
-            variant="contained"
-            color="primary"
+            variant="outlined"
             onClick={openDialog}
           >
             座る

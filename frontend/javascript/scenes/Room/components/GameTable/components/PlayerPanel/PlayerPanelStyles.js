@@ -25,15 +25,15 @@ const styles = theme => ({
       case 'right':
         return {
           ...base,
-          top: '50%',
-          left: 0,
+          top: '40%',
+          left: '-8px',
           transform: 'translate(-100%, 0%)',
         };
       case 'left':
         return {
           ...base,
-          top: '50%',
-          right: 0,
+          top: '40%',
+          right: '8px',
           transform: 'translate(100%, 0%)',
         };
       default:

@@ -2,7 +2,6 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
-import AddIcon from '@material-ui/icons/Add';
 
 import usePlayersState from 'hooks/usePlayersState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
@@ -23,17 +22,17 @@ const ChipAmountControlContainer = () => {
   return (
     <div className={classes.container}>
       <div>
-        <Button startIcon={<AddIcon />} className={classes.button} variant="outlined" color="primary" onClick={() => increment(25)}>
+        <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(25)}>
           25
         </Button>
       </div>
       <div>
-        <Button startIcon={<AddIcon />} className={classes.button} variant="outlined" color="primary" onClick={() => increment(100)}>
+        <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(100)}>
           100
         </Button>
       </div>
       <div>
-        <Button startIcon={<AddIcon />} className={classes.button} variant="outlined" color="primary" onClick={() => increment(500)}>
+        <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(500)}>
           500
         </Button>
       </div>

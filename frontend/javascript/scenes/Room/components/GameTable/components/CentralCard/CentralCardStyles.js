@@ -21,7 +21,7 @@ const styles = theme => ({
     top: '25%',
     left: '50%',
     transform: 'translate(-50%, 0)',
-    //border: `1px solid red`, // TODO
+    // border: `1px solid red`, // TODO
   },
   inner: {
     //border: `1px solid blue`, // TODO
@@ -31,6 +31,14 @@ const styles = theme => ({
     transform: 'translate(-50%, 0)',
     height: '100%',
     width: '100%',
+  },
+  message: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: '2px',
+    padding: theme.spacing(1),
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(0, -50%)',
   },
   pot: {
     position: 'absolute',
