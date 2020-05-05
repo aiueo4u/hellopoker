@@ -64,7 +64,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
       <div className={classes.nickname}>{player.nickname}</div>
       <Box mt={1 / 2} position="relative" height="60px">
         <PlayerAvatar player={player} isTurn={isPlayerTurn} />
-        {isPlayerTurn && remainTimePercentage && (
+        {isPlayerTurn && !!remainTimePercentage && (
           <LinearProgress
             variant="determinate"
             value={remainTimePercentage}
@@ -95,8 +95,8 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
       )}
 
       <div className={classes.statusCard}>
-        {player.actionType ? (
-          <span className={classes.actionType}>{readableActionType(player.actionType)}</span>
+        {!!player.actionType ? (
+          <div className={classes.actionType}>{readableActionType(player.actionType)}</div>
         ) : (
           <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
         )}
@@ -109,7 +109,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
       )}
 
       {/* チップ増減結果 */}
-      {gameTable.gameHandState === 'finished' && player.amount_diff && (
+      {gameTable.gameHandState === 'finished' && !!player.amount_diff && (
         <div className={classes.betAmount}>
           <span className={classes.result}>
             {player.amount_diff > 0 && <span>+</span>}

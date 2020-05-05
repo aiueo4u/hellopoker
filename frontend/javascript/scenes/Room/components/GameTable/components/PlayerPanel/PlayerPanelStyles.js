@@ -108,7 +108,7 @@ const styles = theme => ({
   }),
   actionType: {
     color: theme.palette.common.white,
-    fontSize: '0.675rem',
+    fontSize: '0.625rem',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: theme.spacing(1 / 4, 1 / 2),
     borderRadius: '2px',
