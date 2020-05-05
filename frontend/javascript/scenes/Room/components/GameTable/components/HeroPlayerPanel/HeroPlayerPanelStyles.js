@@ -24,13 +24,13 @@ const styles = theme => ({
   },
   heroHoleCard1: {
     position: 'absolute',
-    top: '40px',
+    top: '55px',
     left: 'calc(50% + 40px)',
     transform: 'translate(-50%, -50%)',
   },
   heroHoleCard2: {
     position: 'absolute',
-    top: '40px',
+    top: '55px',
     left: 'calc(50% + 70px)',
     transform: 'translate(-50%, -50%)',
   },

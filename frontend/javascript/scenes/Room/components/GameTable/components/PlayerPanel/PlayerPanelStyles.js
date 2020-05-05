@@ -34,7 +34,7 @@ const styles = theme => ({
         return {
           ...base,
           top: '45%',
-          right: '12px',
+          right: '-12px',
           transform: 'translate(100%, 0%)',
         };
       default:
@@ -58,7 +58,7 @@ const styles = theme => ({
         return {
           ...base,
           top: '40%',
-          right: '5px',
+          right: '-5px',
           transform: 'translate(100%, -100%)',
         };
       case 'right':
@@ -106,6 +106,13 @@ const styles = theme => ({
   result: ({ player }) => ({
     color: player.amount_diff > 0 ? 'orange' : 'white',
   }),
+  actionType: {
+    color: theme.palette.common.white,
+    fontSize: '0.675rem',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    padding: theme.spacing(1 / 4, 1 / 2),
+    borderRadius: '2px',
+  },
   stackSize: ({ player }) => ({
     display: 'inline',
     color: player && player.state === 1 ? theme.palette.grey['500'] : 'orange',

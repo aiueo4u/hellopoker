@@ -61,7 +61,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
 
   return (
     <Box className={classes.panelContainer} onClick={openDialog}>
-      {/*<div className={classes.nickname}>{player.nickname}</div>*/}
+      <div className={classes.nickname}>{player.nickname}</div>
       <Box mt={1 / 2} position="relative" height="60px">
         <PlayerAvatar player={player} isTurn={isPlayerTurn} />
         {isPlayerTurn && remainTimePercentage && (
@@ -96,13 +96,9 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
 
       <div className={classes.statusCard}>
         {player.actionType ? (
-          <Typography variant="caption" style={{ fontSize: '0.625rem', color: 'white' }}>
-            {readableActionType(player.actionType)}
-          </Typography>
+          <span className={classes.actionType}>{readableActionType(player.actionType)}</span>
         ) : (
-          <div>
-            <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
-          </div>
+          <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
         )}
       </div>
 
@@ -123,7 +119,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
       )}
 
       {/* ベット額 */}
-      {gameTable.inGame && (player.bet_amount_in_state || player.betSize) && (
+      {gameTable.inGame && !!(player.bet_amount_in_state || player.betSize) && (
         <div className={classes.betAmount}>
           {player.betSize
             ? `${player.bet_amount_in_state || 0} → ${player.bet_amount_in_state + player.betSize}`

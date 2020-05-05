@@ -115,7 +115,7 @@ module.exports = (env, argv) => {
           use: ['ts-loader'],
         },
         {
-          test: /(.jpg|.jpeg|.png|.gif|.tiff|.ico|.svg|.eot|.otf|.ttf|.woff|.woff2)$/i,
+          test: /(.jpg|.jpeg|.png|.gif|.tiff|.ico|.svg|.eot|.otf|.ttf|.woff|.woff2|.mp3)$/i,
           use: [
             {
               loader: 'file-loader',
@@ -180,14 +180,14 @@ module.exports = (env, argv) => {
       compress: true,
       quiet: false,
       disableHostCheck: true,
-      host: 'localhost',
+      host: '192.168.100.101',
       port: 3045,
       https: false,
       hot: true,
       contentBase: path.resolve(__dirname, 'public/webpacks'),
       inline: true,
       useLocalIp: false,
-      public: 'localhost:3045',
+      public: '192.168.100.101:3045',
       publicPath: '/webpacks/',
       historyApiFallback: {
         disableDotRule: true,

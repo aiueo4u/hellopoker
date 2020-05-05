@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
-import CustomCircularProgress from 'components/CustomCircularProgress';
 
+import CustomCircularProgress from 'components/CustomCircularProgress';
 import Loading from 'components/Loading';
 import TopInfobar from 'components/TopInfobar';
 
 import useChipChannel from 'hooks/useChipChannel';
 import useDealtCardChannel from 'hooks/useDealtCardChannel';
 import useGameTableState from 'hooks/useGameTableState';
+import useInitializeAudio from 'hooks/useInitializeAudio';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 
@@ -30,6 +31,7 @@ const Room = () => {
   const gameTable = useGameTableState();
   const playerSession = usePlayerSessionState();
   const players = usePlayersState();
+  const [initializeAudio] = useInitializeAudio();
   const currentPlayer = players.find(player => player.id === playerSession.playerId);
   const isShowInformationBar = (gameTable.inGame || players.length > 1) && gameTable.round !== 'init';
 
@@ -39,7 +41,7 @@ const Room = () => {
   if (!gameTable.isReady) return <Loading />;
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} onClick={initializeAudio}>
       {/* ネットワーク接続中のダイアログ */}
       <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
 

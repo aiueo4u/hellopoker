@@ -18,6 +18,7 @@ import useGameTableState from 'hooks/useGameTableState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
 
 import styles from './HeroPlayerPanelStyles';
+import usePlayAudioMyTurn from './hooks/usePlayAudioMyTurn';
 
 const useStyles = makeStyles(styles);
 
@@ -38,8 +39,8 @@ const HeroPlayerPanel = ({
   const isHeroTurn = player && player.seat_no === gameTable.currentSeatNo;
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const [isOpen, openDialog, closeDialog] = useDialogState();
-
   const classes = useStyles({ player });
+  usePlayAudioMyTurn(isHeroTurn);
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false
   const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === playerOnTurn.seat_no
@@ -55,8 +56,8 @@ const HeroPlayerPanel = ({
   return (
     <div>
       <div className={classes.panelContainer}>
-        {/*<div className={classes.nickname}>{player.nickname}</div>*/}
-        <Box textAlign="center">
+        <div className={classes.nickname}>{player.nickname}</div>
+        <Box textAlign="center" mt={1 / 2}>
           <PlayerAvatar player={player} isTurn={isHeroTurn} />
         </Box>
         <div className={classes.statusCard} onClick={openDialog}>
