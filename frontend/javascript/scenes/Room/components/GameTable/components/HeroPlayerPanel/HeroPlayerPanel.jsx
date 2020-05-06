@@ -57,7 +57,7 @@ const HeroPlayerPanel = ({
     <div>
       <div className={classes.panelContainer}>
         <div className={classes.nickname}>{player.nickname}</div>
-        <Box textAlign="center" mt={1 / 2}>
+        <Box mt={1 / 2} display="inline-block">
           <PlayerAvatar player={player} isTurn={isHeroTurn} />
         </Box>
         <div className={classes.statusCard} onClick={openDialog}>

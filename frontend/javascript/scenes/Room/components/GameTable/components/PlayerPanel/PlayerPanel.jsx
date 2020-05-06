@@ -64,7 +64,9 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
       <Box className={classes.panelContainer} onClick={openDialog}>
         <div className={classes.nickname}>{player.nickname}</div>
         <Box mt={1 / 2} position="relative" height="60px">
-          <PlayerAvatar player={player} isTurn={isPlayerTurn} />
+          <Box display="inline-block">
+            <PlayerAvatar player={player} isTurn={isPlayerTurn} />
+          </Box>
           {isPlayerTurn && !!remainTimePercentage && (
             <LinearProgress
               variant="determinate"

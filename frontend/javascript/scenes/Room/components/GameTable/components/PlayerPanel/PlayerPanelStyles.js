@@ -81,6 +81,7 @@ const styles = theme => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    width: '90px',
   },
   handContainer: {
     position: 'absolute',

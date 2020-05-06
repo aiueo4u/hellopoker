@@ -21,6 +21,7 @@ const styles = theme => ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    width: '90px',
   },
   heroHoleCard1: {
     position: 'absolute',
