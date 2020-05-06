@@ -253,7 +253,6 @@ function* handleJoinSession() {
   playerId = `${playerId}`;
 
   const element = document.getElementById(`video-player-${playerId}`);
-  element.id = `remoteVideoContainer+${playerId}`;
   element.autoplay = 'autoplay';
   element.srcObject = localstream;
 
@@ -311,8 +310,10 @@ const joinRoom = data => {
 
 const removeUser = data => {
   console.log('Removing user', data.from);
-  const video = document.getElementById(`remoteVideoContainer+${data.from}`);
-  video && video.remove();
+  const video = document.getElementById(`video-player-${data.from}`);
+  if (video) {
+    video.srcObject = null;
+  }
   delete pcPeers[data.from];
 };
 
@@ -355,7 +356,6 @@ function createPC(userId, isOffer) {
   pc.ontrack = event => {
     if (event.track.kind === 'video') {
       const element = document.getElementById(`video-player-${userId}`);
-      element.id = `remoteVideoContainer+${userId}`;
       element.autoplay = 'autoplay';
       element.srcObject = event.streams[0];
       remoteStreams[userId] = event.streams[0];
