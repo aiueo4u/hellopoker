@@ -54,14 +54,15 @@ const PlayerActions = ({ player, tableId }) => {
   // Reset or Bet
   if (player.betSize > 0) {
     return (
-      <div>
+      <>
         <Button className={classNames([classes.button, classes.leftButton])} variant="contained" onClick={resetBetSize}>
           Reset
         </Button>
         <Button className={classNames([classes.button, classes.rightButton])} variant="contained" onClick={betAction} color="primary">
           Bet
         </Button>
-      </div>
+        <ChipAmountControlContainer />}
+      </>
     );
   }
 
