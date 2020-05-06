@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const usePlayAudioMyTurn = isTurn => {
-  return;
   const audio = useSelector(state => state.data.audio);
 
   useEffect(() => {
