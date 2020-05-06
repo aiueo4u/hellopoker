@@ -17,7 +17,7 @@ const styles = theme => ({
   },
   nickname: {
     color: theme.palette.common.white,
-    fontSize: theme.typography.caption.fontSize,
+    fontSize: '0.625rem',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
