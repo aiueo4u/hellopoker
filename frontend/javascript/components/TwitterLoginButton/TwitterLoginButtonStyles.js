@@ -1,7 +1,7 @@
 const styles = theme => ({
   button: {
     color: theme.palette.common.white,
-    width: '300px',
+    width: '100%',
     backgroundColor: theme.palette.twitter.main,
     textTransform: 'none',
     '&:hover': {

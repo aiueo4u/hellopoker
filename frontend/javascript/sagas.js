@@ -295,17 +295,6 @@ function* handleSetupGameStartTimer(action) {
   yield race([call(startCountdown, action), take('GAME_START_BUTTON_CLICKED'), take('PLAYER_ACTION_RECEIVED')]);
 }
 
-function* handleInitialize() {
-  // ログイン前のページへとリダイレクトさせる
-  const redirectTo = sessionStorage.getItem('redirectTo');
-  sessionStorage.removeItem('redirectTo');
-  if (redirectTo) {
-    window.location = redirectTo;
-  } else {
-    yield put({ type: 'FETCH_PLAYER' });
-  }
-}
-
 let localstream;
 let remoteStreams = {};
 let currentStreamPlayerId = null;
@@ -541,8 +530,6 @@ export default function* rootSage() {
 
   // TODO: 観戦時にはこれを無効にしたい
   yield takeEvery('SETUP_GAME_START_TIMER', handleSetupGameStartTimer);
-
-  yield call(handleInitialize);
 
   yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);

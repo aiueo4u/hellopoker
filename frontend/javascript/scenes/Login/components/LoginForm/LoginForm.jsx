@@ -3,13 +3,10 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/styles';
 
 import useFormData from 'hooks/useFormData';
 import useSubmitFormData from './hooks/useSubmitFormData';
-import styles from './LoginFormStyles';
-
-const useStyles = makeStyles(styles);
+import useStyles from './LoginFormStyles';
 
 function LoginForm() {
   const classes = useStyles();
@@ -18,10 +15,24 @@ function LoginForm() {
 
   return (
     <Box className={classes.container}>
-      <TextField name="name" label="ユーザー名" value={formData.name} onChange={onChangeFormData} />
-      <Button variant="outlined" onClick={() => onSubmitFormData(formData)}>
-        デバッグログイン
-      </Button>
+      <TextField
+        className={classes.textField}
+        name="name"
+        variant="outlined"
+        margin="dense"
+        label="ゲスト名"
+        value={formData.name}
+        onChange={onChangeFormData}
+      />
+      <Box mt={1}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onSubmitFormData(formData)}
+        >
+          ログイン
+        </Button>
+      </Box>
     </Box>
   );
 };

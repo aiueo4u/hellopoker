@@ -8,6 +8,7 @@ const styles = theme => ({
     width: '80%',
     textAlign: 'center',
     margin: 'auto',
+    padding: theme.spacing(2),
     top: 0,
     bottom: 0,
     left: 0,
