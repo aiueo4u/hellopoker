@@ -2,7 +2,6 @@ const initialState = {
   actionType: null,
   betSize: 0,
   isFetching: false,
-  isHiddenPanel: false,
 };
 
 const PlayerReducer = (state = initialState, action) => {
@@ -45,7 +44,6 @@ const PlayerReducer = (state = initialState, action) => {
       return {
         ...player,
         isFetching: true,
-        isHiddenPanel: true,
       };
     default:
       return player;

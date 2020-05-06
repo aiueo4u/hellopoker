@@ -1,27 +1,15 @@
+import { makeStyles } from '@material-ui/core/styles'
+
 const styles = theme => ({
-  button: {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    textTransform: 'none',
-    height: '60px',
-    width: '60px',
-    touchAction: 'manipulation',
-    borderRadius: '30px',
-  },
-  leftButton: {
-    left: 'calc(50% - 135px)',
-  },
-  rightButton: {
-    left: 'calc(50% + 135px)',
-  },
   nickname: {
     color: theme.palette.common.white,
     fontSize: '0.625rem',
+    textAlign: 'center',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     width: '90px',
+    margin: 'auto',
   },
   heroHoleCard1: {
     position: 'absolute',
@@ -35,10 +23,10 @@ const styles = theme => ({
     left: 'calc(50% + 70px)',
     transform: 'translate(-50%, -50%)',
   },
-  panelContainer: ({ player }) => ({
+  container: ({ player }) => ({
     position: 'absolute',
+    top: 0,
     left: '50%',
-    bottom: '24px',
     transform: 'translate(-50%, 0%)',
     //border: `1px solid white`, // TODO
     textAlign: 'center',
@@ -54,7 +42,7 @@ const styles = theme => ({
   },
   statusCard: {
     position: 'absolute',
-    bottom: '-24px',
+    top: '64px',
     left: '50%',
     transform: 'translate(-50%, 0%)',
     //border: '1px solid red', // TODO
@@ -66,4 +54,4 @@ const styles = theme => ({
   },
 });
 
-export default styles;
+export default makeStyles(styles);

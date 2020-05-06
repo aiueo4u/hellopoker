@@ -7,14 +7,6 @@ const styles = theme => ({
     maxWidth: '640px',
     margin: 'auto',
   },
-  control: {
-    height: '80px',
-    width: '100%',
-  },
-  gameTable: {
-    height: 'calc(100% - 80px)',
-    width: '100%',
-  },
 });
 
 export default makeStyles(styles);

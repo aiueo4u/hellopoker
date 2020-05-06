@@ -26,14 +26,14 @@ const styles = theme => ({
       case 'right':
         return {
           ...base,
-          top: '45%',
+          top: '55%',
           left: '-12px',
           transform: 'translate(-100%, 0%)',
         };
       case 'left':
         return {
           ...base,
-          top: '45%',
+          top: '55%',
           right: '-12px',
           transform: 'translate(100%, 0%)',
         };
@@ -57,14 +57,14 @@ const styles = theme => ({
       case 'left':
         return {
           ...base,
-          top: '40%',
+          top: '50%',
           right: '-5px',
           transform: 'translate(100%, -100%)',
         };
       case 'right':
         return {
           ...base,
-          top: '40%',
+          top: '50%',
           left: '-5px',
           transform: 'translate(-100%, -100%)',
         };
@@ -85,7 +85,7 @@ const styles = theme => ({
   },
   handContainer: {
     position: 'absolute',
-    top: '45px',
+    top: '55px',
     left: '50%',
     transform: 'translate(-50%, 0%)',
   },

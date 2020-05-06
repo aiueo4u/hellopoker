@@ -29,7 +29,7 @@ const styles = theme => ({
   },
   playerChipBetArea: {
     position: 'absolute',
-    bottom: '21%',
+    bottom: '160px',
     left: '50%',
     transform: 'translate(-50%, 0)',
     //border: `1px solid white`,
@@ -46,7 +46,7 @@ const styles = theme => ({
   playerContainer: ({ position }) => {
     const base = {
       position: 'absolute',
-      height: '20%',
+      height: '25%',
       width: '25%',
       //border: `1px solid yellow`, // TODO
     };
@@ -60,9 +60,9 @@ const styles = theme => ({
           transform: 'translate(-50%, 0)',
         };
       case 1: // bottom left
-        return { ...base, top: '60%' };
+        return { ...base, top: '50%' };
       case 2: // top left
-        return { ...base, top: '20%' };
+        return { ...base, top: '25%' };
       case 3: // top
         return {
           ...base,
@@ -71,9 +71,9 @@ const styles = theme => ({
           transform: 'translate(-50%, 0)',
         };
       case 4: // top right
-        return { ...base, top: '20%', right: 0 };
+        return { ...base, top: '25%', right: 0 };
       case 5: // bottom right
-        return { ...base, top: '60%', right: 0 };
+        return { ...base, top: '50%', right: 0 };
       default:
         return base;
     }
