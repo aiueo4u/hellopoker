@@ -19,10 +19,7 @@ const PlayerMenuDialog = ({
 
   return (
     <>
-      <Dialog
-        open={isOpen}
-        onClose={onClose}
-      >
+      <Dialog open={isOpen} onClose={onClose}>
         <DialogTitle>
           {"Player " + player.nickname}
         </DialogTitle>

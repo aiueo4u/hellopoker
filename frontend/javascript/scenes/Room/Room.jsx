@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import CustomCircularProgress from 'components/CustomCircularProgress';
 import Loading from 'components/Loading';
 import TopInfobar from 'components/TopInfobar';
+import TopTitlebar from 'components/TopTitlebar';
 
 import useChipChannel from 'hooks/useChipChannel';
 import useDealtCardChannel from 'hooks/useDealtCardChannel';
@@ -44,6 +45,9 @@ const Room = () => {
     <div className={classes.container} onClick={initializeAudio}>
       {/* ネットワーク接続中のダイアログ */}
       <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
+
+      {/* 画面左上のタイトルバー */
+      <TopTitlebar gameTable={gameTable} />}
 
       {/* 画面右上部の情報バー */
       isShowInformationBar && <TopInfobar handCount={gameTable.gameHandCount} round={gameTable.round} />}
