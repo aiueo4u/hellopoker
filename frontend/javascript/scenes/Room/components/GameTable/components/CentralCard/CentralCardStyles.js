@@ -3,13 +3,13 @@ import { makeStyles } from '@material-ui/styles';
 const styles = theme => ({
   board: {
     position: 'absolute',
-    top: '150px',
+    top: '120px',
     left: '50%',
     transform: 'translate(-50%, 0)',
   },
   buttonContainer: {
     position: 'absolute',
-    top: '230px',
+    top: '200px',
     left: '50%',
     transform: 'translate(-50%, 0)',
   },
@@ -21,7 +21,7 @@ const styles = theme => ({
     top: '25%',
     left: '50%',
     transform: 'translate(-50%, 0)',
-    // border: `1px solid red`, // TODO
+    //border: `1px solid red`, // TODO
   },
   inner: {
     //border: `1px solid blue`, // TODO
@@ -42,7 +42,7 @@ const styles = theme => ({
   },
   pot: {
     position: 'absolute',
-    top: '90px',
+    top: '60px',
     left: '50%',
     transform: 'translate(-50%, 0)',
     display: 'inline-block',

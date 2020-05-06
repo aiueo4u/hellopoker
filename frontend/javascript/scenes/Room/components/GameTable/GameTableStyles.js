@@ -60,9 +60,9 @@ const styles = theme => ({
           transform: 'translate(-50%, 0)',
         };
       case 1: // bottom left
-        return { ...base, top: '50%' };
+        return { ...base, top: '45%' };
       case 2: // top left
-        return { ...base, top: '25%' };
+        return { ...base, top: '20%' };
       case 3: // top
         return {
           ...base,
@@ -71,9 +71,9 @@ const styles = theme => ({
           transform: 'translate(-50%, 0)',
         };
       case 4: // top right
-        return { ...base, top: '25%', right: 0 };
+        return { ...base, top: '20%', right: 0 };
       case 5: // bottom right
-        return { ...base, top: '50%', right: 0 };
+        return { ...base, top: '45%', right: 0 };
       default:
         return base;
     }
