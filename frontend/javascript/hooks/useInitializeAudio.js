@@ -9,6 +9,7 @@ const useInitializeAudio = () => {
   const audio = useSelector(state => state.data.audio);
 
   const initializeAudio = () => {
+    return;
     if (audio.isReady) return;
 
     const audioCall = new Audio(audioCallPath);
