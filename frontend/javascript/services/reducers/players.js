@@ -1,7 +1,6 @@
 const initialState = {
   actionType: null,
   betSize: 0,
-  isFetching: false,
 };
 
 const PlayerReducer = (state = initialState, action) => {
@@ -28,22 +27,12 @@ const PlayerReducer = (state = initialState, action) => {
         betSize = 0;
       }
       return { ...player, betSize };
-    case 'CHECK_ACTION_COMPLETED':
-    case 'CHECK_ACTION_FAILED':
-    case 'BET_ACTION_COMPLETED':
-    case 'BET_ACTION_FAILED':
-    case 'CALL_ACTION_COMPLETED':
-    case 'CALL_ACTION_FAILED':
-    case 'FOLD_ACTION_COMPLETED':
-    case 'FOLD_ACTION_FAILED':
-      return { ...player, isFetching: false };
     case 'BET_ACTION':
     case 'CALL_ACTION':
     case 'FOLD_ACTION':
     case 'CHECK_ACTION':
       return {
         ...player,
-        isFetching: true,
       };
     default:
       return player;

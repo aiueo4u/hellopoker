@@ -5,104 +5,11 @@ import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-
 
 import {
   fetchCurrentUser,
-  actionToGameDealer,
   startToGameDealer,
   takeSeatToGameDealer,
   addNpcPlayer,
   postTest,
 } from './api';
-
-function* handleCheckAction(action) {
-  const { tableId, playerId } = action;
-
-  try {
-    yield call(actionToGameDealer, 'PLAYER_ACTION_CHECK', tableId, playerId);
-    yield put({ type: 'CHECK_ACTION_COMPLETED', tableId, playerId });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: 'CHECK_ACTION_FAILED', tableId, playerId });
-  }
-}
-
-function* handleMuckHandAction(action) {
-  const { tableId, playerId } = action;
-
-  try {
-    yield call(actionToGameDealer, 'PLAYER_ACTION_MUCK_HAND', tableId, playerId);
-    yield put({ type: 'MUCK_HAND_ACTION_COMPLETED', tableId, playerId });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: 'MUCK_HAND_ACTION_FAILED', tableId, playerId });
-  }
-}
-
-function* handleShowHandAction(action) {
-  const { tableId, playerId } = action;
-
-  try {
-    yield call(actionToGameDealer, 'PLAYER_ACTION_SHOW_HAND', tableId, playerId);
-    yield put({ type: 'SHOW_HAND_ACTION_COMPLETED', tableId, playerId });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: 'SHOW_HAND_ACTION_FAILED', tableId, playerId });
-  }
-}
-
-function* handleFoldAction(action) {
-  const { tableId, playerId } = action;
-
-  try {
-    yield call(actionToGameDealer, 'PLAYER_ACTION_FOLD', tableId, playerId);
-    yield put({ type: 'FOLD_ACTION_COMPLETED', tableId, playerId });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: 'FOLD_ACTION_FAILED', tableId, playerId, error });
-  }
-}
-
-function* handleCallAction(action) {
-  const { tableId, playerId } = action;
-
-  try {
-    yield call(actionToGameDealer, 'PLAYER_ACTION_CALL', tableId, playerId);
-    yield put({ type: 'CALL_ACTION_COMPLETED', tableId, playerId });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: 'CALL_ACTION_FAILED', tableId, playerId, error });
-  }
-}
-
-function* handleBetAction(action) {
-  const { tableId, playerId, amount } = action;
-
-  try {
-    const response = yield call(actionToGameDealer, 'PLAYER_ACTION_BET_CHIPS', tableId, playerId, amount);
-    const { pot } = response.data;
-    yield put({ type: 'BET_ACTION_COMPLETED', tableId, playerId, amount, pot });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: 'BET_ACTION_FAILED', tableId, playerId, error });
-  }
-}
-
-function* handleTakePotAction(action) {
-  const { tableId, playerId } = action;
-
-  try {
-    const response = yield call(actionToGameDealer, 'GAME_HAND_TAKE_POT', tableId, playerId);
-    const { pot, playerStack } = camelizeKeys(response.data);
-    yield put({
-      type: 'TAKE_POT_ACTION_COMPLETED',
-      tableId,
-      playerId,
-      pot,
-      playerStack,
-    });
-  } catch (error) {
-    console.log(error);
-    yield put({ type: 'TAKE_POT_ACTION_FAILED', tableId, playerId, error });
-  }
-}
 
 function* handlePlayerTakeSeat(action) {
   const { amount, tableId, playerId, seatNo, buyInAmount } = action;
@@ -516,14 +423,7 @@ const logError = error => console.log(error);
 
 export default function* rootSage() {
   yield takeEvery('FETCH_PLAYER', handleFetchPlayer);
-  yield takeEvery('BET_ACTION', handleBetAction);
-  yield takeEvery('CALL_ACTION', handleCallAction);
-  yield takeEvery('FOLD_ACTION', handleFoldAction);
-  yield takeEvery('CHECK_ACTION', handleCheckAction);
-  yield takeEvery('MUCK_HAND_ACTION', handleMuckHandAction);
-  yield takeEvery('SHOW_HAND_ACTION', handleShowHandAction);
   yield takeEvery('GAME_START_BUTTON_CLICKED', handleGameStartButtonClicked);
-  yield takeEvery('TAKE_POT_ACTION', handleTakePotAction);
   yield takeEvery('PLAYER_TAKE_SEAT', handlePlayerTakeSeat);
   yield takeEvery('ADD_NPC_PLAYER', handleAddNpcPlayer);
   yield takeEvery('BEFORE_PLAYER_ACTION_RECEIVED', handleBeforePlayerActionReceived);

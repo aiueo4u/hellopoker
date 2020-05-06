@@ -34,12 +34,13 @@ const PlayerActions = ({ player, tableId }) => {
     muckAction,
     resetBetSize,
     showAction,
-  ] = useActions(tableId, player);
+    loading,
+  ] = useActions(tableId, player, gameTable);
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false
   const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seat_no
 
-  if (!gameTable.inGame || gameTable.currentSeatNo !== player.seat_no) return null;
+  if (loading || !gameTable.inGame || gameTable.currentSeatNo !== player.seat_no) return null;
 
   // Muck or Show
   if (gameTable.showOrMuck) {
