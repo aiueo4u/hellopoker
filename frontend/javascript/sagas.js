@@ -223,10 +223,7 @@ function* initializeWebRTC(action) {
 
   navigator.mediaDevices
     .getUserMedia({
-      audio: {
-        sampleSize: 8,
-        echoCancellation: true,
-      },
+      audio: true,
       video: {
         width: {
           max: 320,
