@@ -12,7 +12,7 @@ const useStyles = makeStyles(styles);
 const PlayerAvatar = ({ isTurn, player }) => {
   const classes = useStyles();
 
-  //return <WebRTCTest player={player} />;
+  return <WebRTCTest player={player} />;
 
   return (
     <Avatar

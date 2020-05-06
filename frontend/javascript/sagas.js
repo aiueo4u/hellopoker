@@ -207,6 +207,7 @@ let remoteStreams = {};
 let currentStreamPlayerId = null;
 
 function* handleChangedPlayerTurn(action) {
+  return;
   const { player } = action;
 
   const localVideo = document.getElementById('bg-video');
