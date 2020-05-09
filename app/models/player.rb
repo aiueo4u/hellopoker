@@ -1,4 +1,11 @@
 class Player < ApplicationRecord
+  has_many :table_players
+  has_many :tables, through: :table_players
+
+  def self.create_npc_player
+    create!(nickname: 'AI', image_url: '')
+  end
+
   def profile_image_url
     # TOOD: 汚い。。。
     if image_url =~ /graph.facebook.com/

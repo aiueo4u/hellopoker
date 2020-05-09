@@ -1,10 +1,10 @@
 class NpcPlayer
   attr_reader :manager, :game_hand, :table_player
 
-  def initialize(manager, game_hand, table_player)
-    @manager = manager
-    @game_hand = game_hand
-    @table_player = table_player
+  def initialize(table_id, player_id)
+    @manager = GameManager.new(table_id, player_id, nil, nil)
+    @game_hand = @manager.game_hand
+    @table_player = @game_hand.table_player_by_player_id(player_id)
   end
 
   def output
@@ -19,20 +19,20 @@ class NpcPlayer
       current_round_actions = game_hand.all_actions.group_by(&:state)[current_round] || []
 
       # 本フェーズでの最高ベット額を取得
-      amount_to_call = game_hand.amount_to_call_by_table_player(table_player)
+      amount_to_call = game_hand.amount_to_call_by_player_id(table_player.player_id)
 
       # 誰もベットしていない場合
       if current_round_actions.none?(&:bet?)
-        # オリジナルがいないorオリジナルならば、70%の確率でベット
-        if (!last_aggressive_player_id || last_aggressor?) && lot(70)
+        # オリジナルがいないorオリジナルならば、50%の確率でベット
+        if (!last_aggressive_player_id || last_aggressor?) && lot(50)
           type = 'PLAYER_ACTION_BET_CHIPS'
           amount = calc_bet(amount_to_call) # 1/2 pot bet
         end
       # 誰かがベットしていたら
       else
         weights = [
-          ['PLAYER_ACTION_CALL', 70],
-          ['PLAYER_ACTION_FOLD', 30],
+          ['PLAYER_ACTION_CALL', 60],
+          ['PLAYER_ACTION_FOLD', 40],
         ]
         type = lot_by_weights(weights)
         case type

@@ -96,7 +96,7 @@ const styles = theme => ({
     transform: 'translate(-50%, -50%)',
     //border: `1px solid red`, // TODO
     textAlign: 'center',
-    filter: player && player.state === 1 ? 'grayscale(100%)' : '',
+    filter: player && player.state === 'folded' ? 'grayscale(100%)' : '',
   }),
   progress: {
     color: theme.palette.primary.main,
@@ -116,7 +116,7 @@ const styles = theme => ({
   },
   stackSize: ({ player }) => ({
     display: 'inline',
-    color: player && player.state === 1 ? theme.palette.grey['500'] : 'orange',
+    color: player && player.state === 'folded' ? theme.palette.grey['500'] : 'orange',
     fontSize: theme.typography.caption.fontSize,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: theme.spacing(1 / 4, 1 / 2),

@@ -83,14 +83,14 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
               */
           )}
         </Box>
-        {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 1 && (
+        {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 'folded' && (
           <Box display="flex" justifyContent="center" className={classes.handContainer}>
             <PokerCard invisible={!showHand} size="small" />
             <PokerCard invisible={!showHand} size="small" />
           </Box>
         )}
 
-        {player.hand_show && player.state !== null && player.state !== 1 && (
+        {player.hand_show && player.state !== null && player.state !== 'folded' && (
           <Box display="flex" justifyContent="center" className={classes.handContainer}>
             <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
             <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />

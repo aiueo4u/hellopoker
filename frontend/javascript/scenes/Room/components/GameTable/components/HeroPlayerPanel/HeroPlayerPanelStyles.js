@@ -30,7 +30,7 @@ const styles = theme => ({
     transform: 'translate(-50%, 0%)',
     //border: `1px solid white`, // TODO
     textAlign: 'center',
-    filter: player && player.state === 1 ? 'grayscale(100%)' : '',
+    filter: player && player.state === 'folded' ? 'grayscale(100%)' : '',
   }),
   stackSize: {
     display: 'inline-block',

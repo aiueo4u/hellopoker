@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
+//import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
@@ -26,11 +26,13 @@ const PlayerMenuDialog = ({
         <DialogContent>
           <div>Stack {player.stack}</div>
         </DialogContent>
+        {/*
         <DialogActions>
           <Button variant="contained" color="primary" onClick={openBuyInDialog}>
             チップ量調整
           </Button>
         </DialogActions>
+          */}
       </Dialog>
       <BuyInDialog tableId={tableId} seatNo={player.seat_no} isOpen={isOpenBuyInDialog} onClose={closeBuyInDialog} />
     </>

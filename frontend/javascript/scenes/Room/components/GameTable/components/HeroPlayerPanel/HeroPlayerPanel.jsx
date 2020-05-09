@@ -62,7 +62,7 @@ const HeroPlayerPanel = ({
         </div>
 
         {/* プレイヤーのハンド */}
-        {cards && cards.length === 2 && player.state !== 1 && (
+        {cards && cards.length === 2 && player.state !== 'folded' && (
           <>
             <div className={classes.heroHoleCard1}>
               <PokerCard rank={cards[0].rank} suit={cards[0].suit} />

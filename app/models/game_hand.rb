@@ -1,16 +1,66 @@
 class GameHand < ApplicationRecord
   include ActionType
 
+  belongs_to :table
   has_many :game_hand_players
   has_many :game_actions, autosave: true
 
-  enum player_states: %i(
-    active
-    folded
-    allin
-  )
+  MAX_PLAYER_NUM = 6
 
-  MAX_PLAYER_NUM = 10
+  def self.create_new_game(table)
+    game_hand = self.new(table_id: table.id)
+    deck = Poker::Deck.new
+
+    # TODO: validate active table player exists
+
+    # スタックがあるプレイヤーのみ参加
+    #   - カードも配る
+    joining_table_players = table.table_players.filter { |tp| tp.stack > 0 }.sort_by(&:seat_no)
+    joining_table_players.each do |table_player|
+      game_hand.game_hand_players.build(
+        player_id: table_player.player_id,
+        card1_id: deck.draw.id,
+        card2_id: deck.draw.id,
+      )
+    end
+
+    # ボードのカードを決めちゃう
+    game_hand.board_card1_id = deck.draw.id
+    game_hand.board_card2_id = deck.draw.id
+    game_hand.board_card3_id = deck.draw.id
+    game_hand.board_card4_id = deck.draw.id
+    game_hand.board_card5_id = deck.draw.id
+
+    # ボタンポジションの決定
+    last_button_seat_no = self.where(table_id: table.id).order(:id).last&.button_seat_no || joining_table_players[-1].seat_no
+    # btn, sb, bb, ...
+    sorted_seat_nos = GameUtils.sort_seat_nos(joining_table_players.map(&:seat_no), last_button_seat_no)
+    game_hand.button_seat_no = sorted_seat_nos[0]
+
+    # SB,BBのシート番号
+    if sorted_seat_nos.size == 2 # Heads up
+      sb_seat_no = sorted_seat_nos[0]
+      bb_seat_no = sorted_seat_nos[1]
+    else
+      sb_seat_no = sorted_seat_nos[1]
+      bb_seat_no = sorted_seat_nos[2]
+    end
+
+    # SB,BBからブラインド徴収
+    sb_table_player = joining_table_players.find { |tp| tp.seat_no == sb_seat_no }
+    sb_amount = [table.sb_size, sb_table_player.stack].min
+    sb_table_player.stack -= sb_amount
+    game_hand.build_blind_action(sb_table_player.player_id, sb_amount)
+
+    bb_table_player = joining_table_players.find { |tp| tp.seat_no == bb_seat_no }
+    bb_amount = [table.bb_size, bb_table_player.stack].min
+    bb_table_player.stack -= bb_amount
+    game_hand.build_blind_action(bb_table_player.player_id, bb_amount)
+
+    sb_table_player.save!
+    bb_table_player.save!
+    game_hand.save!
+  end
 
   def last_action
     game_actions.sort_by(&:order_id).last
@@ -21,27 +71,30 @@ class GameHand < ApplicationRecord
   end
 
   def last_action_seat_no
-    table_players.find { |tp| tp.player_id == last_action.player_id }.seat_no
+    game_hand_players.find { |ghp| ghp.player_id == last_action.player_id }.seat_no
   end
 
   # このハンドに参加しているプレイヤーのシート番号の配列を返す
   def seat_nos
-    game_hand_player_ids = game_hand_players.map(&:player_id)
-    table_players.select { |tp| tp.player_id.in?(game_hand_player_ids) }.map(&:seat_no)
+    game_hand_players.map(&:seat_no)
+  end
+
+  def sorted_seat_nos
+    GameUtils.sort_seat_nos(seat_nos, last_action_seat_no)
   end
 
   def player_id_by_seat_no(seat_no)
-    table_players.find { |tp| tp.seat_no == seat_no }&.player_id
+    game_hand_players.find { |ghp| ghp.seat_no == seat_no }&.player_id
   end
 
   # 一人以外全員フォールドしているかどうか
   def folded_except_one?
-    actions = dump_actions.values
-    actions.select { |action| action['player_state'] == self.class.player_states[:folded] }.size == game_hand_players.size - 1
+    game_hand_players.count(&:folded?) == game_hand_players.size - 1
   end
 
+  # folded_except_one?と何が違うんだっけ・・・
   def last_one_active_player?
-    dump_actions.values.select { |action| action['player_state'] == self.class.player_states[:active] }.size <= 1
+    game_hand_players.count(&:active?) <= 1
   end
   
   def next_state
@@ -50,42 +103,15 @@ class GameHand < ApplicationRecord
   end
 
   def active_player_by_seat_no?(seat_no)
-    player_id = player_id_by_seat_no(seat_no)
-    active_player?(player_id)
+    game_hand_player_by_seat_no(seat_no).active?
   end
 
   def allin_player_by_seat_no?(seat_no)
-    player_id = player_id_by_seat_no(seat_no)
-    allin_player?(player_id)
+    game_hand_player_by_seat_no(seat_no).allin?
   end
 
   def folded_player_by_seat_no?(seat_no)
-    player_id = player_id_by_seat_no(seat_no)
-    folded_player?(player_id)
-  end
-
-  def allin_player?(player_id)
-    game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
-    return false unless game_hand_player
-    dumped_actions = dump_actions
-    # 既に何かしらのアクションを実行した、かつ、オールイン状態かチェック
-    dumped_actions[player_id] && dumped_actions[player_id]['player_state'] == self.class.player_states[:allin]
-  end
-
-  def folded_player?(player_id)
-    game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
-    return false unless game_hand_player
-    dumped_actions = dump_actions
-    # 既に何かしらのアクションを実行した、かつ、フォールド状態かをチェック
-    dumped_actions[player_id] && dumped_actions[player_id]['player_state'] == self.class.player_states[:folded]
-  end
-
-  def active_player?(player_id)
-    game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
-    return false unless game_hand_player # そもそもハンドに参加していない（例外投げても良いかも）
-    dumped_actions = dump_actions
-    # まだ何もアクションを実行していない、または、アクティブ状態かをチェック
-    !dumped_actions[player_id] || dumped_actions[player_id]['player_state'] == self.class.player_states[:active]
+    game_hand_player_by_seat_no(seat_no).folded?
   end
 
   def participating_player?(player_id)
@@ -111,25 +137,40 @@ class GameHand < ApplicationRecord
     end
   end
 
-  def amount_to_call_by_table_player(table_player)
-    dumped_actions = dump_actions
-    max_bet_amount_in_state = dumped_actions.values.max_by {
-      |action| action['bet_amount_in_state']
-    }['bet_amount_in_state']
-    amount_to_call = max_bet_amount_in_state
-
-    if dumped_actions[table_player.player_id]
-      amount_to_call -= dumped_actions[table_player.player_id]['bet_amount_in_state']
-    end
-
-    if table_player.stack < amount_to_call
-      amount_to_call = table_player.stack
-    end
-    amount_to_call
+  def amount_to_call_by_player_id(player_id)
+    max_bet_amount = game_hand_players.map { |ghp| ghp.bet_amount_by_state(state) }.max
+    current_game_hand_player = game_hand_player_by_id(player_id)
+    [max_bet_amount - current_game_hand_player.bet_amount_by_state(state), current_game_hand_player.stack].min
   end
 
   def all_actions
     self.game_actions
+  end
+
+  # もうこれ以上プレイヤーのアクションがないか？
+  #   - resultのShow or Muckまでがアクション
+  def no_more_action?
+    game_hand_players.all? { |ghp| ghp.allin? || ghp.folded? || ghp.last_action&.result? }
+  end
+
+  # preflop
+  # flop
+  # turn
+  # river
+  # hand_open: ハンドをショーするかマックするか
+  # payment(result): 精算タイム
+  # finished: 終了（次回ゲームを開始できる）
+  def current_state
+    # 全員のアクションが終了
+    if no_more_action?
+      # finished: 全て終了した場合
+      #   - 精算が終わったら実効ベット額が全員0になる
+      # payment: 精算タイム
+      #   - 生産するべき実効ベット額がある
+      return game_hand_players.sum(&:effective_total_bet_amount) > 0 ? 'payment' : 'finished'
+    end
+
+    last_action_finished_round? ? next_state : last_action.state
   end
 
   # TODO
@@ -152,73 +193,8 @@ class GameHand < ApplicationRecord
     dumped
   end
 
-  def dump_actions
-    actions_by_player_id = self.game_actions.group_by(&:player_id)
-
-    dumped_actions = {}
-    actions_by_player_id.each do |player_id, actions|
-      # 現在のラウンドでのベット額
-      bet_amount_in_state = 0
-      # 実際に賭けたトータルのベット額
-      total_bet_amount = 0
-      # 他プレイヤーにテイクされていない実効ベット額
-      # - サイドポット発生時等に有効
-      effective_total_bet_amount = 0
-
-      actions.each do |action|
-        if action.action_type.in?(%w(blind call bet))
-          total_bet_amount += action.amount
-          effective_total_bet_amount += action.amount
-          if action.state == self.state
-            bet_amount_in_state += action.amount
-          end
-        # 他プレイヤーにテイクされた分を実効ベット額から引く
-        elsif action.action_type == 'taken' && action.amount < 0
-          effective_total_bet_amount += action.amount
-        end
-      end
-
-      is_folded = actions.any?(&:fold?)
-
-      game_hand_player = game_hand_players.find { |ghp| ghp.player_id == player_id }
-
-      table_player = table_player_by_player_id(player_id)
-      taken_amount = actions.select(&:taken?).sum(&:amount)
-
-      if actions.select(&:taken?).present?
-        is_allin = (table_player.stack - taken_amount - total_bet_amount) == 0
-      else
-        is_allin = table_player.stack == 0
-      end
-
-      if is_folded
-        player_state = self.class.player_states[:folded]
-      else
-        if is_allin
-          player_state = self.class.player_states[:allin]
-        else
-          player_state = self.class.player_states[:active]
-        end
-      end
-
-      show_hand = actions.any?(&:show?)
-      muck_hand = !show_hand && actions.any?(&:muck?)
-
-      dumped_actions[player_id] = {
-        'bet_amount_in_state' => bet_amount_in_state,
-        'total_bet_amount' => total_bet_amount,
-        'effective_total_bet_amount' => effective_total_bet_amount,
-        'player_state' => player_state,
-        'round' => self.state,
-        'show_hand' => show_hand,
-        'muck_hand' => muck_hand,
-      }
-    end
-    dumped_actions
-  end
-
   def pot_amount
-    dump_actions.sum { |_, action| action['effective_total_bet_amount'] }
+    game_hand_players.sum(&:effective_total_bet_amount)
   end
 
   def next_order_id
@@ -301,28 +277,24 @@ class GameHand < ApplicationRecord
     )
   end
 
-  def undo_action
-    # saveでDELETEされるように削除フラグをセット
-    last_action.mark_for_destruction
-
-    # スタックに更新が入るアクションだった場合のスタック調整
-    if last_action.action_type.in?(%w(call bet blind))
-      update_player_stack!(last_action.player_id, last_action.amount)
-    elsif last_action.taken? && last_action.amount > 0
-      update_player_stack!(last_action.player_id, -1 * last_action.amount)
-    end
-  end
-
   def min_total_bet_amount_in_not_folded_players
-    dump_actions.values.select { |action|
-      action['player_state'] != self.class.player_states[:folded] && action['effective_total_bet_amount'] > 0
-    }.min_by { |action| action['effective_total_bet_amount'] }['effective_total_bet_amount']
+    game_hand_players
+      .reject(&:folded?)
+      .map(&:effective_total_bet_amount)
+      .filter { |amount| amount > 0 }
+      .min
   end
 
-  def update_player_stack!(player_id, amount)
-    table_player = table_players.find { |tp| tp.player_id == player_id }
-    table_player.stack += amount
-    table_player.save!
+  def game_hand_player_by_seat_no(seat_no)
+    game_hand_players.find { |ghp| ghp.seat_no == seat_no }
+  end
+
+  def game_hand_player_by_id(player_id)
+    game_hand_players.find { |ghp| ghp.player_id == player_id }
+  end
+
+  def add_player_stack!(player_id, amount)
+    game_hand_player_by_id(player_id).add_stack!(amount)
   end
 
   def create_taken_actions(winning_player_id, current_state)
@@ -330,30 +302,102 @@ class GameHand < ApplicationRecord
 
     min_total_bet_amount_in_not_folded_players = self.min_total_bet_amount_in_not_folded_players
 
-    dump_actions.each do |action_player_id, action|
-      eff_total_bet_amount = action['effective_total_bet_amount']
-      next unless eff_total_bet_amount > 0
+    game_hand_players.each do |ghp|
+      next unless ghp.effective_total_bet_amount > 0
+      amount = [min_total_bet_amount_in_not_folded_players, ghp.effective_total_bet_amount].min
 
-      # ポット獲得権利があるプレイヤー
-      if eff_total_bet_amount >= min_total_bet_amount_in_not_folded_players
-        total += min_total_bet_amount_in_not_folded_players
-        # 取得版
-        self.build_taken_action(winning_player_id, min_total_bet_amount_in_not_folded_players, current_state)
-        # 奪われた版
-        self.build_taken_action(action_player_id, -1 * min_total_bet_amount_in_not_folded_players, current_state)
-      # フォールド済みでポット獲得権利がないプレイヤー
-      else
-        total += eff_total_bet_amount
-        # 取得版
-        self.build_taken_action(winning_player_id, eff_total_bet_amount, current_state)
-        # 奪われた版
-        self.build_taken_action(action_player_id, -1 * eff_total_bet_amount, current_state)
-      end
+      total += amount
+      # 取得版
+      self.build_taken_action(winning_player_id, amount, current_state)
+      # 奪われた版
+      self.build_taken_action(ghp.player_id, -1 * amount, current_state)
     end
 
-    self.update_player_stack!(winning_player_id, total)
+    self.add_player_stack!(winning_player_id, total)
     self.save!
 
     total
+  end
+
+  # 前回のアクションによって、そのアクションの属するラウンドを終了させたか？
+  def last_action_finished_round?
+    last_round_actions = game_actions.filter { |action| action.state == last_action.state }
+    last_aggressive_player_id = last_round_actions.filter(&:bet?).sort_by(&:order_id).last&.player_id
+    last_aggressive_game_hand_player = game_hand_player_by_id(last_aggressive_player_id)
+
+    # アグレッサーがいる場合（ブラインドはベットではない）
+    if last_aggressive_game_hand_player
+      # 全員が下記のいずれかを満たす場合、true
+      #   - オールイン
+      #   - フォールド
+      #   - コール（アグレッサーと同額出している）
+      return game_hand_players.all? do |ghp|
+        ghp.allin? ||
+          ghp.folded? ||
+          ghp.bet_amount_by_state(state) == last_aggressive_game_hand_player.bet_amount_by_state(state)
+      end
+    end
+
+    if state == 'preflop'
+      return true if current_bb_used_option? # BBがオプションチェックをした場合
+      return true if folded_except_one? # BB以外全員フォールドした場合
+    end
+
+    # 全員チェックorフォールドの場合のみtrue
+    game_hand_players.filter(&:active?).all? do |ghp|
+      last_action = ghp.last_action_by_state(state)
+      last_action && (last_action.check? || last_action.fold?)
+    end
+  end
+
+  def game_actions_in_state(state)
+    game_actions.filter { |action| action.state == state }
+  end
+
+  def current_bb_used_option?
+    bb_ghp = game_hand_player_by_seat_no(bb_seat_no)
+    game_actions_in_state('preflop').any? { |action| action.player_id == bb_ghp.player_id && !action.blind? }
+  end
+
+  def bb_seat_no
+    GameUtils.sort_seat_nos(seat_nos, button_seat_no)[seat_nos.size > 2 ? 1 : 0]
+  end
+
+  def next_active_seat_no
+    sorted_seat_nos.find { |seat_no| active_player_by_seat_no?(seat_no) }
+  end
+
+  def checkable_by?(table_player)
+    return false unless current_state.in?(%w(preflop flop turn river))
+    no_bet_action = game_actions_in_state(current_state).none?(&:bet?)
+
+    # preflopではBBのオプションチェック時のみ
+    if current_state == 'preflop'
+      # BBで他の誰もベットしていないときチェックできる
+      table_player.seat_no == bb_seat_no && no_bet_action
+    else
+      # まだ誰もベットしていないときチェックできる
+      no_bet_action
+    end
+  end
+
+  def current_seat_no
+    return nil unless current_state.in?(%w(preflop flop turn river result)) # TODO: result -> hand_open
+
+    if game_actions_in_state(current_state).blank?
+      if current_state == 'result'
+        # ハンドオープン時はリバーのアグレッサーから
+        aggressive_action = game_actions.filter { |action| action.river? && action.bet? }.sort_by(&:order_id).last
+        return game_hand_player_by_id(aggressive_action.player_id).seat_no if aggressive_action
+      end
+
+      base_seat_no ||= button_seat_no
+    else
+      base_seat_no = last_action_seat_no
+    end
+
+    GameUtils.sort_seat_nos(seat_nos, base_seat_no).find do |seat_no|
+      active_player_by_seat_no?(seat_no)
+    end
   end
 end

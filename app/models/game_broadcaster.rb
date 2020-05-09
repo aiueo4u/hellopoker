@@ -2,7 +2,6 @@
 module GameBroadcaster
   def broadcast_game_state
     game_hand_players_by_player_id = game_hand&.game_hand_players&.index_by(&:player_id) || {}
-    dumped_actions = game_hand&.dump_actions || {}
     table_players = game_hand&.table_players || TablePlayer.where(table_id: table_id).to_a
 
     total_bet_amount_in_current_round = 0
@@ -10,26 +9,21 @@ module GameBroadcaster
     # カード配布モードでの結果ラウンド
     show_or_muck_by_player_id = {}
     if current_state == 'result' || current_state == 'finished'
-      game_hand_players_in_result = game_hand.game_hand_players.select { |ghp|
-        action = dumped_actions[ghp.player_id]
-        action && action['player_state'] != GameHand.player_states[:folded]
-      }
+      game_hand_players_in_result = game_hand.game_hand_players.reject(&:folded?) 
 
       # All-inプレイヤーがいたらマックできない
-      if dumped_actions.any? { |_player_id, action| action['player_state'] == GameHand.player_states[:allin] }
+      if game_hand.game_hand_players.any?(&:allin?)
         game_hand_players_in_result.each do |ghp|
           show_or_muck_by_player_id[ghp.player_id] = true
         end
       else
         game_hand_players_in_result.each do |ghp|
-          action = dumped_actions[ghp.player_id]
-
           # All-inプレイヤーはマックできない
-          if action['player_state'] == GameHand.player_states[:allin]
+          if ghp.allin?
             show_or_muck_by_player_id[ghp.player_id] = true
-          elsif action['show_hand']
+          elsif ghp.show_hand?
             show_or_muck_by_player_id[ghp.player_id] = true
-          elsif action['muck_hand']
+          elsif ghp.muck_hand?
             show_or_muck_by_player_id[ghp.player_id] = false
           end
         end
@@ -40,15 +34,12 @@ module GameBroadcaster
 
     players_data = table_players.sort_by(&:seat_no).map do |table_player|
       game_hand_player = game_hand_players_by_player_id[table_player.player_id]
-      dumped_action = dumped_actions[table_player.player_id] || {}
 
-      bet_amount_in_state = round_first_action? ? 0 : dumped_action['bet_amount_in_state'] || 0
+      bet_amount_in_state = game_hand_player&.bet_amount_by_state(game_hand.current_state) || 0
       total_bet_amount_in_current_round += bet_amount_in_state
 
       bb_option_usable =
-        game_hand && bb_seat_no == table_player.seat_no && !current_bb_used_option?
-
-      player_state = dumped_action['player_state']
+        game_hand && bb_seat_no == table_player.seat_no && !game_hand.current_bb_used_option?
 
       if show_or_muck_by_player_id[table_player.player.id]
         cards = [
@@ -66,9 +57,9 @@ module GameBroadcaster
         stack: table_player.stack,
         seat_no: table_player.seat_no,
         position: game_hand&.position_by_seat_no(table_player.seat_no),
-        state: player_state,
+        state: game_hand_player&.player_state,
         bet_amount_in_state: bet_amount_in_state,
-        total_bet_amount: dumped_action['total_bet_amount'],
+        total_bet_amount: game_hand_player&.total_bet_amount,
         bb_option_usable: bb_option_usable,
         hand_show: show_or_muck_by_player_id[table_player.player.id],
         cards: cards,
@@ -79,7 +70,7 @@ module GameBroadcaster
     end
 
     # そのラウンドでベットされたチップはポットに含めない
-    pot_amount = dumped_actions.sum { |_, action| action['effective_total_bet_amount'] }
+    pot_amount = game_hand&.game_hand_players&.sum(&:effective_total_bet_amount) || 0
     pot_amount -= total_bet_amount_in_current_round
 
     game_hand_count = GameHand.where(table_id: table_id).count
@@ -138,7 +129,7 @@ module GameBroadcaster
 
       # オールイン勢が揃って、あとはボードをめくるだけのとき
       is_allin = game_hand.game_hand_players.select { |ghp|
-        !game_hand.folded_player?(ghp.player_id)
+        !ghp.folded?
       }.size > 1 && current_state == 'finished' && type == 'PLAYER_ACTION_CALL'
 
       if is_allin
@@ -166,14 +157,14 @@ module GameBroadcaster
       type: 'player_action',
       pot: pot_amount,
       game_hand_state: current_state,
-      current_seat_no: current_seat_no,
+      current_seat_no: game_hand&.current_seat_no,
       button_seat_no: game_hand&.button_seat_no,
       players: players_data,
       last_aggressive_seat_no: last_aggressive_seat_no,
       undoable: GameHand.where(table_id: table_id).exists?,
       game_hand_count: game_hand_count,
       board_cards: board_cards,
-      show_or_muck: current_state == 'result' && !player_hand_fixed?,
+      show_or_muck: current_state == 'result' && !game_hand&.no_more_action?,
       reached_rounds: reached_rounds,
       reaching_rounds: reaching_rounds,
       last_action: last_action,
@@ -224,10 +215,6 @@ module GameBroadcaster
 
   def broadcast
     broadcast_game_state
-
-    # if type # TODO: 良い感じに分離
-    #   InformationBroadcaster.broadcast_info(game_hand, last_action_state, player_id, type, amount)
-    # end
 
     # リバー終了時
     if @broadcast_result

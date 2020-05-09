@@ -19,6 +19,11 @@ function TableRowContent({ table }) {
       <TableCell>{table.name}</TableCell>
       <TableCell>{table.players.length} 名</TableCell>
       <TableCell>
+        {table.players.map(player => (
+          <div key={player.id}>{player.nickname}</div>
+        ))}
+      </TableCell>
+      <TableCell>
         <Link to={`/tables/${table.id}`} className={classes.link}>
           <Button variant="outlined">参加</Button>
         </Link>

@@ -27,6 +27,7 @@ function TableList() {
           <TableCell>テーブル名</TableCell>
           <TableCell>参加人数</TableCell>
           <TableCell />
+          <TableCell />
         </TableRow>
       </TableHead>
       <TableBody>
