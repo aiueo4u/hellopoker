@@ -8,9 +8,11 @@ function WebRTCTest({ player, local }) {
   const classes = useStyles({ player });
   const dispatch = useDispatch();
   const videoState = useSelector(state => state.data.video);
+  const { playerId } = useSelector(state => state.data.playerSession);
 
   const onClick = () => {
     if (videoState.isConnected) return;
+    if (playerId !== player.id) return;
 
     const onSuccess = () => {
       dispatch({ type: 'INITIALIZE_WEBRTC_SUCCESS' });

@@ -40,17 +40,19 @@ const Room = () => {
   if (!gameTable.isReady) return <Loading />;
 
   return (
-    <div className={classes.container} onClick={initializeAudio}>
-      {/* ネットワーク接続中のダイアログ */}
-      <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
+    <div className={classes.background}>
+      <div className={classes.container} onClick={initializeAudio}>
+        {/* ネットワーク接続中のダイアログ */}
+        <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
 
-      {/* 画面左上のタイトルバー */
-      <TopTitlebar gameTable={gameTable} />}
+        {/* 画面左上のタイトルバー */
+        <TopTitlebar gameTable={gameTable} />}
 
-      {/* 画面右上部の情報バー */
-      isShowInformationBar && <TopInfobar handCount={gameTable.gameHandCount} round={gameTable.round} />}
+        {/* 画面右上部の情報バー */
+        isShowInformationBar && <TopInfobar handCount={gameTable.gameHandCount} round={gameTable.round} />}
 
-      <GameTable gameTable={gameTable} players={players} playerSession={playerSession} tableId={tableId} />
+        <GameTable gameTable={gameTable} players={players} playerSession={playerSession} tableId={tableId} />
+      </div>
     </div>
   );
 };
