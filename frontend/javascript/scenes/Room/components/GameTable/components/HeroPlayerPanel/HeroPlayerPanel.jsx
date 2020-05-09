@@ -47,7 +47,7 @@ const HeroPlayerPanel = ({
         <div className={classes.nickname}>{player.nickname}</div>
 
         {/* プレイヤーのアバターorビデオ */}
-        <Box mt={1 / 2} display="inline-block">
+        <Box mt={1 / 2}>
           <PlayerAvatar player={player} isTurn={isHeroTurn} />
         </Box>
 
@@ -65,10 +65,10 @@ const HeroPlayerPanel = ({
         {cards && cards.length === 2 && player.state !== 'folded' && (
           <>
             <div className={classes.heroHoleCard1}>
-              <PokerCard rank={cards[0].rank} suit={cards[0].suit} />
+              <PokerCard rank={cards[0].rank} suit={cards[0].suit} size="medium" />
             </div>
             <div className={classes.heroHoleCard2}>
-              <PokerCard rank={cards[1].rank} suit={cards[1].suit} />
+              <PokerCard rank={cards[1].rank} suit={cards[1].suit} size="medium" />
             </div>
           </>
         )}

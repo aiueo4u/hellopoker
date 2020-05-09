@@ -6,10 +6,10 @@ const styles = theme => ({
     const base = {
       position: 'relative',
       display: 'inline-block',
-      width: size === 'small' ? '12px' : '36px',
-      height: size === 'small' ? '17px' : '51px',
+      width: size === 'small' ? '12px' : size === 'medium' ? '24px' : '36px',
+      height: size === 'small' ? '17px' : size === 'medium' ? '34px' : '51px',
       backgroundColor: theme.palette.common.white,
-      borderRadius: size === 'small' ? '2px' : '4px',
+      borderRadius: size === 'small' ? '2px' : size === 'medium' ? '2px' : '4px',
       boxShadow: `0 1px 1px rgba(0, 0, 0, 0.15)`,
       cursor: 'default',
       willChange: 'transform',
@@ -37,10 +37,10 @@ const styles = theme => ({
   },
   faceSuit: ({ size }) => ({
     position: 'absolute',
-    top: '60%',
+    top: size === 'medium' ? '70%' : '60%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    fontSize: size === 'small' ? '0.75rem' : '1.5rem',
+    fontSize: size === 'small' ? '0.75rem' : size === 'medium' ? '1rem' : '1.5rem',
   }),
   rank: ({ rank, size }) => {
     if (!rank) return null;
@@ -65,13 +65,13 @@ const styles = theme => ({
     return {
       '&:before': {
         position: 'absolute',
-        fontSize: size === 'small' ? '0.675rem' : '0.875rem',
+        fontSize: size === 'small' ? '0.675rem' : size === 'medium' ? '0.75rem' : '0.875rem',
         textAlign: 'center',
         lineHeight: size === 'small' ? '0.675rem' : '0.875rem',
         whiteSpace: 'pre-line',
         letterSpacing: '-0.1rem',
-        top: size === 'small' ? '2px' : '4px',
-        left: size === 'small' ? '2px' : '4px',
+        top: size === 'small' ? '2px' : size === 'medium' ? '2px' : '4px',
+        left: size === 'small' ? '2px' : size === 'medium' ? '2px' : '4px',
         content: `"${content}"`,
       },
     };

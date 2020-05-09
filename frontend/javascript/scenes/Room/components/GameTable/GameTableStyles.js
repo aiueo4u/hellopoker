@@ -29,16 +29,7 @@ const styles = theme => ({
   },
   playerChipBetArea: {
     position: 'absolute',
-    bottom: '160px',
-    left: '50%',
-    transform: 'translate(-50%, 0)',
-    //border: `1px solid white`,
-  },
-  heroPlayerContainer: {
-    height: '150px',
-    width: '100%',
-    position: 'absolute',
-    bottom: 0,
+    bottom: '25%',
     left: '50%',
     transform: 'translate(-50%, 0)',
     //border: `1px solid white`,
@@ -48,7 +39,7 @@ const styles = theme => ({
       position: 'absolute',
       height: '25%',
       width: '25%',
-      //border: `1px solid yellow`, // TODO
+      //border: `1px solid green`, // TODO
     };
 
     switch (position) {

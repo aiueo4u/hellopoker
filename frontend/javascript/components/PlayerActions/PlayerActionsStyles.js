@@ -4,16 +4,26 @@ const styles = theme => ({
     top: '50%',
     transform: 'translate(-50%, -50%)',
     textTransform: 'none',
-    height: '60px',
-    width: '60px',
+    height: '64px',
+    width: '64px',
     touchAction: 'manipulation',
-    borderRadius: '30px',
+    borderRadius: '32px',
   },
   leftButton: {
-    left: 'calc(50% - 135px)',
+    [theme.breakpoints.only('xs')]: {
+      left: 'calc(50% - 112px)',
+    },
+    [theme.breakpoints.up('sm')]: {
+      left: 'calc(50% - 135px)',
+    },
   },
   rightButton: {
-    left: 'calc(50% + 135px)',
+    [theme.breakpoints.only('xs')]: {
+      left: 'calc(50% + 112px)',
+    },
+    [theme.breakpoints.up('sm')]: {
+      left: 'calc(50% + 135px)',
+    },
   },
 });
 

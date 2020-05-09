@@ -39,16 +39,6 @@ function GameTable({
 
   return (
     <div className={classes.container}>
-      {/*
-      {players.map(player => (
-        <WebRTCTest player={player} />
-      ))}
-        */}
-
-      <div style={{ height: 'calc(var(--vh, 1vh) * 100)', width: 'calc(var(--vw, 1vw) * 100)' }}>
-        <video id="bg-video" playsInline autoPlay style={{ height: 'calc(var(--vh, 1vh) * 100)', width: 'calc(var(--vw, 1vw) * 100)', objectFit: 'cover' }} />
-      </div>
-
       <CentralCard />
 
       <div className={classes.playerChipBetArea}>

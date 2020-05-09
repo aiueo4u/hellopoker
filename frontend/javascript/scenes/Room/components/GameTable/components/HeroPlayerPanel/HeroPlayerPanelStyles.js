@@ -13,14 +13,14 @@ const styles = theme => ({
   },
   heroHoleCard1: {
     position: 'absolute',
-    top: '55px',
+    top: '65px',
     left: 'calc(50% + 40px)',
     transform: 'translate(-50%, -50%)',
   },
   heroHoleCard2: {
     position: 'absolute',
-    top: '55px',
-    left: 'calc(50% + 70px)',
+    top: '65px',
+    left: 'calc(50% + 60px)',
     transform: 'translate(-50%, -50%)',
   },
   container: ({ player }) => ({
@@ -28,7 +28,7 @@ const styles = theme => ({
     top: 0,
     left: '50%',
     transform: 'translate(-50%, 0%)',
-    //border: `1px solid white`, // TODO
+    //border: `1px solid red`, // TODO
     textAlign: 'center',
     filter: player && player.state === 'folded' ? 'grayscale(100%)' : '',
   }),
