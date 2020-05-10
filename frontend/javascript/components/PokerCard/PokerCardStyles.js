@@ -40,7 +40,7 @@ const styles = theme => ({
     top: size === 'medium' ? '70%' : '60%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    fontSize: size === 'small' ? '0.75rem' : size === 'medium' ? '1rem' : '1.5rem',
+    fontSize: size === 'small' ? '0.75rem' : size === 'medium' ? '0.875rem' : '1.5rem',
   }),
   rank: ({ rank, size }) => {
     if (!rank) return null;
