@@ -4,8 +4,8 @@ class Admin::ApplicationController < ApplicationController
   private
 
   def check_basic_authentication
-    name = 'poker'
-    passwd = '53ddd2b22a573040131269b9656ef013a37e3f66'
+    name = 'admin'
+    passwd = '82fdd4175498fe0c906e75e2d171a0d6a1baa88f'
     authenticate_or_request_with_http_basic('BA') do |n, p|
       n == name && Digest::SHA1.hexdigest(p) == passwd
     end
