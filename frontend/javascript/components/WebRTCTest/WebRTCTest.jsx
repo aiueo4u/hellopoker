@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 
 import useStyles from './WebRTCTestStyles';
 
-function WebRTCTest({ player, local }) {
+function WebRTCTest({ player, isTurn }) {
   const classes = useStyles({ player });
   const dispatch = useDispatch();
   const videoState = useSelector(state => state.data.video);
@@ -25,12 +27,21 @@ function WebRTCTest({ player, local }) {
   if (!player) return null;
 
   return (
-    <div className={classes.container} onClick={onClick}>
+    <div className={classNames(classes.container, { [classes.isTurn]: isTurn })} onClick={onClick}>
       <div className={classes.videoContainer}>
         <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video}></video>
       </div>
     </div>
   );
+};
+
+WebRTCTest.propTypes = {
+  player: PropTypes.object.isRequired,
+  isTurn: PropTypes.bool,
+};
+
+WebRTCTest.defaultProps = {
+  isTurn: false,
 };
 
 export default WebRTCTest;
