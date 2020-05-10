@@ -8,6 +8,10 @@ const styles = theme => ({
     width: '64px',
     touchAction: 'manipulation',
     borderRadius: '32px',
+    '&:disabled': {
+      backgroundColor: theme.palette.grey['300'],
+      color: theme.palette.common.black,
+    },
   },
   leftButton: {
     [theme.breakpoints.only('xs')]: {

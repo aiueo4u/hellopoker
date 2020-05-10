@@ -18,6 +18,7 @@ import useActions from 'hooks/useActions';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
+import usePlayersState from 'hooks/usePlayersState';
 
 import styles from './PlayerActionsStyles';
 
@@ -25,6 +26,7 @@ const useStyles = makeStyles(styles);
 
 const PlayerActions = ({ player, tableId }) => {
   const gameTable = useGameTableState();
+  const players = usePlayersState();
   const classes = useStyles({ player });
   const [
     betAction,
@@ -39,6 +41,7 @@ const PlayerActions = ({ player, tableId }) => {
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false
   const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seat_no
+  const maxBetAmountInState = Math.max(...players.map(player => player.bet_amount_in_state));
 
   if (loading || !gameTable.inGame || gameTable.currentSeatNo !== player.seat_no) return null;
 
@@ -59,7 +62,13 @@ const PlayerActions = ({ player, tableId }) => {
         <Button className={classNames([classes.button, classes.leftButton])} variant="contained" onClick={resetBetSize}>
           Reset
         </Button>
-        <Button className={classNames([classes.button, classes.rightButton])} variant="contained" onClick={betAction} color="primary">
+        <Button
+          className={classNames([classes.button, classes.rightButton])}
+          disabled={player.bet_amount_in_state + player.betSize <= maxBetAmountInState}
+          variant="contained"
+          onClick={betAction}
+          color="primary"
+        >
           Bet
         </Button>
         <ChipAmountControlContainer />}

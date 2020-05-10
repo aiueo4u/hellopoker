@@ -65,24 +65,24 @@ class GameManager
         Rails.logger.debug('cannot check; proceeding to action fold...')
         game_hand.build_fold_action(self.player_id, last_action_state)
       end
-    when 'PLAYER_ACTION_BET_CHIPS'
+    when 'PLAYER_ACTION_BET_CHIPS' # NOTE: Raiseも含んでいる
       check_your_turn!(table_player) # 自分のターンかチェック
-
-      # 所持チップ調整
-      adjusted_amount = [table_player.stack, amount].min
+      check_your_amount!(table_player, amount) # 残高チェック
+      check_bet_amount!(table_player, amount) # コール額以上になっているかチェック
 
       # プレイヤーのスタックからポットへとチップを移す
       current_game_hand_player = game_hand.game_hand_player_by_id(player_id)
-      current_game_hand_player.add_stack!(-1 * adjusted_amount)
+      current_game_hand_player.add_stack!(-1 * amount)
 
       # アクション生成
-      game_hand.build_bet_action(player_id, adjusted_amount, last_action_state)
+      game_hand.build_bet_action(player_id, amount, last_action_state)
     when 'PLAYER_ACTION_CALL'
       check_your_turn!(table_player) # 自分のターンかチェック
-      check_your_amount!(table_player, amount) # 残高チェック
 
       # 本フェーズでの最高ベット額を取得
       amount_to_call = game_hand.amount_to_call_by_player_id(player_id)
+
+      check_your_amount!(table_player, amount_to_call) # 残高チェック
 
       current_game_hand_player = game_hand.game_hand_player_by_id(player_id)
       current_game_hand_player.add_stack!(-1 * amount_to_call)
@@ -253,5 +253,9 @@ class GameManager
 
   def check_your_amount!(table_player, amount)
     raise "not enough stack to bet #{amount}" if table_player.stack < amount
+  end
+
+  def check_bet_amount!(table_player, amount)
+    raise "not enough stack to bet #{amount}" if game_hand.amount_to_call_by_player_id(player_id) >= amount
   end
 end
