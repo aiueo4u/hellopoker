@@ -222,6 +222,7 @@ function* handleJoinSession() {
 
   const element = document.getElementById(`video-player-${playerId}`);
   element.autoplay = 'autoplay';
+  element.muted = true;
   element.srcObject = localstream;
 
   session = yield cable.subscriptions.create(
