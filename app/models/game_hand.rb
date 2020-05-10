@@ -298,26 +298,25 @@ class GameHand < ApplicationRecord
     game_hand_player_by_id(player_id).add_stack!(amount)
   end
 
-  def create_taken_actions(winning_player_id, current_state)
-    total = 0
-
+  def create_taken_actions(winning_player_ids, current_state)
     min_total_bet_amount_in_not_folded_players = self.min_total_bet_amount_in_not_folded_players
 
     game_hand_players.each do |ghp|
       next unless ghp.effective_total_bet_amount > 0
       amount = [min_total_bet_amount_in_not_folded_players, ghp.effective_total_bet_amount].min
 
-      total += amount
       # 取得版
-      self.build_taken_action(winning_player_id, amount, current_state)
+      chopped_amount = (amount / winning_player_ids.size).to_i # TOOD: 割り切れないときの誤差調整
+      winning_player_ids.each do |winning_player_id|
+        self.build_taken_action(winning_player_id, chopped_amount, current_state)
+        self.add_player_stack!(winning_player_id, chopped_amount)
+      end
+
       # 奪われた版
       self.build_taken_action(ghp.player_id, -1 * amount, current_state)
     end
 
-    self.add_player_stack!(winning_player_id, total)
     self.save!
-
-    total
   end
 
   # ショーダウン無しにゲームが終了？

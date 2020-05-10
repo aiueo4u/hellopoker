@@ -41,9 +41,7 @@ class GameManager
       Rails.logger.info("Player #{player_id} time out.")
       @next_action_timeout = true
 
-      if self.type == 'GAME_HAND_TAKE_POT'
-        # do nothing
-      elsif self.type == 'PLAYER_ACTION_SHOW_HAND'
+      if self.type == 'PLAYER_ACTION_SHOW_HAND'
         @type = 'PLAYER_ACTION_MUCK_HAND'
       elsif game_hand.checkable_by?(table_player)
         @type = 'PLAYER_ACTION_CHECK'
@@ -94,8 +92,6 @@ class GameManager
       check_your_turn!(table_player) # 自分のターンかチェック
 
       game_hand.build_fold_action(self.player_id, last_action_state)
-    when 'GAME_HAND_TAKE_POT'
-      @amount = game_hand.create_taken_actions(player_id, last_action_state)
     else
       Rails.logger.warn("Unknown type: '#{type}'")
     end
@@ -103,8 +99,8 @@ class GameManager
     # カード配布モードで、アクションの後に結果ラウンドになった場合の処理
     if player_hand_fixed?
       while current_state == 'result' # TODO: 無限ループ防止策入れようかな。。
-        winning_player_id = calc_winning_player_id # TODO
-        game_hand.create_taken_actions(winning_player_id, current_state)
+        winning_player_ids = calc_winning_player_ids
+        game_hand.create_taken_actions(winning_player_ids, current_state)
       end
       @broadcast_result = true # TODO: refactor
     end
@@ -112,7 +108,7 @@ class GameManager
     game_hand.save!
   end
 
-  def calc_winning_player_id
+  def calc_winning_player_ids
     # 結果ラウンドにいる、マックしていないポット獲得権利保有者
     #   - 自身とAll-in以外が全員マックした場合は権利ある
     game_hand_players_in_result = game_hand.game_hand_players.select { |ghp|
@@ -148,20 +144,21 @@ class GameManager
       Rails.logger.debug(hand.msg)
     end
 
-    best_player_id = cards_by_player_id.keys.first
+    best_player_ids = Set.new([cards_by_player_id.keys.first])
 
     # ハンドの強さに基づいて順位付け
-    # TODO: 引き分け対応
     cards_by_player_id.each do |player_id, cards|
       target_hand = result[player_id][:hand]
-      best_hand = result[best_player_id][:hand]
+      best_hand = result[best_player_ids.first][:hand]
 
-      if target_hand.compare_with(best_hand) == 1
-        best_player_id = player_id
+      if target_hand.compare_with(best_hand) == 1 # win
+        best_player_ids = Set.new([player_id])
+      elsif target_hand.compare_with(best_hand) == 0 # tie
+        best_player_ids << player_id
       end
     end
 
-    best_player_id
+    best_player_ids.to_a
   end
 
   def player_hand_fixed?
