@@ -22,7 +22,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'space-around',
     [theme.breakpoints.up('sm')]: {
-      bottom: '-64px',
+      //bottom: '-64px',
     },
   },
 });

@@ -19,7 +19,6 @@ import useStyles from './HeroPlayerPanelStyles';
 import usePlayAudioMyTurn from './hooks/usePlayAudioMyTurn';
 
 const HeroPlayerPanel = ({
-  playerOnTurn,
   player,
   tableId,
 }) => {
