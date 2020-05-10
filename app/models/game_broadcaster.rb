@@ -12,14 +12,14 @@ module GameBroadcaster
       game_hand_players_in_result = game_hand.game_hand_players.reject(&:folded?) 
 
       # All-inプレイヤーがいたらマックできない
-      if game_hand.game_hand_players.any?(&:allin?)
+      if game_hand.game_hand_players.any?(&:allin?) && !game_hand.skip_showdown?
         game_hand_players_in_result.each do |ghp|
           show_or_muck_by_player_id[ghp.player_id] = true
         end
       else
         game_hand_players_in_result.each do |ghp|
           # All-inプレイヤーはマックできない
-          if ghp.allin?
+          if ghp.allin? && !game_hand.skip_showdown?
             show_or_muck_by_player_id[ghp.player_id] = true
           elsif ghp.show_hand?
             show_or_muck_by_player_id[ghp.player_id] = true
@@ -54,7 +54,7 @@ module GameBroadcaster
         id: table_player.player.id,
         nickname: table_player.player.nickname,
         image_url: table_player.player.profile_image_url,
-        stack: table_player.stack,
+        stack: game_hand_player&.stack || table_player.stack,
         seat_no: table_player.seat_no,
         position: game_hand&.position_by_seat_no(table_player.seat_no),
         state: game_hand_player&.player_state,
@@ -128,11 +128,9 @@ module GameBroadcaster
       reached_rounds[current_state] = true
 
       # オールイン勢が揃って、あとはボードをめくるだけのとき
-      is_allin = game_hand.game_hand_players.select { |ghp|
-        !ghp.folded?
-      }.size > 1 && current_state == 'finished' && type == 'PLAYER_ACTION_CALL'
+      view_allin_animation = game_hand.game_hand_players.any?(&:allin?) && current_state == 'finished' && !game_hand.skip_showdown?
 
-      if is_allin
+      if view_allin_animation
         if !reached_rounds['flop']
           reaching_rounds << 'flop'
           reached_rounds['flop'] = true

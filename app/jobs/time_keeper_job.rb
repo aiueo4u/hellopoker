@@ -2,6 +2,8 @@ class TimeKeeperJob < ApplicationJob
   queue_as :default
 
   def perform(table_id, player_id, action_order_id)
+    return if Rails.env.development?
+
     Rails.logger.debug('time keeper job')
 
     Rails.logger.debug("TableID: #{table_id}, PlayerID: #{player_id}(#{Player.find(player_id).nickname}), OrderID: #{action_order_id}")

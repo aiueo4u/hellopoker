@@ -21,14 +21,15 @@ end
 create_table "game_hand_players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
   t.integer "game_hand_id", unsigned: true
   t.integer "player_id", unsigned: true
+  t.integer "initial_stack", default: 0, null: false, unsigned: true
   t.string "card1_id", limit: 2
   t.string "card2_id", limit: 2
   t.index ["game_hand_id"], name: "i1"
 end
 
 create_table "game_hands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
-  t.integer "table_id", unsigned: true
-  t.integer "button_seat_no", unsigned: true
+  t.integer "table_id", null: false, unsigned: true
+  t.integer "button_seat_no", null: false, unsigned: true
   t.string "board_card1_id", limit: 2
   t.string "board_card2_id", limit: 2
   t.string "board_card3_id", limit: 2

@@ -12,7 +12,7 @@ class NpcPlayer
     amount = nil
 
     if manager.current_state == 'result'
-      type = 'PLAYER_ACTION_SHOW_HAND'
+      type = lot(70) ? 'PLAYER_ACTION_SHOW_HAND' : 'PLAYER_ACTION_MUCK_HAND'
     else
       # TODO
       current_round = manager.current_state
@@ -27,6 +27,7 @@ class NpcPlayer
         if (!last_aggressive_player_id || last_aggressor?) && lot(50)
           type = 'PLAYER_ACTION_BET_CHIPS'
           amount = calc_bet(amount_to_call) # 1/2 pot bet
+          # amount = [table_player.stack / 2, game_hand.pot_amount].max # TODO: 強制AI
         end
       # 誰かがベットしていたら
       else

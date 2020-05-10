@@ -19,6 +19,7 @@ class GameHand < ApplicationRecord
     joining_table_players.each do |table_player|
       game_hand.game_hand_players.build(
         player_id: table_player.player_id,
+        initial_stack: table_player.stack,
         card1_id: deck.draw.id,
         card2_id: deck.draw.id,
       )
@@ -317,6 +318,11 @@ class GameHand < ApplicationRecord
     self.save!
 
     total
+  end
+
+  # ショーダウン無しにゲームが終了？
+  def skip_showdown?
+    folded_except_one?
   end
 
   # 前回のアクションによって、そのアクションの属するラウンドを終了させたか？

@@ -1,7 +1,6 @@
 class GameHandPlayer < ApplicationRecord
   belongs_to :game_hand
 
-  # TODO: アクション毎にstackにUPDATE打った方が良いかな
   delegate :seat_no, :stack, to: :table_player
 
   def bet_amount_by_state(state)
@@ -23,7 +22,7 @@ class GameHandPlayer < ApplicationRecord
   end
 
   def allin?
-    stack == 0
+    initial_stack - total_bet_amount == 0
   end
 
   def folded?
@@ -55,8 +54,8 @@ class GameHandPlayer < ApplicationRecord
     total_bet_amount + actions.filter { |action| action.taken? && action.amount < 0 }.sum(&:amount)
   end
 
-  def add_stack!(amount)
-    table_player.stack += amount
+  def add_stack!(diff)
+    table_player.stack += diff
     table_player.save!
   end
 

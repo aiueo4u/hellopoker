@@ -3,6 +3,7 @@ import { camelizeKeys } from 'humps';
 import { eventChannel, END } from 'redux-saga';
 import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
 
+import { nameByActionType } from 'helpers/actionType';
 import {
   fetchCurrentUser,
   startToGameDealer,
@@ -71,34 +72,37 @@ function* handleGameStartButtonClicked(action) {
   }
 }
 
-function sleepTimer(seconds) {
-  return eventChannel(emitter => {
-    const iv = setInterval(() => {
-      emitter(END);
-    }, 1000 * seconds);
-
-    return () => {
-      clearInterval(iv);
-    };
+function* openBoardCard(reachedRounds, boardCards, time) {
+  yield call(sleep, time * 1000);
+  yield put({
+    type: 'OPEN_BOARD_CARD_BY_ROUND',
+    reachedRounds,
+    boardCards,
   });
 }
 
-function* openBoardCard(reachedRounds, boardCards, time) {
-  try {
-    const channel = yield call(sleepTimer, time);
-    yield take(channel);
-  } finally {
-    yield put({
-      type: 'OPEN_BOARD_CARD_BY_ROUND',
-      reachedRounds,
-      boardCards,
-    });
-  }
-}
+const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
 function* handleBeforePlayerActionReceived(action) {
+  // プレイヤーのアクション名を表示
+  if (action.lastAction && nameByActionType[action.lastAction.action_type]) {
+    const playerSession = yield select(state => state.data.playerSession);
+
+    yield put({
+      type: 'OTHER_PLAYER_ACTION',
+      actionType: action.lastAction.action_type,
+      playerId: action.lastAction.player_id,
+    });
+
+    // 自分以外のアクションの場合は少し表示したままにする
+    if (action.lastAction.player_id !== playerSession.playerId) {
+      yield call(sleep, 500);
+    }
+  }
+
   // ALLIN時のボードオープン用
   if (action.justActioned && action.reachingRounds.length > 0) {
+    // 対決するプレイヤーのハンドをオープン
     yield put({ type: 'SHOW_ACTIVE_PLAYER_CARDS', players: action.players });
 
     let reachedRounds = {};
@@ -109,63 +113,27 @@ function* handleBeforePlayerActionReceived(action) {
       };
       yield call(openBoardCard, reachedRounds, action.boardCards, 0);
     }
+
+    // 一枚ずつカードをオープンしていくやつ
     yield all(
       action.reachingRounds.map((round, i) => {
-        reachedRounds = Object.assign({}, reachedRounds);
-        reachedRounds[round] = true;
+        reachedRounds = { ...reachedRounds, [round]: true };
         return call(openBoardCard, reachedRounds, action.boardCards, (i + 1) * 2);
       })
     );
-
-    try {
-      const channel = yield call(sleepTimer, 2);
-      yield take(channel);
-    } finally {
-      yield put(Object.assign({}, action, { type: 'PLAYER_ACTION_RECEIVED' }));
-      yield put({
-        type: 'SETUP_GAME_START_TIMER',
-        tableId: action.tableId,
-        seconds: 10,
-      });
-      return;
-    }
+    yield call(sleep, 2000); // オープンし終わったら少し余韻を残す
   }
 
-  if (action.lastAction && action.lastAction.action_type !== 'blind' && action.lastAction.action_type !== 'taken') {
-    yield put({
-      type: 'OTHER_PLAYER_ACTION',
-      actionType: action.lastAction.action_type,
-      playerId: action.lastAction.player_id,
-    });
+  // 全体情報をグローバルステートに反映してアクション名の表示終了
+  yield put({ ...action, type: 'PLAYER_ACTION_RECEIVED' });
 
-    try {
-      const channel = yield call(sleepTimer, 0.8);
-      yield take(channel);
-    } finally {
-      const object = Object.assign({}, action, {
-        type: 'PLAYER_ACTION_RECEIVED',
-      });
-      yield put(object);
-      if (action.gameHandState === 'finished') {
-        yield put({
-          type: 'SETUP_GAME_START_TIMER',
-          tableId: action.tableId,
-          seconds: 10,
-        });
-      }
-    }
-  } else {
-    const object = Object.assign({}, action, {
-      type: 'PLAYER_ACTION_RECEIVED',
+  // ゲーム終了なら次ゲームの自動開始タイマーをセット
+  if (action.gameHandState === 'finished') {
+    yield put({
+      type: 'SETUP_GAME_START_TIMER',
+      tableId: action.tableId,
+      seconds: 30,
     });
-    yield put(object);
-    if (action.gameHandState === 'finished') {
-      yield put({
-        type: 'SETUP_GAME_START_TIMER',
-        tableId: action.tableId,
-        seconds: 10,
-      });
-    }
   }
 }
 

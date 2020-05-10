@@ -14,6 +14,7 @@ import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 
+import { nameByActionType } from 'helpers/actionType';
 import useGameTableState from 'hooks/useGameTableState';
 import useDialogState from 'hooks/useDialogState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
@@ -21,21 +22,6 @@ import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
 import styles from './PlayerPanelStyles';
 
 const useStyles = makeStyles(styles);
-
-const readableActionType = actionType => {
-  switch (actionType) {
-    case 'bet':
-      return 'ベット';
-    case 'check':
-      return 'チェック';
-    case 'call':
-      return 'コール';
-    case 'fold':
-      return 'フォールド';
-    default:
-      return actionType;
-  }
-};
 
 const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRightSideStyle, player }) => {
   const dispatch = useDispatch();
@@ -83,6 +69,7 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
               */
           )}
         </Box>
+
         {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 'folded' && (
           <Box display="flex" justifyContent="center" className={classes.handContainer}>
             <PokerCard invisible={!showHand} size="small" />
@@ -99,7 +86,9 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
 
         <div className={classes.statusCard}>
           {!!player.actionType ? (
-            <div className={classes.actionType}>{readableActionType(player.actionType)}</div>
+            <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
+          ) : (player.stack - (player.betSize || 0)) === 0 ? (
+            <div className={classes.allin}>オールイン</div>
           ) : (
             <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
           )}

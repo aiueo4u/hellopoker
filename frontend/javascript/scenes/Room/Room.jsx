@@ -5,6 +5,7 @@ import { useRouteMatch } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 
 import Loading from 'components/Loading';
+import NetworkStatusDialog from 'components/NetworkStatusDialog';
 import TopInfobar from 'components/TopInfobar';
 import TopTitlebar from 'components/TopTitlebar';
 
@@ -16,7 +17,6 @@ import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 
 import GameTable from './components/GameTable';
-import NetworkStatusDialog from './components/NetworkStatusDialog';
 import useStyles from './RoomStyles';
 
 const gameStartable = gameHandState => {

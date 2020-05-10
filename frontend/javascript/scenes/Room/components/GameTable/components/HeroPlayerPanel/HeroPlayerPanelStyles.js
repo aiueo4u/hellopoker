@@ -1,6 +1,15 @@
 import { makeStyles } from '@material-ui/core/styles'
+import { red } from '@material-ui/core/colors';
 
 const styles = theme => ({
+  allin: {
+    color: red[400],
+    fontSize: '0.625rem',
+    fontWeight: theme.typography.fontWeightBold,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    padding: theme.spacing(1 / 4, 1 / 2),
+    borderRadius: '2px',
+  },
   nickname: {
     color: theme.palette.common.white,
     fontSize: '0.625rem',

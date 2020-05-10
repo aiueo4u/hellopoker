@@ -1,3 +1,5 @@
+import { red } from '@material-ui/core/colors';
+
 const styles = theme => ({
   activePanel: {},
   avatar: {
@@ -114,6 +116,14 @@ const styles = theme => ({
     padding: theme.spacing(1 / 4, 1 / 2),
     borderRadius: '2px',
   },
+  allin: {
+    color: red[400],
+    fontSize: '0.625rem',
+    fontWeight: theme.typography.fontWeightBold,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    padding: theme.spacing(1 / 4, 1 / 2),
+    borderRadius: '2px',
+  },
   stackSize: ({ player }) => ({
     display: 'inline',
     color: player && player.state === 'folded' ? theme.palette.grey['500'] : 'orange',
@@ -127,7 +137,8 @@ const styles = theme => ({
     flexDirection: 'column',
     height: '30px',
     maxWidth: '140px',
-    marginTop: theme.spacing(1 / 2),
+    marginTop: theme.spacing(1),
+    //border: `1px solid red`,
   },
   '@keyframes onPlayerTurnAvatarBlinkAnimation': {
     '50%': {

@@ -39,6 +39,7 @@ const HeroPlayerPanel = ({
   );
 
   const cards = gameTable.dealtCards[player.id];
+  const remainStack = player.betSize ? player.stack - player.betSize : player.stack;
 
   return (
     <>
@@ -54,7 +55,11 @@ const HeroPlayerPanel = ({
         {/* プレイヤーのスタックと残り時間 */}
         <div className={classes.statusCard} onClick={openDialog}>
           <div>
-            <div className={classes.stackSize}>{player.betSize ? player.stack - player.betSize : player.stack}</div>
+            {remainStack > 0 ? (
+              <div className={classes.stackSize}>{remainStack}</div>
+            ) : (
+              <div className={classes.allin}>オールイン</div>
+            )}
           </div>
           {isHeroTurn && remainTimePercentage > 0 && (
             <LinearProgress variant="determinate" value={remainTimePercentage} />
