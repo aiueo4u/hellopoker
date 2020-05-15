@@ -2,7 +2,7 @@ class NpcPlayer
   attr_reader :manager, :game_hand, :table_player
 
   def initialize(table_id, player_id)
-    @manager = GameManager.new(table_id, player_id, nil, nil)
+    @manager = GameManager.new(table_id, player_id)
     @game_hand = @manager.game_hand
     @table_player = @game_hand.table_player_by_player_id(player_id)
   end
@@ -12,7 +12,7 @@ class NpcPlayer
     amount = nil
 
     if manager.current_state == 'result'
-      type = lot(70) ? 'PLAYER_ACTION_SHOW_HAND' : 'PLAYER_ACTION_MUCK_HAND'
+      type = lot(80) ? 'PLAYER_ACTION_SHOW_HAND' : 'PLAYER_ACTION_MUCK_HAND'
     else
       # TODO
       current_round = manager.current_state
@@ -32,6 +32,7 @@ class NpcPlayer
       # 誰かがベットしていたら
       else
         weights = [
+          ['PLAYER_ACTION_BET_CHIPS', 20],
           ['PLAYER_ACTION_CALL', 60],
           ['PLAYER_ACTION_FOLD', 40],
         ]
@@ -39,11 +40,17 @@ class NpcPlayer
         case type
         when 'PLAYER_ACTION_CALL'
           amount = amount_to_call
+        when 'PLAYER_ACTION_BET_CHIPS'
+          amount = cals_raise(amount_to_call)
         end
       end
     end
 
     [type, amount]
+  end
+
+  def cals_raise(amount_to_call)
+    amount_to_call * 3
   end
 
   def calc_bet(amount_to_call)

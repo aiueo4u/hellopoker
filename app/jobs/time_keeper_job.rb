@@ -2,7 +2,7 @@ class TimeKeeperJob < ApplicationJob
   queue_as :default
 
   def perform(table_id, player_id, action_order_id)
-    return if Rails.env.development?
+    #return if Rails.env.development?
 
     Rails.logger.debug('time keeper job')
 
@@ -10,7 +10,7 @@ class TimeKeeperJob < ApplicationJob
 
     ActiveRecord::Base.uncached do
       action_order_id ||= 0
-      manager = GameManager.new(table_id, player_id, nil, nil)
+      manager = GameManager.new(table_id, player_id)
       game_hand = manager.game_hand
 
       waiting_time = 0
@@ -21,7 +21,7 @@ class TimeKeeperJob < ApplicationJob
         sleep 1
         waiting_time += 1
         if waiting_time % 5 == 0
-          gm = GameManager.new(table_id, player_id, nil, nil)
+          gm = GameManager.new(table_id, player_id)
           if !gm.game_hand.current_seat_no
             Rails.logger.debug('stale job: no current_seat_no')
             return
@@ -49,19 +49,15 @@ class TimeKeeperJob < ApplicationJob
         else
           type = 'PLAYER_ACTION_FOLD'
         end
-        manager = GameManager.new(table_id, player_id, type, nil)
+        manager = GameManager.new(table_id, player_id)
 
         if manager.game_hand.next_order_id == action_order_id + 1
-          manager.do_action
-          manager.broadcast
+          CreateGameActionCommand.run(
+            table_id: table_id,
+            current_player_id: player_id,
+            type: type,
+          )
 
-          if !manager.current_state.in?(['init', 'finished'])
-            table_player = manager.game_hand.table_player_by_seat_no(manager.game_hand.current_seat_no)
-            if table_player.auto_play?
-              NpcPlayerJob.perform_later(table_id, table_player.player_id)
-            end
-            TimeKeeperJob.perform_later(table_id, table_player.player_id, action_order_id + 1)
-          end
           Rails.logger.debug("Player #{player_id} #{type}")
         else
           Rails.logger.debug('stale job')

@@ -1,7 +1,7 @@
 class GameManager
   include GameBroadcaster
 
-  attr_reader :table_id, :table, :game_hand, :player_id, :amount, :type, :last_action_state
+  attr_reader :table_id, :table, :game_hand, :player_id, :just_actioned
 
   # 新規ゲームの開始
   def self.create_new_game(table_id, player)
@@ -11,101 +11,23 @@ class GameManager
 
     GameHand.create_new_game(table)
 
-    self.new(table_id, player.id, nil, 0)
+    self.new(table_id, player.id)
   end
 
+  # 最新のゲームを取得
   def self.current_game_hand(table_id)
     GameHand.where(table_id: table_id).order(:id).last
   end
 
-  def initialize(table_id, player_id, type, amount)
+  def initialize(table_id, player_id)
     @table_id = table_id
     @table = Table.find(table_id)
     @game_hand = GameHand.where(table_id: table_id).order(:id).last
     @player_id = player_id
-    @type = type
-    @amount = amount
   end
 
   def next_action_player_id?(target_player_id)
     game_hand.player_id_by_seat_no(game_hand.current_seat_no) == target_player_id
-  end
-
-  def do_action
-    @last_action_state = current_state
-
-    table_player = game_hand.table_player_by_player_id(player_id)
-
-    # タイムアウト処理
-    if game_hand.next_action_timeout?
-      Rails.logger.info("Player #{player_id} time out.")
-      @next_action_timeout = true
-
-      if self.type == 'PLAYER_ACTION_SHOW_HAND'
-        @type = 'PLAYER_ACTION_MUCK_HAND'
-      elsif game_hand.checkable_by?(table_player)
-        @type = 'PLAYER_ACTION_CHECK'
-      else
-        @type = 'PLAYER_ACTION_FOLD'
-      end
-    end
-
-    case self.type
-    when 'PLAYER_ACTION_SHOW_HAND'
-      game_hand.build_show_action(player_id, last_action_state)
-    when 'PLAYER_ACTION_MUCK_HAND'
-      game_hand.build_muck_action(player_id, last_action_state)
-    when 'PLAYER_ACTION_CHECK'
-      check_your_turn!(table_player) # 自分のターンかチェック
-      if game_hand.checkable_by?(table_player)
-        game_hand.build_check_action(player_id, last_action_state)
-      else
-        Rails.logger.debug('cannot check; proceeding to action fold...')
-        game_hand.build_fold_action(self.player_id, last_action_state)
-      end
-    when 'PLAYER_ACTION_BET_CHIPS' # NOTE: Raiseも含んでいる
-      check_your_turn!(table_player) # 自分のターンかチェック
-      check_your_amount!(table_player, amount) # 残高チェック
-      check_bet_amount!(table_player, amount) # コール額以上になっているかチェック
-
-      # プレイヤーのスタックからポットへとチップを移す
-      current_game_hand_player = game_hand.game_hand_player_by_id(player_id)
-      current_game_hand_player.add_stack!(-1 * amount)
-
-      # アクション生成
-      game_hand.build_bet_action(player_id, amount, last_action_state)
-    when 'PLAYER_ACTION_CALL'
-      check_your_turn!(table_player) # 自分のターンかチェック
-
-      # 本フェーズでの最高ベット額を取得
-      amount_to_call = game_hand.amount_to_call_by_player_id(player_id)
-
-      check_your_amount!(table_player, amount_to_call) # 残高チェック
-
-      current_game_hand_player = game_hand.game_hand_player_by_id(player_id)
-      current_game_hand_player.add_stack!(-1 * amount_to_call)
-
-      # アクション生成
-      game_hand.build_call_action(player_id, amount_to_call, last_action_state)
-      @amount = amount_to_call
-    when 'PLAYER_ACTION_FOLD'
-      check_your_turn!(table_player) # 自分のターンかチェック
-
-      game_hand.build_fold_action(self.player_id, last_action_state)
-    else
-      Rails.logger.warn("Unknown type: '#{type}'")
-    end
-
-    # カード配布モードで、アクションの後に結果ラウンドになった場合の処理
-    if player_hand_fixed?
-      while current_state == 'result' # TODO: 無限ループ防止策入れようかな。。
-        winning_player_ids = calc_winning_player_ids
-        game_hand.create_taken_actions(winning_player_ids, current_state)
-      end
-      @broadcast_result = true # TODO: refactor
-    end
-
-    game_hand.save!
   end
 
   def calc_winning_player_ids
@@ -161,7 +83,8 @@ class GameManager
     best_player_ids.to_a
   end
 
-  def player_hand_fixed?
+  # ゲームが終了しているかどうか
+  def hand_finished?
     # 結果ラウンドであることを確認
     return false unless current_state == 'result'
 
@@ -246,13 +169,5 @@ class GameManager
 
   def check_your_turn!(table_player)
     raise "This is not your turn" unless table_player.seat_no == game_hand.current_seat_no
-  end
-
-  def check_your_amount!(table_player, amount)
-    raise "not enough stack to bet #{amount}" if table_player.stack < amount
-  end
-
-  def check_bet_amount!(table_player, amount)
-    raise "not enough stack to bet #{amount}" if game_hand.amount_to_call_by_player_id(player_id) >= amount
   end
 end

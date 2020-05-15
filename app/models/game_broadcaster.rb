@@ -1,5 +1,11 @@
 # TODO: GameManagerからincludeされる前提
 module GameBroadcaster
+  def broadcast
+    broadcast_game_state
+  end
+
+  private
+
   def broadcast_game_state
     game_hand_players_by_player_id = game_hand&.game_hand_players&.index_by(&:player_id) || {}
     table_players = game_hand&.table_players || TablePlayer.where(table_id: table_id).to_a
@@ -76,49 +82,6 @@ module GameBroadcaster
     game_hand_count = GameHand.where(table_id: table_id).count
     table = Table.find(table_id)
 
-    board_cards = []
-    if game_hand
-      case current_state
-      when 'flop'
-        board_cards = [
-          game_hand.board_card1_id,
-          game_hand.board_card2_id,
-          game_hand.board_card3_id,
-        ]
-      when 'turn'
-        board_cards = [
-          game_hand.board_card1_id,
-          game_hand.board_card2_id,
-          game_hand.board_card3_id,
-          game_hand.board_card4_id,
-        ]
-      when 'river'
-        board_cards = [
-          game_hand.board_card1_id,
-          game_hand.board_card2_id,
-          game_hand.board_card3_id,
-          game_hand.board_card4_id,
-          game_hand.board_card5_id,
-        ]
-      when 'result'
-        board_cards = [
-          game_hand.board_card1_id,
-          game_hand.board_card2_id,
-          game_hand.board_card3_id,
-          game_hand.board_card4_id,
-          game_hand.board_card5_id,
-        ]
-      when 'finished'
-        board_cards = [
-          game_hand.board_card1_id,
-          game_hand.board_card2_id,
-          game_hand.board_card3_id,
-          game_hand.board_card4_id,
-          game_hand.board_card5_id,
-        ]
-      end
-    end
-
     reached_rounds = {}
     reaching_rounds = []
     if game_hand
@@ -161,12 +124,12 @@ module GameBroadcaster
       last_aggressive_seat_no: last_aggressive_seat_no,
       undoable: GameHand.where(table_id: table_id).exists?,
       game_hand_count: game_hand_count,
-      board_cards: board_cards,
+      board_cards: build_board_cards(game_hand, current_state),
       show_or_muck: current_state == 'result' && !game_hand&.no_more_action?,
       reached_rounds: reached_rounds,
       reaching_rounds: reaching_rounds,
       last_action: last_action,
-      just_actioned: type.present?,
+      just_actioned: just_actioned,
       table_id: table_id,
     }
     ActionCable.server.broadcast "chip_channel_#{table_id}", data
@@ -186,37 +149,36 @@ module GameBroadcaster
     end
   end
 
-  # カード配布モードの結果発表モーダル表示
-  def broadcast_game_result_with_cards
-    dumped_result_actions = game_hand.dump_result_actions
+  def build_board_cards(game_hand, current_state)
+    return [] unless game_hand
 
-    players_data = dumped_result_actions.map do |player_id, action|
-      table_player = game_hand.table_player_by_player_id(player_id)
-      {
-        id: table_player.player.id,
-        nickname: table_player.player.nickname,
-        image_url: table_player.player.profile_image_url,
-        seat_no: table_player.seat_no,
-        position: game_hand.position_by_seat_no(table_player.seat_no),
-        stack_before: table_player.stack - action['amount_diff'],
-        stack_after: table_player.stack,
-        amount_diff: action['amount_diff'],
-      }
+    if current_state == 'flop'
+      return [
+        game_hand.board_card1_id,
+        game_hand.board_card2_id,
+        game_hand.board_card3_id,
+      ]
     end
 
-    data = {
-      type: 'show_result_dialog',
-      players: players_data,
-    }
-    ActionCable.server.broadcast "chip_channel_#{game_hand.table_id}", data
-  end
-
-  def broadcast
-    broadcast_game_state
-
-    # リバー終了時
-    if @broadcast_result
-      broadcast_game_result_with_cards
+    if current_state == 'turn'
+      return [
+        game_hand.board_card1_id,
+        game_hand.board_card2_id,
+        game_hand.board_card3_id,
+        game_hand.board_card4_id,
+      ]
     end
+
+    if current_state.in?(%w(river result finished))
+      return [
+        game_hand.board_card1_id,
+        game_hand.board_card2_id,
+        game_hand.board_card3_id,
+        game_hand.board_card4_id,
+        game_hand.board_card5_id,
+      ]
+    end
+
+    []
   end
 end

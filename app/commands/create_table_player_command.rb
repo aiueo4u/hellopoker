@@ -19,8 +19,8 @@ class CreateTablePlayerCommand
     end
 
     if success?
-      manager = GameManager.new(table.id, current_player.id, nil, nil)
-      manager.broadcast_game_state
+      manager = GameManager.new(table.id, current_player.id)
+      manager.broadcast
     end
   end
 

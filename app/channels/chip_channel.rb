@@ -6,7 +6,7 @@ class ChipChannel < ApplicationCable::Channel
 
     # 接続が完了したら現在のゲーム情報を取得する
     # （他のプレイヤーにも送信してしまうがしょうがないか。。）
-    manager = GameManager.new(table_id, nil, nil, nil)
+    manager = GameManager.new(table_id, nil)
     manager.broadcast
   end
 
