@@ -10,7 +10,7 @@ class TimeKeeperJob < ApplicationJob
 
     ActiveRecord::Base.uncached do
       action_order_id ||= 0
-      manager = GameManager.new(table_id, player_id)
+      manager = GameManager.new(table_id)
       game_hand = manager.game_hand
 
       waiting_time = 0
@@ -21,7 +21,7 @@ class TimeKeeperJob < ApplicationJob
         sleep 1
         waiting_time += 1
         if waiting_time % 5 == 0
-          gm = GameManager.new(table_id, player_id)
+          gm = GameManager.new(table_id)
           if !gm.game_hand.current_seat_no
             Rails.logger.debug('stale job: no current_seat_no')
             return
@@ -49,7 +49,7 @@ class TimeKeeperJob < ApplicationJob
         else
           type = 'PLAYER_ACTION_FOLD'
         end
-        manager = GameManager.new(table_id, player_id)
+        manager = GameManager.new(table_id)
 
         if manager.game_hand.next_order_id == action_order_id + 1
           CreateGameActionCommand.run(

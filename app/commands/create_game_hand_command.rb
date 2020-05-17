@@ -32,7 +32,7 @@ class CreateGameHandCommand
   private
 
   def validate_table
-    manager = GameManager.new(table.id, current_player.id)
+    manager = GameManager.new(table.id)
 
     errors.add(:table, :invalid) if table.table_players.count { |tp| tp.stack > 0 } < 2
     # 前回のゲームが終了状態になっているかチェック

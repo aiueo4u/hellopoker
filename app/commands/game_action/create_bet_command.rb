@@ -42,7 +42,7 @@ class GameAction::CreateBetCommand
     # 指定ベット額はコール額を超えているか（同じならコールになり、ベットできない）
     errors.add(:game_hand, :invalid) if calculate_amount_to_call >= amount
     # 指定ベット額を持っているか
-    errors.add(:game_hand, :invalid) if table_player.stack <= amount
+    errors.add(:game_hand, :invalid) if table_player.stack < amount
     # TODO: flop〜riverか
   end
 end

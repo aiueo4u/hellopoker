@@ -2,7 +2,7 @@ class NpcPlayer
   attr_reader :manager, :game_hand, :table_player
 
   def initialize(table_id, player_id)
-    @manager = GameManager.new(table_id, player_id)
+    @manager = GameManager.new(table_id)
     @game_hand = @manager.game_hand
     @table_player = @game_hand.table_player_by_player_id(player_id)
   end
@@ -22,14 +22,14 @@ class NpcPlayer
       amount_to_call = game_hand.amount_to_call_by_player_id(table_player.player_id)
 
       # 誰もベットしていない場合
-      if current_round_actions.none?(&:bet?)
+      if current_round_actions.none? { |action| action.bet? || action.blind? }
         # オリジナルがいないorオリジナルならば、50%の確率でベット
         if (!last_aggressive_player_id || last_aggressor?) && lot(50)
           type = 'PLAYER_ACTION_BET_CHIPS'
           amount = calc_bet(amount_to_call) # 1/2 pot bet
           # amount = [table_player.stack / 2, game_hand.pot_amount].max # TODO: 強制AI
         end
-      # 誰かがベットしていたら
+      # 誰かがベットしていたら（ブラインド含む）
       else
         weights = [
           ['PLAYER_ACTION_BET_CHIPS', 20],

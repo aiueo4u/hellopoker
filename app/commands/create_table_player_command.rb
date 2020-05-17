@@ -19,7 +19,7 @@ class CreateTablePlayerCommand
     end
 
     if success?
-      manager = GameManager.new(table.id, current_player.id)
+      manager = GameManager.new(table.id)
       manager.broadcast
     end
   end

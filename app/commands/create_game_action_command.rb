@@ -1,7 +1,7 @@
 class CreateGameActionCommand
   include Command
 
-  attr_reader :table, :current_player, :type, :amount, :manager, :just_actioned
+  attr_reader :table, :current_player, :type, :amount, :manager
 
   validate :validate_table
 
@@ -14,7 +14,7 @@ class CreateGameActionCommand
 
   def run
     table.with_lock do
-      @manager = GameManager.new(table.id, current_player.id)
+      @manager = GameManager.new(table.id)
       raise ActiveRecord::Rollback if invalid?
 
       # アクション実行
@@ -93,7 +93,7 @@ class CreateGameActionCommand
     end
 
     if command.success?
-      @just_actioned = true
+      manager.just_actioned!
     else
       errors.add(:table, :invalid)
       raise ActiveRecord::Rollback

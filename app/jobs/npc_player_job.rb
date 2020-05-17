@@ -6,6 +6,8 @@ class NpcPlayerJob < ApplicationJob
 
     type, amount = NpcPlayer.new(table_id, player_id).output
 
+    Rails.logger.debug("[NPC Action] #{type}: #{amount}")
+
     CreateGameActionCommand.run(
       table_id: table_id,
       current_player_id: player_id,
