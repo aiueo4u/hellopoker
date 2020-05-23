@@ -296,6 +296,33 @@ function createPC(userId, isOffer) {
     pc.addTrack(track, localstream);
   }
 
+  pc.onicecandidate = event => {
+    event.candidate &&
+      broadcastData({
+        type: 'EXCHANGE',
+        from: playerId,
+        to: userId,
+        candidate: JSON.stringify(event.candidate),
+      });
+  };
+
+  pc.ontrack = event => {
+    const element = document.getElementById(`video-player-${userId}`);
+    element.autoplay = 'autoplay';
+    element.srcObject = event.streams[0];
+    remoteStreams[userId] = event.streams[0];
+  };
+
+  pc.oniceconnectionstatechange = event => {
+    if (pc.iceConnectionState === 'disconnected') {
+      console.log('Disconnected: ', userId);
+      broadcastData({
+        type: 'REMOVE_USER',
+        from: userId,
+      });
+    }
+  };
+
   isOffer &&
     pc
       .createOffer()
@@ -311,35 +338,6 @@ function createPC(userId, isOffer) {
         });
       })
       .catch(logError);
-
-  pc.onicecandidate = event => {
-    event.candidate &&
-      broadcastData({
-        type: 'EXCHANGE',
-        from: playerId,
-        to: userId,
-        candidate: JSON.stringify(event.candidate),
-      });
-  };
-
-  pc.ontrack = event => {
-    if (event.track.kind === 'video') {
-      const element = document.getElementById(`video-player-${userId}`);
-      element.autoplay = 'autoplay';
-      element.srcObject = event.streams[0];
-      remoteStreams[userId] = event.streams[0];
-    }
-  };
-
-  pc.oniceconnectionstatechange = event => {
-    if (pc.iceConnectionState === 'disconnected') {
-      console.log('Disconnected: ', userId);
-      broadcastData({
-        type: 'REMOVE_USER',
-        from: userId,
-      });
-    }
-  };
 
   return pc;
 }
