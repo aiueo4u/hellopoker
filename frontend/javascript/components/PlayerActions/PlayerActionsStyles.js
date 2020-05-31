@@ -1,8 +1,8 @@
 const styles = theme => ({
   button: {
-    position: 'absolute',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
+    //position: 'absolute',
+    //top: '50%',
+    //transform: 'translate(-50%, -50%)',
     textTransform: 'none',
     height: '64px',
     width: '64px',
@@ -13,6 +13,12 @@ const styles = theme => ({
       color: theme.palette.common.black,
     },
   },
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center', 
+  },
+  /*
   leftButton: {
     [theme.breakpoints.only('xs')]: {
       left: 'calc(50% - 112px)',
@@ -29,6 +35,7 @@ const styles = theme => ({
       left: 'calc(50% + 135px)',
     },
   },
+  */
 });
 
 export default styles;

@@ -6,7 +6,6 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import EmptySeat from 'components/EmptySeat';
 
-import PlayerActions from 'components/PlayerActions';
 import PlayerAvatar from 'components/PlayerAvatar';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
@@ -38,28 +37,15 @@ const HeroPlayerPanel = ({
   );
 
   const cards = gameTable.dealtCards[player.id];
-  const remainStack = player.betSize ? player.stack - player.betSize : player.stack;
 
   return (
     <>
       <div className={classes.container}>
-        {/* ニックネーム */}
-        <div className={classes.nickname}>{player.nickname}</div>
-
         {/* プレイヤーのアバターorビデオ */}
-        <Box mt={1 / 2}>
-          <PlayerAvatar player={player} isTurn={isHeroTurn} />
-        </Box>
+        <PlayerAvatar player={player} isTurn={isHeroTurn} />
 
         {/* プレイヤーのスタックと残り時間 */}
         <div className={classes.statusCard} onClick={openDialog}>
-          <div>
-            {remainStack > 0 ? (
-              <div className={classes.stackSize}>{remainStack}</div>
-            ) : (
-              <div className={classes.allin}>オールイン</div>
-            )}
-          </div>
           {isHeroTurn && remainTimePercentage > 0 && (
             <LinearProgress variant="determinate" value={remainTimePercentage} />
           )}
@@ -76,9 +62,6 @@ const HeroPlayerPanel = ({
             </div>
           </>
         )}
-
-        {/* プレイヤーのアクションボタン */}
-        <PlayerActions tableId={tableId} player={player} />
       </div>
 
       <PlayerMenuDialog isOpen={isOpen} onClose={closeDialog} player={player} tableId={tableId} />

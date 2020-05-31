@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 
+import { nameByActionType } from 'helpers/actionType';
 import useStyles from './WebRTCTestStyles';
 
 function WebRTCTest({ player, isTurn }) {
@@ -26,10 +27,22 @@ function WebRTCTest({ player, isTurn }) {
 
   if (!player) return null;
 
+  const remainStack = player.betSize ? player.stack - player.betSize : player.stack;
+
   return (
     <div className={classNames(classes.container, { [classes.isTurn]: isTurn })} onClick={onClick}>
       <div className={classes.videoContainer}>
         <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video}></video>
+        <span className={classes.nickname}>{player.nickname}</span>
+        <span className={classes.status}>
+          {!!player.actionType ? (
+            <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
+          ) : (player.stack - (player.betSize || 0)) === 0 ? (
+            <div className={classes.allin}>オールイン</div>
+          ) : (
+            <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
+          )}
+        </span>
       </div>
     </div>
   );

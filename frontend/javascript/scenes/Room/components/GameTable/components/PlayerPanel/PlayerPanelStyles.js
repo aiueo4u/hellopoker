@@ -12,7 +12,6 @@ const styles = theme => ({
     const base = {
       position: 'absolute',
       borderRadius: theme.spacing(1 / 4),
-      fontSize: theme.typography.caption.fontSize,
       color: theme.palette.common.white,
       padding: theme.spacing(1 / 4, 1 / 2),
     };
@@ -29,14 +28,14 @@ const styles = theme => ({
         return {
           ...base,
           top: '55%',
-          left: '-12px',
+          left: '-32px',
           transform: 'translate(-100%, 0%)',
         };
       case 'left':
         return {
           ...base,
           top: '55%',
-          right: '-12px',
+          right: '-32px',
           transform: 'translate(100%, 0%)',
         };
       default:
@@ -60,14 +59,14 @@ const styles = theme => ({
         return {
           ...base,
           top: '50%',
-          right: '-5px',
+          right: '-20px',
           transform: 'translate(100%, -100%)',
         };
       case 'right':
         return {
           ...base,
           top: '50%',
-          left: '-5px',
+          left: '-20px',
           transform: 'translate(-100%, -100%)',
         };
       default:
@@ -87,8 +86,8 @@ const styles = theme => ({
   },
   handContainer: {
     position: 'absolute',
-    top: '55px',
-    left: '50%',
+    bottom: '8px',
+    left: '100%',
     transform: 'translate(-50%, 0%)',
   },
   panelContainer: ({ player }) => ({
@@ -109,16 +108,8 @@ const styles = theme => ({
   result: ({ player }) => ({
     color: player.amount_diff > 0 ? 'orange' : 'white',
   }),
-  actionType: {
-    color: theme.palette.common.white,
-    fontSize: '0.625rem',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    padding: theme.spacing(1 / 4, 1 / 2),
-    borderRadius: '2px',
-  },
   allin: {
     color: red[400],
-    fontSize: '0.625rem',
     fontWeight: theme.typography.fontWeightBold,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: theme.spacing(1 / 4, 1 / 2),
@@ -127,19 +118,10 @@ const styles = theme => ({
   stackSize: ({ player }) => ({
     display: 'inline',
     color: player && player.state === 'folded' ? theme.palette.grey['500'] : 'orange',
-    fontSize: theme.typography.caption.fontSize,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: theme.spacing(1 / 4, 1 / 2),
     borderRadius: '2px',
   }),
-  statusCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '30px',
-    maxWidth: '140px',
-    marginTop: theme.spacing(1),
-    //border: `1px solid red`,
-  },
   '@keyframes onPlayerTurnAvatarBlinkAnimation': {
     '50%': {
       boxShadow: '0 3px 15px 1px yellow',

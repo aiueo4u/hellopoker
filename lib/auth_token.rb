@@ -7,6 +7,6 @@ class AuthToken
   end
 
   def self.decode(token)
-    JWT.decode(token, nil, 'none')[0]
+    JWT.decode(token, nil, false)[0]
   end
 end

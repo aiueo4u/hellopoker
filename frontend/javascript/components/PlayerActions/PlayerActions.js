@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/core/styles'
@@ -48,17 +47,18 @@ const PlayerActions = ({ player, tableId }) => {
   // Muck or Show
   if (gameTable.showOrMuck) {
     return (
-      <>
+      <div className={classes.container}>
         <Button className={classNames([classes.button, classes.leftButton])} variant="contained" onClick={muckAction}>Muck</Button>
         <Button className={classNames([classes.button, classes.rightButton])} variant="contained" onClick={showAction}>Show</Button>
-      </>
+      </div>
     );
   }
 
   // Reset or Bet
   if (player.betSize > 0) {
     return (
-      <>
+      <div className={classes.container}>
+        <ChipAmountControlContainer />}
         <Button className={classNames([classes.button, classes.leftButton])} variant="contained" onClick={resetBetSize}>
           Reset
         </Button>
@@ -71,14 +71,14 @@ const PlayerActions = ({ player, tableId }) => {
         >
           Bet
         </Button>
-        <ChipAmountControlContainer />}
-      </>
+      </div>
     );
   }
 
   // Fold or Check or Call
   return (
-    <>
+    <div className={classes.container}>
+      <ChipAmountControlContainer />
       <Button
         className={classNames([classes.button, classes.leftButton])}
         variant="contained"
@@ -105,8 +105,7 @@ const PlayerActions = ({ player, tableId }) => {
           Call
         </Button>
       )}
-      <ChipAmountControlContainer />}
-    </>
+    </div>
   );
 };
 

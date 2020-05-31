@@ -20,23 +20,17 @@ const ChipAmountControlContainer = () => {
   const increment = useChipAmountControlContainer(player);
 
   return (
-    <div className={classes.container}>
-      <div>
-        <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(25)}>
-          25
-        </Button>
-      </div>
-      <div>
-        <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(100)}>
-          100
-        </Button>
-      </div>
-      <div>
-        <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(500)}>
-          500
-        </Button>
-      </div>
-    </div>
+    <>
+      <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(25)}>
+        25
+      </Button>
+      <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(100)}>
+        100
+      </Button>
+      <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(500)}>
+        500
+      </Button>
+    </>
   );
 };
 

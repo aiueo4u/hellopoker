@@ -4,6 +4,7 @@ import { useRouteMatch } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
 
+import PlayerActions from 'components/PlayerActions';
 import Loading from 'components/Loading';
 import NetworkStatusDialog from 'components/NetworkStatusDialog';
 import TopInfobar from 'components/TopInfobar';
@@ -51,7 +52,12 @@ const Room = () => {
         {/* 画面右上部の情報バー */
         isShowInformationBar && <TopInfobar handCount={gameTable.gameHandCount} round={gameTable.round} />}
 
-        <GameTable gameTable={gameTable} players={players} playerSession={playerSession} tableId={tableId} />
+        <Box className={classes.table}>
+          <GameTable gameTable={gameTable} players={players} playerSession={playerSession} tableId={tableId} />
+        </Box>
+        <Box className={classes.action}>
+          <PlayerActions tableId={tableId} player={currentPlayer} />
+        </Box>
       </div>
     </div>
   );

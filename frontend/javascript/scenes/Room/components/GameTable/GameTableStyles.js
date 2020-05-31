@@ -17,15 +17,15 @@ const styles = theme => ({
     position: 'relative',
     width: '100%',
     height: '100%',
-    maxWidth: '640px',
+    maxWidth: '1280px',
     margin: 'auto',
-    backgroundImage: `url(${Image})`,
-    backgroundSize: 'cover',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    backgroundBlendMode: 'darken',
-    //backgroundColor: green['700'],
-    //backgroundColor: theme.palette.grey['900'],
+    //backgroundImage: `url(${Image})`,
+    //backgroundSize: 'cover',
+    //backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    //backgroundBlendMode: 'darken',
+    //backgroundColor: 'rgba(0, 150, 0, 1.0)',
     borderRadius: '0%',
+    //border: `1px solid blue`,
   },
   playerChipBetArea: {
     position: 'absolute',
@@ -37,9 +37,9 @@ const styles = theme => ({
   playerContainer: ({ position }) => {
     const base = {
       position: 'absolute',
-      height: '25%',
+      height: '30%',
       width: '25%',
-      //border: `1px solid green`, // TODO
+      //border: `2px solid red`, // TODO
     };
 
     switch (position) {
@@ -51,7 +51,7 @@ const styles = theme => ({
           transform: 'translate(-50%, 0)',
         };
       case 1: // bottom left
-        return { ...base, top: '45%' };
+        return { ...base, top: '50%' };
       case 2: // top left
         return { ...base, top: '20%' };
       case 3: // top
@@ -64,7 +64,7 @@ const styles = theme => ({
       case 4: // top right
         return { ...base, top: '20%', right: 0 };
       case 5: // bottom right
-        return { ...base, top: '45%', right: 0 };
+        return { ...base, top: '50%', right: 0 };
       default:
         return base;
     }

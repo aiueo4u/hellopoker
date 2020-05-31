@@ -14,7 +14,6 @@ import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 
-import { nameByActionType } from 'helpers/actionType';
 import useGameTableState from 'hooks/useGameTableState';
 import useDialogState from 'hooks/useDialogState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
@@ -48,25 +47,13 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
   return (
     <>
       <Box className={classes.panelContainer} onClick={openDialog}>
-        <div className={classes.nickname}>{player.nickname}</div>
-        <Box mt={1 / 2} position="relative" height="60px">
-          <Box display="inline-block">
-            <PlayerAvatar player={player} isTurn={isPlayerTurn} />
-          </Box>
+        <PlayerAvatar player={player} isTurn={isPlayerTurn} />
+        <Box>
           {isPlayerTurn && !!remainTimePercentage && (
             <LinearProgress
               variant="determinate"
               value={remainTimePercentage}
             />
-            /*
-            <CircularProgress
-              className={classes.progress}
-              variant="static"
-              value={remainTimePercentage}
-              thickness={2.4}
-              size={80}
-            />
-              */
           )}
         </Box>
 
@@ -83,16 +70,6 @@ const PlayerPanel = ({ tableId, leftSideStyle, rightSideStyle, position, topRigh
             <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
           </Box>
         )}
-
-        <div className={classes.statusCard}>
-          {!!player.actionType ? (
-            <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
-          ) : (player.stack - (player.betSize || 0)) === 0 ? (
-            <div className={classes.allin}>オールイン</div>
-          ) : (
-            <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
-          )}
-        </div>
 
         {player.seat_no === gameTable.buttonSeatNo && (
           <div className={classes.dealerButton}>

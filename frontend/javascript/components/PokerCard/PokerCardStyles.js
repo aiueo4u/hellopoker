@@ -6,14 +6,18 @@ const styles = theme => ({
     const base = {
       position: 'relative',
       display: 'inline-block',
-      width: size === 'small' ? '12px' : size === 'medium' ? '24px' : '36px',
-      height: size === 'small' ? '17px' : size === 'medium' ? '34px' : '51px',
+      width: size === 'small' ? '24px' : size === 'medium' ? '48px' : '72px',
+      height: size === 'small' ? '34px' : size === 'medium' ? '68px' : '102px',
       backgroundColor: theme.palette.common.white,
       borderRadius: size === 'small' ? '2px' : size === 'medium' ? '2px' : '4px',
       boxShadow: `0 1px 1px rgba(0, 0, 0, 0.15)`,
       cursor: 'default',
       willChange: 'transform',
       border: `1px solid ${theme.palette.grey['700']}`,
+      [theme.breakpoints.only('xs')]: {
+        width: size === 'small' ? '12px' : size === 'medium' ? '24px' : '36px',
+        height: size === 'small' ? '17px' : size === 'medium' ? '34px' : '51px',
+      },
     };
     return base;
   },
@@ -37,10 +41,14 @@ const styles = theme => ({
   },
   faceSuit: ({ size }) => ({
     position: 'absolute',
-    top: size === 'medium' ? '70%' : '60%',
+    top: size === 'medium' ? '60%' : '60%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    fontSize: size === 'small' ? '0.75rem' : size === 'medium' ? '0.875rem' : '1.5rem',
+    fontSize: size === 'small' ? '2rem' : size === 'medium' ? '2.5rem' : '3rem',
+    [theme.breakpoints.only('xs')]: {
+      top: size === 'medium' ? '70%' : '60%',
+      fontSize: size === 'small' ? '0.75rem' : size === 'medium' ? '0.875rem' : '1.5rem',
+    },
   }),
   rank: ({ rank, size }) => {
     if (!rank) return null;
@@ -65,14 +73,19 @@ const styles = theme => ({
     return {
       '&:before': {
         position: 'absolute',
-        fontSize: size === 'small' ? '0.675rem' : size === 'medium' ? '0.75rem' : '0.875rem',
+        fontSize: size === 'small' ? '1.5rem' : size === 'medium' ? '1.25rem' : '1.5rem',
         textAlign: 'center',
         lineHeight: size === 'small' ? '0.675rem' : '0.875rem',
         whiteSpace: 'pre-line',
         letterSpacing: '-0.1rem',
-        top: size === 'small' ? '2px' : size === 'medium' ? '2px' : '4px',
-        left: size === 'small' ? '2px' : size === 'medium' ? '2px' : '4px',
+        top: size === 'small' ? '4px' : size === 'medium' ? '8px' : '8px',
+        left: size === 'small' ? '4px' : size === 'medium' ? '4px' : '8px',
         content: `"${content}"`,
+        [theme.breakpoints.only('xs')]: {
+          top: '2px',
+          left: '2px',
+          fontSize: '1rem',
+        },
       },
     };
   },
