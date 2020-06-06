@@ -26,3 +26,5 @@ config/secrets.yml.key
 
 *.sw[pon]
 *~
+
+.DS_Store
