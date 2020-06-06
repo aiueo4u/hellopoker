@@ -19,6 +19,7 @@ ApiClient.interceptors.response.use(response => {
   return response;
 });
 
+export const fetchTableMessages = tableId => ApiClient.get(`/tables/${tableId}/table_messages`);
 export const postTest = data => {
   const body = new FormData();
   Object.keys(data).map(key => body.append(key, data[key]));
@@ -66,6 +67,14 @@ export const createTable = form => {
   body.append('table[sb_size]', sb);
   body.append('table[bb_size]', bb);
   return ApiClient.post(`/tables`, body);
+};
+
+export const createTableMessage = (tableId, form) => {
+  const { content } = form;
+
+  const body = new FormData();
+  body.append('content', content);
+  return ApiClient.post(`/tables/${tableId}/table_messages`, body);
 };
 
 export const debugLogin = ({ name }) => {

@@ -23,7 +23,11 @@ const TopInfobar = ({ handCount, round }) => {
 
 TopInfobar.propTypes = {
   handCount: PropTypes.number.isRequired,
-  round: PropTypes.string.isRequired,
+  round: PropTypes.string,
+};
+
+TopInfobar.defaultProps = {
+  round: '',
 };
 
 export default TopInfobar;

@@ -1,6 +1,7 @@
 class Table < ApplicationRecord
   has_many :table_players
   has_many :players, through: :table_players
+  has_many :table_messages
 
   validates :name, presence: true
   validates :sb_size, numericality: { greater_than: 0 }

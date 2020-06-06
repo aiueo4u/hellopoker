@@ -11,6 +11,9 @@ const styles = theme => ({
     //backgroundImage: `url(${BackgroundImage})`,
     backgroundColor: green[200],
   },
+  chatCard: {
+    width: '40%',
+  },
   container: {
     position: 'relative',
     height: 'calc(var(--vh, 1vh) * 100)',

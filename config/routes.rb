@@ -10,7 +10,10 @@ Rails.application.routes.draw do
     resources :tests, only: %i(create)
     resource :session, only: %i(create destroy)
     resources :players
-    resources :tables
+    resources :tables do
+      resources :table_messages, only: %i(index create)
+    end
+
     resource :game_dealer, only: %i(create) do
       post :start, on: :collection
       post :take_seat, on: :collection

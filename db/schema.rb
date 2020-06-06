@@ -71,6 +71,14 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "table_messages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC" do |t|
+    t.integer "table_id", null: false, unsigned: true
+    t.integer "player_id", null: false, unsigned: true
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.index ["table_id"], name: "i1"
+  end
+
   create_table "table_players", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC" do |t|
     t.integer "table_id", null: false, unsigned: true
     t.integer "player_id", null: false, unsigned: true

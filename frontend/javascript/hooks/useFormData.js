@@ -7,7 +7,7 @@ const useFormData = (form = {}) => {
     setFormData(formData => ({ ...formData, [name]: value }));
   };
 
-  return [formData, onChangeFormData];
+  return [formData, onChangeFormData, setFormData];
 };
 
 export default useFormData;

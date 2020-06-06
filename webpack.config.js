@@ -170,6 +170,7 @@ module.exports = (env, argv) => {
         writeToDisk: true,
         publicPath: '/webpacks/',
       }),
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ja/),
     ],
   };
 

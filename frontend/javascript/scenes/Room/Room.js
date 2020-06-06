@@ -6,6 +6,7 @@ import Box from '@material-ui/core/Box';
 import PlayerActions from 'components/PlayerActions';
 import Loading from 'components/Loading';
 import NetworkStatusDialog from 'components/NetworkStatusDialog';
+import TableMessageDrawer from 'components/TableMessageDrawer';
 import TopInfobar from 'components/TopInfobar';
 import TopTitlebar from 'components/TopTitlebar';
 
@@ -65,9 +66,10 @@ const Room = () => {
           <PlayerSeat position={5} player={sortedPlayers[5]} tableId={tableId} />
         </Box>
         <Box className={classes.action}>
-          <PlayerActions tableId={tableId} player={currentPlayer} />
+          {currentPlayer && <PlayerActions tableId={tableId} player={currentPlayer} />}
         </Box>
       </div>
+      <TableMessageDrawer tableId={tableId} />
     </div>
   );
 };
