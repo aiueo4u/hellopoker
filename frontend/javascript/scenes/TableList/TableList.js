@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 
 import Loading from 'components/Loading';
@@ -22,12 +22,7 @@ function TableList() {
   }
 
   return (
-    <div>
-      <Link to="/tables/new" className={classes.link}>
-        <Button variant="outlined" className={classes.button}>
-          新規テーブル作成
-        </Button>
-      </Link>
+    <div className={classes.container}>
       <Grid container spacing={2}>
         {tables.map(table => (
           <Grid item key={table.id}>
@@ -35,6 +30,13 @@ function TableList() {
           </Grid>
         ))}
       </Grid>
+      <div className={classes.newTableForm}>
+        <Link to="/tables/new" className={classes.link}>
+          <Fab className={classes.button} color="primary" variant="extended">
+            新しくテーブルを作る
+          </Fab>
+        </Link>
+      </div>
     </div>
   );
 }
