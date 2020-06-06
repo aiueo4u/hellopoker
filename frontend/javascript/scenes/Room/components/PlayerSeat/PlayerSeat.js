@@ -15,7 +15,7 @@ const PlayerSeat = ({ player, position, tableId }) => {
       {player.id ? (
         <PlayerPanel player={player} tableId={tableId} position={panelPosition} />
       ) : (
-        <EmptySeat tableId={tableId} seatNo={player.seat_no} />
+        <EmptySeat tableId={tableId} seatNo={player.seatNo} />
       )}
     </div>
   );

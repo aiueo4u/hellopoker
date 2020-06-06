@@ -25,6 +25,12 @@ class Broadcaster
       last_action: last_action,
       just_actioned: manager.just_actioned,
       table_id: table.id,
+      table: {
+        id: table.id,
+        name: table.name,
+        sb_size: table.sb_size,
+        bb_size: table.bb_size,
+      },
     }
     ActionCable.server.broadcast "chip_channel_#{table.id}", data
   end

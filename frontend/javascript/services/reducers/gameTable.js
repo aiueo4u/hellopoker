@@ -7,6 +7,7 @@ const initialState = {
   buyInAmount: '',
   isOpenGameStartCountdown: false,
   timeToStart: 0,
+  table: {},
 };
 
 const GameTableReducer = (state = initialState, action) => {
@@ -38,20 +39,7 @@ const GameTableReducer = (state = initialState, action) => {
         boardCards: action.boardCards,
       });
     case 'PLAYER_ACTION_RECEIVED':
-      return Object.assign({}, state, {
-        isReady: true,
-        pot: action.pot,
-        gameHandState: action.gameHandState,
-        round: action.round,
-        currentSeatNo: action.currentSeatNo,
-        buttonSeatNo: action.buttonSeatNo,
-        lastAggressiveSeatNo: action.lastAggressiveSeatNo,
-        undoable: action.undoable,
-        gameHandCount: action.gameHandCount,
-        boardCards: action.boardCards,
-        showOrMuck: action.showOrMuck,
-        reachedRounds: action.reachedRounds,
-      });
+      return { ...state, ...action, isReady: true };
     case 'OPEN_PLAYER_MENU_DIALOG':
       return Object.assign({}, state, {
         openingPlayerMenuDialogPlayerId: action.playerId,

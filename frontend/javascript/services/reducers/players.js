@@ -49,7 +49,7 @@ const PlayersReducer = (state = [], action) => {
         return {
           ...player,
           cards: actionPlayer.cards,
-          hand_show: actionPlayer.hand_show,
+          handShow: actionPlayer.handShow,
           state: actionPlayer.state,
         };
       });

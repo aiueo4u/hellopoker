@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ActionCable from 'actioncable';
-import { playerActionReceived, gameHandActionReceived, gameHandFinishedReceived } from 'data/actions';
+import { camelizeKeys } from 'humps';
+import { playerActionReceived } from 'data/actions';
 
 const useChipChannel = tableId => {
   const dispatch = useDispatch();
@@ -19,16 +20,10 @@ const useChipChannel = tableId => {
           dispatch({ type: 'ACTION_CABLE_DISCONNECTED' });
         },
         received(data) {
-          if (data.type === 'player_action') {
-            dispatch(playerActionReceived(data));
-          } else if (data.type === 'game_hand') {
-            dispatch(gameHandActionReceived(data.pot, data.players));
-          } else if (data.type === 'game_hand_finished') {
-            dispatch(gameHandFinishedReceived());
+          const camelizedData = camelizeKeys(data);
+          if (camelizedData.type === 'player_action') {
+            dispatch(playerActionReceived(camelizedData));
           }
-        },
-        rejected(_) {
-          // console.debug('Chip Channel rejected', data);
         },
       }
     );

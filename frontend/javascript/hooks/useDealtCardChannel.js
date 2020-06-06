@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ActionCable from 'actioncable';
+import { camelizeKeys } from 'humps';
 import { dealtCardsReceived } from 'data/actions';
 
 const useDealtCardChannel = tableId => {
@@ -22,8 +23,8 @@ const useDealtCardChannel = tableId => {
           //console.debug('DealtCardChannel disconnected');
         },
         received(data) {
-          //console.debug('DealtCardChannel received: ', data);
-          dispatch(dealtCardsReceived(data));
+          const camelizedData = camelizeKeys(data);
+          dispatch(dealtCardsReceived(camelizedData));
         },
         rejected(_) {
           //console.debug('DealtCardChannel rejected', data);

@@ -23,10 +23,10 @@ const PlayerActions = ({ player, tableId }) => {
   );
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false;
-  const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seat_no;
-  const maxBetAmountInState = Math.max(...players.map(player => player.bet_amount_in_state));
+  const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seatNo;
+  const maxBetAmountInState = Math.max(...players.map(player => player.betAmountInState));
 
-  if (loading || !gameTable.inGame || gameTable.currentSeatNo !== player.seat_no) return null;
+  if (loading || !gameTable.inGame || gameTable.currentSeatNo !== player.seatNo) return null;
 
   // Muck or Show
   if (gameTable.showOrMuck) {
@@ -52,7 +52,7 @@ const PlayerActions = ({ player, tableId }) => {
         </Button>
         <Button
           className={classNames([classes.button, classes.rightButton])}
-          disabled={player.bet_amount_in_state + player.betSize <= maxBetAmountInState}
+          disabled={player.betAmountInState + player.betSize <= maxBetAmountInState}
           variant="contained"
           onClick={betAction}
           color="primary"

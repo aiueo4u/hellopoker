@@ -11,7 +11,7 @@ const PlayerAvatar = ({ isTurn, player }) => {
   //const classes = useStyles();
 
   return <WebRTCTest player={player} isTurn={isTurn} />;
-  //return <Avatar src={player.image_url} className={classNames(classes.avatar, { [classes.inTurn]: isTurn })} alt="" />;
+  //return <Avatar src={player.imageUrl} className={classNames(classes.avatar, { [classes.inTurn]: isTurn })} alt="" />;
 };
 
 PlayerAvatar.propTypes = {

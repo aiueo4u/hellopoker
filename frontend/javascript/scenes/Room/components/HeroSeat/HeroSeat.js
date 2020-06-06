@@ -14,7 +14,7 @@ const HeroSeat = ({ player, tableId }) => {
       {player.id ? (
         <HeroPlayerPanel player={player} tableId={tableId} />
       ) : (
-        <EmptySeat tableId={tableId} seatNo={player.seat_no} />
+        <EmptySeat tableId={tableId} seatNo={player.seatNo} />
       )}
     </div>
   );

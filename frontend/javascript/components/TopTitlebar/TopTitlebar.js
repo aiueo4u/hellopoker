@@ -9,7 +9,7 @@ const TopTitlebar = ({ gameTable }) => {
   return (
     <div className={classes.container}>
       <Typography variant="caption" className={classes.title}>
-        {gameTable.title}
+        {gameTable.table.name}
       </Typography>
     </div>
   );

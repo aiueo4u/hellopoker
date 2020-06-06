@@ -23,24 +23,24 @@ const PlayerChipBetArea = () => {
   return (
     <div className={classes.container}>
       {// 結果の収支
-      gameTable.gameHandState === 'finished' && player.amount_diff && (
+      gameTable.gameHandState === 'finished' && player.amountDiff && (
         <div className={classes.result}>
-          {player.amount_diff > 0 && <span>+</span>}
-          {player.amount_diff}
+          {player.amountDiff > 0 && <span>+</span>}
+          {player.amountDiff}
         </div>
       )}
 
       {// ベット額
-      gameTable.inGame && !!(player.bet_amount_in_state || player.betSize) && (
+      gameTable.inGame && !!(player.betAmountInState || player.betSize) && (
         <span className={classes.betArea}>
           {player.betSize
-            ? `${player.bet_amount_in_state || 0} → ${player.bet_amount_in_state + player.betSize}`
-            : player.bet_amount_in_state > 0 && player.bet_amount_in_state}
+            ? `${player.betAmountInState || 0} → ${player.betAmountInState + player.betSize}`
+            : player.betAmountInState > 0 && player.betAmountInState}
         </span>
       )}
 
       {// ディーラーボタン
-      gameTable.inGame && player.seat_no === gameTable.buttonSeatNo && <DealerButtonPlate />}
+      gameTable.inGame && player.seatNo === gameTable.buttonSeatNo && <DealerButtonPlate />}
     </div>
   );
 };

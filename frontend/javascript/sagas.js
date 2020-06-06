@@ -77,17 +77,17 @@ const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
 function* handleBeforePlayerActionReceived(action) {
   // プレイヤーのアクション名を表示
-  if (action.lastAction && nameByActionType[action.lastAction.action_type]) {
+  if (action.lastAction && nameByActionType[action.lastAction.actionType]) {
     const playerSession = yield select(state => state.data.playerSession);
 
     yield put({
       type: 'OTHER_PLAYER_ACTION',
-      actionType: action.lastAction.action_type,
-      playerId: action.lastAction.player_id,
+      actionType: action.lastAction.actionType,
+      playerId: action.lastAction.playerId,
     });
 
     // 自分以外のアクションの場合は少し表示したままにする
-    if (action.lastAction.player_id !== playerSession.playerId) {
+    if (action.lastAction.playerId !== playerSession.playerId) {
       yield call(sleep, 500);
     }
   }

@@ -18,7 +18,7 @@ import usePlayAudioMyTurn from './hooks/usePlayAudioMyTurn';
 
 const HeroPlayerPanel = ({ player, tableId }) => {
   const gameTable = useGameTableState();
-  const isHeroTurn = player && player.seat_no === gameTable.currentSeatNo;
+  const isHeroTurn = player && player.seatNo === gameTable.currentSeatNo;
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const [isOpen, openDialog, closeDialog] = useDialogState();
   const classes = useStyles({ player });

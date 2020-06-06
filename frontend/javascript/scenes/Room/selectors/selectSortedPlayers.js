@@ -5,17 +5,17 @@ const selectSortedPlayers = (players, currentUserId) => {
 
   /* 6 MAX */
   for (let i = 0; i < 6; i++) {
-    const player = players.find(e => e.seat_no === i + 1);
+    const player = players.find(e => e.seatNo === i + 1);
     if (player) {
       sortedPlayers.push(player);
     } else {
-      sortedPlayers.push({ seat_no: i + 1 });
+      sortedPlayers.push({ seatNo: i + 1 });
     }
   }
   if (currentPlayer) {
     sortedPlayers = sortedPlayers
-      .slice(currentPlayer.seat_no - 1, 10)
-      .concat(sortedPlayers.slice(0, currentPlayer.seat_no - 1));
+      .slice(currentPlayer.seatNo - 1, 10)
+      .concat(sortedPlayers.slice(0, currentPlayer.seatNo - 1));
   }
 
   return sortedPlayers;

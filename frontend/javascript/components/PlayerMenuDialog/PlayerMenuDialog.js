@@ -28,7 +28,7 @@ const PlayerMenuDialog = ({ player, isOpen, onClose, tableId }) => {
         </DialogActions>
           */}
       </Dialog>
-      <BuyInDialog tableId={tableId} seatNo={player.seat_no} isOpen={isOpenBuyInDialog} onClose={closeBuyInDialog} />
+      <BuyInDialog tableId={tableId} seatNo={player.seatNo} isOpen={isOpenBuyInDialog} onClose={closeBuyInDialog} />
     </>
   );
 };

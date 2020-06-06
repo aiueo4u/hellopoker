@@ -24,7 +24,7 @@ const PlayerPanel = ({ tableId, position, player }) => {
   const [isOpen, openDialog, closeDialog] = useDialogState();
 
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
-  const isPlayerTurn = player.seat_no === gameTable.currentSeatNo;
+  const isPlayerTurn = player.seatNo === gameTable.currentSeatNo;
   const classes = useStyles({ player, position, isPlayerTurn });
 
   // TODO
@@ -32,13 +32,13 @@ const PlayerPanel = ({ tableId, position, player }) => {
   if (!player.id) {
     player.id = 123;
     player.nickname = 'aiueo4u-hogehoge';
-    player.image_url = 'https://pbs.twimg.com/media/EUK26AJVAAAjUUr?format=jpg&name=240x240';
+    player.imageUrl = 'https://pbs.twimg.com/media/EUK26AJVAAAjUUr?format=jpg&name=240x240';
     player.stack = 12345;
-    player.bet_amount_in_state = 1234;
+    player.betAmountInState = 1234;
   }
   */
 
-  const showHand = player.hand_show;
+  const showHand = player.handShow;
 
   return (
     <>
@@ -50,42 +50,42 @@ const PlayerPanel = ({ tableId, position, player }) => {
           )}
         </Box>
 
-        {gameTable.inGame && !player.hand_show && player.state !== null && player.state !== 'folded' && (
+        {player.seatNo === gameTable.buttonSeatNo && (
+          <div className={classes.dealerButton}>
+            <DealerButtonPlate />
+          </div>
+        )}
+
+        {gameTable.inGame && !player.handShow && player.state !== null && player.state !== 'folded' && (
           <Box display="flex" justifyContent="center" className={classes.handContainer}>
             <PokerCard invisible={!showHand} size="small" />
             <PokerCard invisible={!showHand} size="small" />
           </Box>
         )}
 
-        {player.hand_show && player.state !== null && player.state !== 'folded' && (
+        {player.handShow && player.state !== null && player.state !== 'folded' && (
           <Box display="flex" justifyContent="center" className={classes.handContainer}>
             <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
             <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
           </Box>
         )}
 
-        {player.seat_no === gameTable.buttonSeatNo && (
-          <div className={classes.dealerButton}>
-            <DealerButtonPlate />
-          </div>
-        )}
-
         {/* チップ増減結果 */}
-        {gameTable.gameHandState === 'finished' && !!player.amount_diff && (
+        {gameTable.gameHandState === 'finished' && !!player.amountDiff && (
           <div className={classes.betAmount}>
             <span className={classes.result}>
-              {player.amount_diff > 0 && <span>+</span>}
-              {player.amount_diff}
+              {player.amountDiff > 0 && <span>+</span>}
+              {player.amountDiff}
             </span>
           </div>
         )}
 
         {/* ベット額 */}
-        {gameTable.inGame && !!(player.bet_amount_in_state || player.betSize) && (
+        {gameTable.inGame && !!(player.betAmountInState || player.betSize) && (
           <div className={classes.betAmount}>
             {player.betSize
-              ? `${player.bet_amount_in_state || 0} → ${player.bet_amount_in_state + player.betSize}`
-              : `${player.bet_amount_in_state > 0 ? player.bet_amount_in_state : ''}`}
+              ? `${player.betAmountInState || 0} → ${player.betAmountInState + player.betSize}`
+              : `${player.betAmountInState > 0 ? player.betAmountInState : ''}`}
           </div>
         )}
       </Box>
