@@ -1,0 +1,69 @@
+import { makeStyles } from '@material-ui/styles';
+
+const styles = theme => ({
+  chip: ({ index }) => ({
+    position: 'absolute',
+    bottom: `calc(${index} * 6px)`,
+    width: '40px',
+    height: '20px',
+    //border: `1px solid ${theme.palette.common.black}`,
+  }),
+  label: {
+    color: theme.palette.common.black,
+    fontSize: theme.typography.body6.fontSize,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
+  top: ({ index, label }) => {
+    const base = {
+      position: 'relative',
+      width: '100%',
+      height: '80%',
+      //backgroundColor: '#FF7043',
+      backgroundColor: theme.palette.grey[200],
+      borderRadius: '50%',
+      zIndex: index * 2 + 1,
+      border: `2px solid ${theme.palette.grey[700]}`,
+      //border: `1px solid blue`,
+    };
+
+    switch (label) {
+      case 5000:
+        return { ...base, borderColor: 'blue' };
+      case 1000:
+        return { ...base, borderColor: 'red' };
+      case 500:
+        return { ...base, borderColor: 'orange' };
+      default:
+        return base;
+    }
+  },
+  body: ({ index, label }) => {
+    const base = {
+      position: 'absolute',
+      bottom: '0%',
+      width: '100%',
+      height: '60%',
+      //border: `1px solid ${theme.palette.grey[700]}`,
+      //backgroundColor: '#F4511E',
+      backgroundColor: theme.palette.grey[700],
+      borderRadius: '0 0 50% 50% / 0 0 calc(4500% / 60) calc(4500% / 60)',
+      zIndex: index * 2,
+    };
+
+    switch (label) {
+      case 5000:
+        return { ...base, backgroundColor: 'blue' };
+      case 1000:
+        return { ...base, backgroundColor: 'red' };
+      case 500:
+        return { ...base, backgroundColor: 'orange' };
+      default:
+        return base;
+    }
+  },
+});
+
+export default makeStyles(styles);

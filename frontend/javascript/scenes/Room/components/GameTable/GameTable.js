@@ -12,7 +12,6 @@ const GameTable = () => {
   return (
     <div className={classes.container}>
       <CentralCard />
-
       <div className={classes.playerChipBetArea}>
         <PlayerChipBetArea />
       </div>

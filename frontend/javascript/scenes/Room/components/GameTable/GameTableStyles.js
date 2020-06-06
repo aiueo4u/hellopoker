@@ -13,10 +13,11 @@ const styles = theme => ({
     maxWidth: '800px',
     maxHeight: '400px',
     backgroundImage: `url(${BackgroundImage})`,
-    backgroundColor: green[700],
+    backgroundColor: green[200],
     borderRadius: '200px',
-    border: `2px solid ${theme.palette.grey[700]}`,
+    border: `1px solid ${theme.palette.grey[700]}`,
     //border: `1px solid blue`,
+    boxShadow: theme.shadows[8],
   },
   playerChipBetArea: {
     position: 'absolute',

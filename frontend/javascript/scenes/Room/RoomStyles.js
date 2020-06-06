@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-//import BackgroundImage from 'assets/climpek.png';
 
 const styles = theme => ({
   action: {
@@ -8,8 +7,7 @@ const styles = theme => ({
     height: '80px',
   },
   background: {
-    //backgroundImage: `url(${BackgroundImage})`,
-    backgroundColor: green[200],
+    backgroundColor: green[50],
   },
   chatCard: {
     width: '40%',
@@ -17,7 +15,6 @@ const styles = theme => ({
   container: {
     position: 'relative',
     height: 'calc(var(--vh, 1vh) * 100)',
-    //backgroundColor: theme.palette.common.black,
     maxWidth: '1280px',
     minWidth: '800px',
     minHeight: '600px',

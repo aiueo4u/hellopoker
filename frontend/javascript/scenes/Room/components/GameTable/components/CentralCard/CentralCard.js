@@ -5,6 +5,7 @@ import { useRouteMatch } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
+import PokerChip from 'components/PokerChip';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
@@ -44,7 +45,11 @@ const CentralCard = () => {
             <GameStartCountdown count={gameTable.timeToStart} />
           </Box>
         )}
-        {gameTable.inGame && <div className={classes.pot}>{gameTable.pot}</div>}
+        {gameTable.inGame && gameTable.pot > 0 && (
+          <div className={classes.pot}>
+            <PokerChip amount={gameTable.pot} />
+          </div>
+        )}
 
         <Box className={classes.board}>
           <BoardCardArea gameTable={gameTable} />

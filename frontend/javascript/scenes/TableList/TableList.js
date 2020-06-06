@@ -22,20 +22,22 @@ function TableList() {
   }
 
   return (
-    <div className={classes.container}>
-      <Grid container spacing={2}>
-        {tables.map(table => (
-          <Grid item key={table.id}>
-            <TableCard table={table} />
-          </Grid>
-        ))}
-      </Grid>
-      <div className={classes.newTableForm}>
-        <Link to="/tables/new" className={classes.link}>
-          <Fab className={classes.button} color="primary" variant="extended">
-            新しくテーブルを作る
-          </Fab>
-        </Link>
+    <div className={classes.background}>
+      <div className={classes.container}>
+        <Grid container spacing={2}>
+          {tables.map(table => (
+            <Grid item key={table.id}>
+              <TableCard table={table} />
+            </Grid>
+          ))}
+        </Grid>
+        <div className={classes.newTableForm}>
+          <Link to="/tables/new" className={classes.link}>
+            <Fab className={classes.button} color="primary" variant="extended">
+              新しくテーブルを作る
+            </Fab>
+          </Link>
+        </div>
       </div>
     </div>
   );

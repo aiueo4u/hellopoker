@@ -31,8 +31,7 @@ const styles = theme => ({
     top: 'calc(50% + 110px)',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    color: theme.palette.grey[100],
-    opacity: '0.5',
+    color: theme.palette.grey[600],
   },
   inner: {
     //border: `1px solid blue`, // TODO
@@ -53,15 +52,15 @@ const styles = theme => ({
   },
   pot: {
     position: 'absolute',
-    top: '60px',
+    top: '50px',
     left: '50%',
     transform: 'translate(-50%, 0)',
     display: 'inline-block',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    //backgroundColor: 'rgba(0, 0, 0, 0.7)',
     color: theme.palette.common.white,
-    padding: theme.spacing(1),
+    //padding: theme.spacing(1),
     margin: '16px auto',
-    borderRadius: '4px',
+    //borderRadius: '4px',
   },
 });
 

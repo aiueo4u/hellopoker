@@ -11,8 +11,8 @@ function TableCard({ table }) {
   const onClickTable = () => history.push(`/tables/${table.id}`);
 
   return (
-    <div className={classes.tableContainer} onClick={onClickTable}>
-      <div className={classes.table}>
+    <div className={classes.tableContainer}>
+      <div className={classes.table} onClick={onClickTable}>
         <div className={classes.tableContent}>
           <div className={classes.tableName}>{table.name}</div>
           <div className={classes.tableBlind}>

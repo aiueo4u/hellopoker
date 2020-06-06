@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
+import { green } from '@material-ui/core/colors';
 
 const styles = theme => ({
   link: {
@@ -12,13 +13,21 @@ const styles = theme => ({
     width: '150px',
     height: '80px',
     borderRadius: '40px',
-    border: `1px solid green`,
+    border: `1px solid ${green[200]}`,
+    backgroundColor: green[100],
+    boxShadow: theme.shadows[4],
+    cursor: 'pointer',
+    '&:hover': {
+      boxShadow: theme.shadows[8],
+      backgroundColor: green[200],
+    },
   },
   tableContainer: {
     position: 'relative',
     width: '300px',
     height: '200px',
-    border: `1px solid blue`,
+    background: theme.palette.grey[100],
+    borderRadius: '8px',
   },
   tableBlind: {
     color: theme.palette.grey[700],
@@ -33,6 +42,7 @@ const styles = theme => ({
     textAlign: 'center',
   },
   tableName: {
+    color: theme.palette.grey[800],
     fontSize: theme.typography.body3.fontSize,
     whiteSpace: 'nowrap',
     overflow: 'hidden',

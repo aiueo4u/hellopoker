@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/styles';
 import PlayerAvatar from 'components/PlayerAvatar';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerCard from 'components/PokerCard';
+import PokerChip from 'components/PokerChip';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 
 import useGameTableState from 'hooks/useGameTableState';
@@ -81,11 +82,9 @@ const PlayerPanel = ({ tableId, position, player }) => {
         )}
 
         {/* ベット額 */}
-        {gameTable.inGame && !!(player.betAmountInState || player.betSize) && (
+        {gameTable.inGame && player.betAmountInState > 0 && (
           <div className={classes.betAmount}>
-            {player.betSize
-              ? `${player.betAmountInState || 0} → ${player.betAmountInState + player.betSize}`
-              : `${player.betAmountInState > 0 ? player.betAmountInState : ''}`}
+            <PokerChip amount={player.betAmountInState} />
           </div>
         )}
       </Box>

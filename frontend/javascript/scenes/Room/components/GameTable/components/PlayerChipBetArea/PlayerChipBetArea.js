@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 
 import DealerButtonPlate from 'components/DealerButtonPlate';
+import PokerChip from 'components/PokerChip';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayersState from 'hooks/usePlayersState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
@@ -35,7 +36,7 @@ const PlayerChipBetArea = () => {
         <span className={classes.betArea}>
           {player.betSize
             ? `${player.betAmountInState || 0} → ${player.betAmountInState + player.betSize}`
-            : player.betAmountInState > 0 && player.betAmountInState}
+            : player.betAmountInState > 0 && <PokerChip amount={player.betAmountInState} />}
         </span>
       )}
 
