@@ -2,14 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
+import Grid from '@material-ui/core/Grid';
 
 import Loading from 'components/Loading';
-import TableRowContent from './components/TableRowContent';
+import TableCard from './components/TableCard';
 import useTableList from './hooks/useTableList';
 import useStyles from './TableListStyles';
 
@@ -32,21 +28,13 @@ function TableList() {
           新規テーブル作成
         </Button>
       </Link>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>テーブル名</TableCell>
-            <TableCell>参加人数</TableCell>
-            <TableCell />
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tables.map(table => (
-            <TableRowContent table={table} key={table.id} />
-          ))}
-        </TableBody>
-      </Table>
+      <Grid container spacing={2}>
+        {tables.map(table => (
+          <Grid item key={table.id}>
+            <TableCard table={table} />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }

@@ -29,6 +29,10 @@ html, body, .wrapper {
   margin: 0;
 }
 
+body {
+  font-family: 'Rubik', Rubik, Arial, 'Hiragino Sans', "ヒラギノ角ゴシック", 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3',Roboto, 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
+}
+
 #root {
   width: 100vw;
   height: calc(var(--vh, 1vh) * 100);

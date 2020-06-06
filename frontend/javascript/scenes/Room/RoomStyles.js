@@ -14,7 +14,8 @@ const styles = theme => ({
     position: 'relative',
     height: 'calc(var(--vh, 1vh) * 100)',
     //backgroundColor: theme.palette.common.black,
-    width: '1280px',
+    maxWidth: '1280px',
+    minWidth: '800px',
     margin: 'auto',
     [theme.breakpoints.only('xs')]: {
       width: '100%',
