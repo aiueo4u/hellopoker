@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   heroHoleCard1: {
@@ -32,7 +32,7 @@ const styles = theme => ({
     display: 'inline-block',
     color: 'orange',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    padding: theme.spacing(1/ 4, 1 / 2),
+    padding: theme.spacing(1 / 4, 1 / 2),
     borderRadius: '4px',
   },
   statusCard: {

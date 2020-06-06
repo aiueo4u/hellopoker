@@ -8,7 +8,7 @@ module Rack
 
     def perform_request(env)
       if env["PATH_INFO"].start_with?("/webpacks") && Rails.env.development?
-        env["HTTP_HOST"] = env["HTTP_X_FORWARDED_HOST"] = env["HTTP_X_FORWARDED_SERVER"] = '192.168.100.101:3045'
+        env["HTTP_HOST"] = env["HTTP_X_FORWARDED_HOST"] = env["HTTP_X_FORWARDED_SERVER"] = '192.168.100.100:3045'
         env["HTTP_X_FORWARDED_PROTO"] = env["HTTP_X_FORWARDED_SCHEME"] = 'http'
         env["HTTPS"] = env["HTTP_X_FORWARDED_SSL"] = "off"
         env["SCRIPT_NAME"] = ""

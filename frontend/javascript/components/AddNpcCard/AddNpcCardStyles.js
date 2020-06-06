@@ -3,8 +3,7 @@ const styles = theme => ({
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
     color: theme.palette.common.white,
   },
-  icon: {
-  },
+  icon: {},
 });
 
 export default styles;

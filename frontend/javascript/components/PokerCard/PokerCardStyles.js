@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/styles';
 import FaceBackImage from './faces/back.png';
 
 const styles = theme => ({
-  card: ({ rank, suit, size }) => {
+  card: ({ size }) => {
     const base = {
       position: 'relative',
       display: 'inline-block',
@@ -22,22 +22,24 @@ const styles = theme => ({
     return base;
   },
   faceOrBack: ({ invisible }) => {
-    return invisible ? {
-      position: 'absolute',
-      backgroundImage: `url(${FaceBackImage})`,
-      backgroundPosition: '50% 50%',
-      backgroundSize: '100% 100%',
-      backgroundRepeat: 'no-repeat',
-      width: '100%',
-      height: '100%',
-      top: 0,
-      left: 0,
-    } : {
-      height: '100%',
-      backgroundPosition: '100% 100%',
-      backgroundSize: '100% 100%',
-      backgroundRepeat: 'no-repeat',
-    };
+    return invisible
+      ? {
+          position: 'absolute',
+          backgroundImage: `url(${FaceBackImage})`,
+          backgroundPosition: '50% 50%',
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
+          width: '100%',
+          height: '100%',
+          top: 0,
+          left: 0,
+        }
+      : {
+          height: '100%',
+          backgroundPosition: '100% 100%',
+          backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat',
+        };
   },
   faceSuit: ({ size }) => ({
     position: 'absolute',
@@ -58,16 +60,22 @@ const styles = theme => ({
     switch (rank) {
       case 'T':
         content = '10';
+        break;
       case 'J':
         content = 'J';
+        break;
       case 'Q':
         content = 'Q';
+        break;
       case 'K':
         content = 'K';
+        break;
       case 'A':
         content = 'A';
+        break;
       default:
         content = rank;
+        break;
     }
 
     return {

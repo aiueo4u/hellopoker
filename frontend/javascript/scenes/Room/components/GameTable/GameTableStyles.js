@@ -1,8 +1,8 @@
-//import Image from 'assets/climpek.png';
-import Image from 'assets/background.jpg';
-import { green } from '@material-ui/core/colors';
+// import Image from 'assets/climpek.png';
+// import Image from 'assets/background.jpg';
+// import { green } from '@material-ui/core/colors';
 
-const styles = theme => ({
+const styles = () => ({
   centralContainer: {
     position: 'absolute',
     width: '50%',

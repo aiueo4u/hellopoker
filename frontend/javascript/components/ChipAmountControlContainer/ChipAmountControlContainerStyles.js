@@ -1,3 +1,5 @@
+import { makeStyles } from '@material-ui/styles';
+
 const styles = theme => ({
   button: {
     color: 'orange',
@@ -30,4 +32,4 @@ const styles = theme => ({
   },
 });
 
-export default styles;
+export default makeStyles(styles);

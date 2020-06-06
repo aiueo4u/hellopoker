@@ -4,13 +4,7 @@ import { eventChannel, END } from 'redux-saga';
 import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
 
 import { nameByActionType } from 'helpers/actionType';
-import {
-  fetchCurrentUser,
-  startToGameDealer,
-  takeSeatToGameDealer,
-  addNpcPlayer,
-  postTest,
-} from './api';
+import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer, postTest } from './api';
 
 function* handlePlayerTakeSeat(action) {
   const { amount, tableId, playerId, seatNo, buyInAmount } = action;
@@ -26,7 +20,6 @@ function* handlePlayerTakeSeat(action) {
       pot: data.pot,
     });
   } catch (error) {
-    console.log(error);
     yield put({
       type: 'PLAYER_ACTION_TAKE_SEAT_FAILED',
       tableId,
@@ -67,7 +60,6 @@ function* handleGameStartButtonClicked(action) {
     yield call(startToGameDealer, tableId);
     yield put({ type: 'GAME_START_COMPLETED', tableId });
   } catch (error) {
-    console.log(error);
     yield put({ type: 'GAME_START_FAILED', tableId });
   }
 }
@@ -171,10 +163,11 @@ function* handleSetupGameStartTimer(action) {
 }
 
 let localstream;
-let remoteStreams = {};
-let currentStreamPlayerId = null;
+const remoteStreams = {};
 
-function* handleChangedPlayerTurn(action) {
+/*
+let currentStreamPlayerId = null;
+function handleChangedPlayerTurn() {
   return;
   const { player } = action;
 
@@ -185,8 +178,9 @@ function* handleChangedPlayerTurn(action) {
     localVideo.srcObject = remoteStreams[player.id] || localstream;
   }
 }
+*/
 
-function* initializeWebRTC(action) {
+function initializeWebRTC(action) {
   const { onSuccess } = action.payload;
 
   navigator.mediaDevices
@@ -208,12 +202,12 @@ function* initializeWebRTC(action) {
       localstream = stream;
       if (onSuccess) onSuccess();
     })
-    .catch(error => console.log('Error!: ', error));
+    .catch(error => console.log('Error!: ', error)); // eslint-disable-line
 }
 
 const jwt = localStorage.getItem('playerSession.jwt');
 const cable = ActionCable.createConsumer(`/cable?jwt=${jwt}`);
-let session;
+let session; // eslint-disable-line
 let playerId;
 
 function* handleJoinSession() {
@@ -229,7 +223,7 @@ function* handleJoinSession() {
     { channel: 'TestChannel' },
     {
       connected: () => {
-        console.log('ActionCable connected.');
+        console.log('ActionCable connected.'); // eslint-disable-line
         broadcastData({
           type: 'JOIN_ROOM',
           from: playerId,
@@ -237,7 +231,7 @@ function* handleJoinSession() {
       },
       received: data => {
         if (data.from === playerId) return;
-        console.log('ActionCable received: ', data);
+        console.log('ActionCable received: ', data); // eslint-disable-line
         switch (data.type) {
           case 'JOIN_ROOM':
             return joinRoom(data);
@@ -254,8 +248,9 @@ function* handleJoinSession() {
   );
 }
 
-let pcPeers = {};
+const pcPeers = {};
 
+/*
 function handleLeaveSession() {
   for (const user in pcPeers) {
     pcPeers[user].close();
@@ -272,13 +267,14 @@ function handleLeaveSession() {
     from: playerId,
   });
 }
+*/
 
 const joinRoom = data => {
   createPC(data.from, true);
 };
 
 const removeUser = data => {
-  console.log('Removing user', data.from);
+  console.log('Removing user', data.from); // eslint-disable-line
   const video = document.getElementById(`video-player-${data.from}`);
   if (video) {
     video.srcObject = null;
@@ -313,9 +309,9 @@ function createPC(userId, isOffer) {
     remoteStreams[userId] = event.streams[0];
   };
 
-  pc.oniceconnectionstatechange = event => {
+  pc.oniceconnectionstatechange = _ => {
     if (pc.iceConnectionState === 'disconnected') {
-      console.log('Disconnected: ', userId);
+      console.log('Disconnected: ', userId); // eslint-disable-line
       broadcastData({
         type: 'REMOVE_USER',
         from: userId,
@@ -353,7 +349,7 @@ const exchange = data => {
 
   if (data.candidate) {
     pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)))
-      .then(() => console.log('Ice candidate added'))
+      .then(() => console.log('Ice candidate added')) // eslint-disable-line
       .catch(logError);
   }
 
@@ -384,7 +380,7 @@ function broadcastData(data) {
   postTest(data);
 }
 
-const logError = error => console.log(error);
+const logError = error => console.log(error); // eslint-disable-line
 
 export default function* rootSage() {
   yield takeEvery('FETCH_PLAYER', handleFetchPlayer);
@@ -399,5 +395,5 @@ export default function* rootSage() {
   yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
   //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
   yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
-  yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
+  //yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
 }

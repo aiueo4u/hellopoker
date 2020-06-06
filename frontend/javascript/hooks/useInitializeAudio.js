@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import audioCallPath from 'assets/audio/call.mp3';
@@ -18,7 +17,7 @@ const useInitializeAudio = () => {
     audioCall.load();
     //audioCall.play();
 
-    const audioMyTurn =  new Audio(audioMyTurnPath);
+    const audioMyTurn = new Audio(audioMyTurnPath);
     audioMyTurn.id = 'audio-myturn';
     audioMyTurn.preload = 'auto';
     audioMyTurn.load();

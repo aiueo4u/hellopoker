@@ -1,7 +1,7 @@
 const styles = theme => ({
   button: {
+    width: '220px',
     backgroundColor: '#1877F2',
-    width: '100%',
     color: theme.palette.common.white,
     textTransform: 'none',
     '&:hover': {

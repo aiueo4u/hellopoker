@@ -47,10 +47,12 @@ module.exports = {
     'react/no-string-refs': OFF, // refsに文字列を渡すことを禁止する
     'react/forbid-prop-types': OFF, // 特定のpropTypeを禁止
     'react/display-name': OFF, // 一時的にOFF functional componentには必ず関数名をつける
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
 
     'jsx-a11y/label-has-for': OFF, // labelタグに対してhtmlForを設定すること
     'jsx-a11y/click-events-have-key-events': OFF, // TODO: remove 非対話型コンテンツにclickイベントを設定を禁止する
     'jsx-a11y/label-has-associated-control': OFF, // ラベルタグにテキストラベルと関連するコントロールがあることを強制する
+    'jsx-a11y/media-has-caption': OFF,
     'jsx-a11y/no-static-element-interactions': OFF, // TODO: remove アクセシビリティレイヤー意外にインタラクティブなイベントの付与を強制する
   },
   settings: {

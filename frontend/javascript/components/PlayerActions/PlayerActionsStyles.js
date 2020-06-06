@@ -1,3 +1,5 @@
+import { makeStyles } from '@material-ui/core/styles';
+
 const styles = theme => ({
   button: {
     //position: 'absolute',
@@ -16,7 +18,7 @@ const styles = theme => ({
   container: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   /*
   leftButton: {
@@ -38,4 +40,4 @@ const styles = theme => ({
   */
 });
 
-export default styles;
+export default makeStyles(styles);

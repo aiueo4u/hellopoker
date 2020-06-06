@@ -44,16 +44,7 @@ const useActions = (tableId, player, gameTable) => {
     await actionToGameDealer('PLAYER_ACTION_SHOW_HAND', tableId, player.id);
   };
 
-  return [
-    betAction,
-    callAction,
-    checkAction,
-    foldAction,
-    muckAction,
-    resetBetSize,
-    showAction,
-    loading,
-  ];
+  return [betAction, callAction, checkAction, foldAction, muckAction, resetBetSize, showAction, loading];
 };
 
 export default useActions;

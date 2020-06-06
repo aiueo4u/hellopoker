@@ -1,4 +1,6 @@
-const styles = theme => ({
+import { makeStyles } from '@material-ui/styles';
+
+const styles = () => ({
   avatar: {
     width: '60px',
     height: '60px',
@@ -13,4 +15,4 @@ const styles = theme => ({
   },
 });
 
-export default styles;
+export default makeStyles(styles);

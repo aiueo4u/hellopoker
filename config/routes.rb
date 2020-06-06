@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/', to: 'home#index'
   get '/login', to: 'home#index'
   resources :tables, to: 'home#index'
+  get '/settings', to: 'home#index'
 
   namespace :api do
     resources :tests, only: %i(create)

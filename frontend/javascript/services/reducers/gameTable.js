@@ -24,12 +24,14 @@ const GameTableReducer = (state = initialState, action) => {
         buyInAmount: action.amount,
       });
     case 'DEALT_CARD_RECEIVED':
-      const dealtCards = Object.assign({}, state.dealtCards);
-      dealtCards[action.playerId] = action.cards;
-      return Object.assign({}, state, {
-        dealtCards,
+      return {
+        ...state,
         isOpenGameStartCountdown: false,
-      });
+        dealtCards: {
+          ...state.dealtCards,
+          [action.playerId]: action.cards,
+        },
+      };
     case 'OPEN_BOARD_CARD_BY_ROUND':
       return Object.assign({}, state, {
         reachedRounds: action.reachedRounds,

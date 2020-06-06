@@ -1,3 +1,5 @@
+import { makeStyles } from '@material-ui/core/styles';
+
 const styles = theme => ({
   container: {
     position: 'absolute',
@@ -14,4 +16,4 @@ const styles = theme => ({
   },
 });
 
-export default styles;
+export default makeStyles(styles);
