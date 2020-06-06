@@ -50,6 +50,13 @@ const CentralCard = () => {
           <BoardCardArea gameTable={gameTable} />
         </Box>
 
+        <div className={classes.information}>
+          {gameTable.table.name}
+          <div className={classes.blindInformation}>
+            レベル {gameTable.table.sbSize}/{gameTable.table.bbSize}
+          </div>
+        </div>
+
         {!gameTable.inGame && isSeated && (
           <Box className={classes.buttonContainer}>
             <Button variant="contained" color="primary" onClick={onGameStart}>

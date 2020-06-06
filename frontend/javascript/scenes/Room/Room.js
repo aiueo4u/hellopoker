@@ -7,8 +7,6 @@ import PlayerActions from 'components/PlayerActions';
 import Loading from 'components/Loading';
 import NetworkStatusDialog from 'components/NetworkStatusDialog';
 import TableMessageDrawer from 'components/TableMessageDrawer';
-import TopInfobar from 'components/TopInfobar';
-import TopTitlebar from 'components/TopTitlebar';
 
 import useChipChannel from 'hooks/useChipChannel';
 import useDealtCardChannel from 'hooks/useDealtCardChannel';
@@ -32,7 +30,6 @@ const Room = () => {
   const players = usePlayersState();
   const [initializeAudio] = useInitializeAudio();
   const currentPlayer = players.find(player => player.id === playerSession.playerId);
-  const isShowInformationBar = (gameTable.inGame || players.length > 1) && gameTable.round !== 'init';
 
   const sortedPlayers = selectSortedPlayers(players, playerSession.playerId);
 
@@ -46,14 +43,6 @@ const Room = () => {
       <div className={classes.container} onClick={initializeAudio}>
         {/* ネットワーク接続中のダイアログ */}
         <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
-
-        {
-          /* 画面左上のタイトルバー */
-          <TopTitlebar gameTable={gameTable} />
-        }
-
-        {/* 画面右上部の情報バー */
-        isShowInformationBar && <TopInfobar handCount={gameTable.gameHandCount} round={gameTable.round} />}
 
         <Box className={classes.table}>
           <GameTable gameTable={gameTable} players={players} playerSession={playerSession} tableId={tableId} />

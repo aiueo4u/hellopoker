@@ -1,6 +1,9 @@
 import { makeStyles } from '@material-ui/styles';
 
 const styles = theme => ({
+  blindInformation: {
+    fontSize: theme.typography.body4.fontSize,
+  },
   board: {
     position: 'absolute',
     top: '50%',
@@ -22,6 +25,14 @@ const styles = theme => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     //border: `1px solid red`, // TODO
+  },
+  information: {
+    position: 'absolute',
+    top: 'calc(50% + 110px)',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    color: theme.palette.grey[100],
+    opacity: '0.5',
   },
   inner: {
     //border: `1px solid blue`, // TODO
