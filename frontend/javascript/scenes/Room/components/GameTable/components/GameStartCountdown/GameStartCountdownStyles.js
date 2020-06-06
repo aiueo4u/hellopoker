@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 const styles = theme => ({
   container: {
     position: 'absolute',
-    top: '100px',
+    top: '20px',
     left: 0,
     width: '100%',
     display: 'inline-block',

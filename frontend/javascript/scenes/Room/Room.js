@@ -17,7 +17,10 @@ import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 
 import GameTable from './components/GameTable';
+import HeroSeat from './components/HeroSeat';
+import PlayerSeat from './components/PlayerSeat';
 import useStyles from './RoomStyles';
+import selectSortedPlayers from './selectors/selectSortedPlayers';
 
 const Room = () => {
   const classes = useStyles();
@@ -29,6 +32,8 @@ const Room = () => {
   const [initializeAudio] = useInitializeAudio();
   const currentPlayer = players.find(player => player.id === playerSession.playerId);
   const isShowInformationBar = (gameTable.inGame || players.length > 1) && gameTable.round !== 'init';
+
+  const sortedPlayers = selectSortedPlayers(players, playerSession.playerId);
 
   useChipChannel(tableId);
   useDealtCardChannel(tableId);
@@ -51,6 +56,13 @@ const Room = () => {
 
         <Box className={classes.table}>
           <GameTable gameTable={gameTable} players={players} playerSession={playerSession} tableId={tableId} />
+
+          <HeroSeat position={0} player={sortedPlayers[0]} tableId={tableId} />
+          <PlayerSeat position={1} player={sortedPlayers[1]} tableId={tableId} />
+          <PlayerSeat position={2} player={sortedPlayers[2]} tableId={tableId} />
+          <PlayerSeat position={3} player={sortedPlayers[3]} tableId={tableId} />
+          <PlayerSeat position={4} player={sortedPlayers[4]} tableId={tableId} />
+          <PlayerSeat position={5} player={sortedPlayers[5]} tableId={tableId} />
         </Box>
         <Box className={classes.action}>
           <PlayerActions tableId={tableId} player={currentPlayer} />
