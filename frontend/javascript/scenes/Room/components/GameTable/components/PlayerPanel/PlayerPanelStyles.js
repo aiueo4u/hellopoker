@@ -11,9 +11,11 @@ const styles = theme => ({
   betAmount: ({ position }) => {
     const base = {
       position: 'absolute',
+      //height: '100px',
       borderRadius: theme.spacing(1 / 4),
       color: theme.palette.common.white,
       padding: theme.spacing(1 / 4, 1 / 2),
+      //border: '1px solid red',
     };
 
     switch (position) {
@@ -27,16 +29,16 @@ const styles = theme => ({
       case 'right':
         return {
           ...base,
-          top: '55%',
+          top: '50%',
           left: '-32px',
-          transform: 'translate(-100%, 0%)',
+          transform: 'translate(-100%, -50%)',
         };
       case 'left':
         return {
           ...base,
-          top: '55%',
+          top: '50%',
           right: '-32px',
-          transform: 'translate(100%, 0%)',
+          transform: 'translate(100%, -50%)',
         };
       default:
         return base;
