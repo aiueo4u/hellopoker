@@ -1,14 +1,14 @@
 import { makeStyles } from '@material-ui/styles';
-import { red } from '@material-ui/core/colors';
+import { orange, red, yellow } from '@material-ui/core/colors';
 
 const styles = theme => ({
   '@keyframes onHeroTurnAvatarBlinkAnimation': {
     '50%': {
-      boxShadow: '0px 0px 8px 2px yellow',
+      boxShadow: `0px 0px 12px 4px ${yellow[700]}`,
     },
   },
   actionType: {
-    color: theme.palette.common.white,
+    color: theme.palette.grey[700],
   },
   allin: {
     color: red[400],
@@ -41,8 +41,8 @@ const styles = theme => ({
     bottom: 0,
     left: '50%',
     transform: 'translate(-50%, 0%)',
-    color: 'orange',
-    background: 'rgba(0, 0, 0, 0.5)',
+    color: orange[700],
+    background: 'rgba(227, 227, 227, 0.5)',
     width: '100%',
     fontSize: '13px',
     lineHeight: '19px',

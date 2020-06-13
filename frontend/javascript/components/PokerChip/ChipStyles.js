@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
+import { blue, orange, red, yellow } from '@material-ui/core/colors';
 
 const styles = theme => ({
   chip: ({ index }) => ({
@@ -30,12 +31,14 @@ const styles = theme => ({
     };
 
     switch (label) {
+      case 10000:
+        return { ...base, backgroundColor: yellow[700] };
       case 5000:
-        return { ...base, borderColor: 'blue' };
+        return { ...base, borderColor: blue[700] };
       case 1000:
-        return { ...base, borderColor: 'red' };
+        return { ...base, borderColor: red[700] };
       case 500:
-        return { ...base, borderColor: 'orange' };
+        return { ...base, borderColor: orange[700] };
       default:
         return base;
     }
@@ -54,12 +57,14 @@ const styles = theme => ({
     };
 
     switch (label) {
+      case 10000:
+        return { ...base, backgroundColor: yellow[700] };
       case 5000:
-        return { ...base, backgroundColor: 'blue' };
+        return { ...base, backgroundColor: blue[700] };
       case 1000:
-        return { ...base, backgroundColor: 'red' };
+        return { ...base, backgroundColor: red[700] };
       case 500:
-        return { ...base, backgroundColor: 'orange' };
+        return { ...base, backgroundColor: orange[700] };
       default:
         return base;
     }

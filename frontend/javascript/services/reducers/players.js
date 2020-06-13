@@ -15,6 +15,12 @@ const PlayerReducer = (state = initialState, action) => {
       return { ...player, actionType: action.actionType };
     case 'RESET_BET_SIZE':
       return { ...player, betSize: 0 };
+    case 'SET_BET_SIZE':
+      betSize = action.amount;
+      if (action.playerStack < betSize) {
+        betSize = action.playerStack;
+      }
+      return { ...player, betSize };
     case 'INCREMENT_BET_SIZE':
       betSize = (player.betSize || 0) + action.amount;
       if (action.playerStack < betSize) {

@@ -46,7 +46,7 @@ const styles = theme => ({
   },
   pot: {
     position: 'absolute',
-    top: '50px',
+    top: '40px',
     left: '50%',
     transform: 'translate(-50%, 0)',
     display: 'inline-block',

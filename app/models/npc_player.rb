@@ -41,7 +41,7 @@ class NpcPlayer
         when 'PLAYER_ACTION_CALL'
           amount = amount_to_call
         when 'PLAYER_ACTION_BET_CHIPS'
-          amount = cals_raise(amount_to_call)
+          amount = [cals_raise(amount_to_call), game_hand.game_hand_player_by_id(table_player.player_id).stack].min
         end
       end
     end

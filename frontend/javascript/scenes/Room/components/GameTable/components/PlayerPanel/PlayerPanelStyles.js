@@ -30,14 +30,14 @@ const styles = theme => ({
         return {
           ...base,
           top: '50%',
-          left: '-32px',
+          left: '-80px',
           transform: 'translate(-100%, -50%)',
         };
       case 'left':
         return {
           ...base,
           top: '50%',
-          right: '-32px',
+          right: '-80px',
           transform: 'translate(100%, -50%)',
         };
       default:
@@ -61,14 +61,14 @@ const styles = theme => ({
         return {
           ...base,
           top: '50%',
-          right: '-20px',
+          right: '-40px',
           transform: 'translate(100%, -100%)',
         };
       case 'right':
         return {
           ...base,
           top: '50%',
-          left: '-20px',
+          left: '-40px',
           transform: 'translate(-100%, -100%)',
         };
       default:

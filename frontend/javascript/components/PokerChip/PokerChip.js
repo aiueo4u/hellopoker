@@ -23,7 +23,7 @@ const amountToChips = amount => {
   let remain = amount;
   const chips = [];
 
-  [5000, 1000, 500, 100].map(label => {
+  [10000, 5000, 1000, 500, 100].map(label => {
     const count = parseInt(remain / label);
     chips.unshift({ label, count });
     remain -= label * count;

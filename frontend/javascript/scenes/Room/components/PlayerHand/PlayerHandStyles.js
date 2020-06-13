@@ -2,57 +2,58 @@ import { makeStyles } from '@material-ui/styles';
 
 const styles = () => ({
   '@keyframes deal0l': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% + 320px)', left: 'calc(50% + 120px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal0r': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% + 320px)', left: 'calc(50% + 160px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal1l': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% + 200px)', left: 'calc(50% - 380px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal1r': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% + 200px)', left: 'calc(50% - 340px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal2l': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% - 120px)', left: 'calc(50% - 380px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal2r': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% - 120px)', left: 'calc(50% - 340px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal3l': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% - 260px)', left: 'calc(50% + 100px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal3r': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% - 260px)', left: 'calc(50% + 140px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal4l': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 340px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal4r': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 380px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal5l': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% + 200px)', left: 'calc(50% + 340px)', transform: 'rotateZ(1800deg)' },
   },
   '@keyframes deal5r': {
-    '0%': { transform: 'rotateZ(0deg)' },
+    '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': { top: 'calc(50% + 200px)', left: 'calc(50% + 380px)', transform: 'rotateZ(1800deg)' },
   },
   base: {
     position: 'absolute',
-    top: 'calc(50% - 200px)',
+    top: '50%',
     left: '50%',
+    transform: 'translate(-50%, -50%)',
   },
   dealt0Left: { top: 'calc(50% + 320px)', left: 'calc(50% + 120px)' },
   dealt0Right: { top: 'calc(50% + 320px)', left: 'calc(50% + 160px)' },

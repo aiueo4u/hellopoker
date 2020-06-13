@@ -27,10 +27,12 @@ const PlayerHand = ({ isHero, position, player }) => {
   const invisible = (!isHero && !player.handShow) || dealing;
   const cards = isHero ? gameTable.dealtCards[player.id] : player.cards;
 
-  const leftRank = !invisible ? cards && cards[0].rank : null;
-  const rightRank = !invisible ? cards && cards[1].rank : null;
-  const leftSuit = !invisible ? cards && cards[0].suit : null;
-  const rightSuit = !invisible ? cards && cards[1].suit : null;
+  const isCards = !invisible && cards && cards.length == 2;
+
+  const leftRank = (isCards && cards[0].rank) || null;
+  const rightRank = (isCards && cards[1].rank) || null;
+  const leftSuit = (isCards && cards[0].suit) || null;
+  const rightSuit = (isCards && cards[1].suit) || null;
 
   // TODO: !inGame hidden
 
