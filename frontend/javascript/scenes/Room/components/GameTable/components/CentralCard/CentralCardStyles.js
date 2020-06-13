@@ -4,12 +4,6 @@ const styles = theme => ({
   blindInformation: {
     fontSize: theme.typography.body4.fontSize,
   },
-  board: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
   buttonContainer: {
     position: 'absolute',
     bottom: '20px',

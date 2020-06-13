@@ -46,7 +46,7 @@ class Broadcaster
               else
                 []
               end
-      data = { player_id: table_player.player_id, cards: cards }
+      data = { player_id: table_player.player_id, cards: cards, just_created: manager.just_created }
       ActionCable.server.broadcast "dealt_card_channel_#{table.id}_#{table_player.player_id}", data
     end
   end

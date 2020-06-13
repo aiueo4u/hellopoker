@@ -1,7 +1,7 @@
 class GameManager
   include GameBroadcaster
 
-  attr_reader :table_id, :table, :game_hand, :just_actioned
+  attr_reader :table_id, :table, :game_hand, :just_actioned, :just_created
 
   # 新規ゲームの開始
   def self.create_new_game(table_id, player)
@@ -11,7 +11,7 @@ class GameManager
 
     GameHand.create_new_game(table)
 
-    self.new(table_id)
+    self.new(table_id, just_created: true)
   end
 
   # 最新のゲームを取得
@@ -19,10 +19,11 @@ class GameManager
     GameHand.where(table_id: table_id).order(:id).last
   end
 
-  def initialize(table_id)
+  def initialize(table_id, options = {})
     @table_id = table_id
     @table = Table.find(table_id)
     @game_hand = GameHand.where(table_id: table_id).order(:id).last
+    @just_created = options[:just_created] || false
   end
 
   def just_actioned!

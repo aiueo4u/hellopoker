@@ -86,12 +86,6 @@ const styles = theme => ({
     textOverflow: 'ellipsis',
     width: '90px',
   },
-  handContainer: {
-    position: 'absolute',
-    bottom: '8px',
-    left: '100%',
-    transform: 'translate(-50%, 0%)',
-  },
   panelContainer: ({ player }) => ({
     position: 'absolute',
     top: '50%',

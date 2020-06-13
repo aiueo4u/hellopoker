@@ -1,24 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-  heroHoleCard1: {
-    position: 'absolute',
-    bottom: '5px',
-    left: 'calc(50% + 90px)',
-    transform: 'translate(0%, 0%)',
-    [theme.breakpoints.only('xs')]: {
-      left: 'calc(50% + 40px)',
-    },
-  },
-  heroHoleCard2: {
-    position: 'absolute',
-    bottom: '5px',
-    left: 'calc(50% + 140px)',
-    transform: 'translate(0%, 0%)',
-    [theme.breakpoints.only('xs')]: {
-      left: 'calc(50% + 65px)',
-    },
-  },
   container: ({ player }) => ({
     position: 'absolute',
     bottom: 0,

@@ -10,7 +10,6 @@ import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 
-import BoardCardArea from '../BoardCardArea';
 import GameStartCountdown from '../GameStartCountdown';
 
 import useStyles from './CentralCardStyles';
@@ -50,10 +49,6 @@ const CentralCard = () => {
             <PokerChip amount={gameTable.pot} />
           </div>
         )}
-
-        <Box className={classes.board}>
-          <BoardCardArea gameTable={gameTable} />
-        </Box>
 
         <div className={classes.information}>
           {gameTable.table.name}

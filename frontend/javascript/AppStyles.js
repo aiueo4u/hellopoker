@@ -7,6 +7,7 @@ const styles = theme => ({
     left: '220px',
     width: 'calc(100vw - 220px)',
     height: 'calc(var(--vh, 1vh) * 100)',
+    overflow: 'scroll',
     // border: `1px solid blue`,
   },
   sideBar: {

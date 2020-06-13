@@ -7,7 +7,6 @@ import EmptySeat from 'components/EmptySeat';
 
 import PlayerAvatar from 'components/PlayerAvatar';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
-import PokerCard from 'components/PokerCard';
 
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
@@ -34,8 +33,6 @@ const HeroPlayerPanel = ({ player, tableId }) => {
     );
   }
 
-  const cards = gameTable.dealtCards[player.id];
-
   return (
     <>
       <div className={classes.container}>
@@ -48,18 +45,6 @@ const HeroPlayerPanel = ({ player, tableId }) => {
             <LinearProgress variant="determinate" value={remainTimePercentage} />
           )}
         </div>
-
-        {/* プレイヤーのハンド */}
-        {cards && cards.length === 2 && player.state !== 'folded' && (
-          <>
-            <div className={classes.heroHoleCard1}>
-              <PokerCard rank={cards[0].rank} suit={cards[0].suit} size="medium" />
-            </div>
-            <div className={classes.heroHoleCard2}>
-              <PokerCard rank={cards[1].rank} suit={cards[1].suit} size="medium" />
-            </div>
-          </>
-        )}
       </div>
 
       <PlayerMenuDialog isOpen={isOpen} onClose={closeDialog} player={player} tableId={tableId} />

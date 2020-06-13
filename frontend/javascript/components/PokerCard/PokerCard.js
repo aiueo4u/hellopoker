@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import useStyles from './PokerCardStyles';
 
-const PokerCard = ({ rank, suit, invisible, size }) => {
-  const classes = useStyles({ rank, suit, invisible, size });
+const PokerCard = ({ position, rank, suit, invisible, size }) => {
+  const classes = useStyles({ position, rank, suit, invisible, size });
 
   return (
-    <div>
-      <div className={classNames(classes.card, classes.rank, classes.suit)}>
-        <div className={classes.faceOrBack}>
+    <div className={classes.base}>
+      <div className={classes.inner}>
+        <div className={classes.back} />
+        <div className={classNames(classes.card, classes.rank, classes.suit)}>
           <div className={classes.faceSuit}>
             {suit === 's' && <span>&#9824;</span>}
             {suit === 'h' && <span>&#9829;</span>}
@@ -25,6 +26,7 @@ const PokerCard = ({ rank, suit, invisible, size }) => {
 PokerCard.propTypes = {
   invisible: PropTypes.bool,
   rank: PropTypes.string,
+  position: PropTypes.string,
   size: PropTypes.string,
   suit: PropTypes.string,
 };
@@ -32,6 +34,7 @@ PokerCard.propTypes = {
 PokerCard.defaultProps = {
   invisible: false,
   rank: null,
+  position: null,
   size: null,
   suit: null,
 };

@@ -8,6 +8,8 @@ const initialState = {
   isOpenGameStartCountdown: false,
   timeToStart: 0,
   table: {},
+  justActioned: false,
+  justCreated: false, // ゲーム開始直後かどうか
 };
 
 const GameTableReducer = (state = initialState, action) => {
@@ -28,6 +30,7 @@ const GameTableReducer = (state = initialState, action) => {
       return {
         ...state,
         isOpenGameStartCountdown: false,
+        justCreated: action.justCreated,
         dealtCards: {
           ...state.dealtCards,
           [action.playerId]: action.cards,

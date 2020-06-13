@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/styles';
 
 import PlayerAvatar from 'components/PlayerAvatar';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
-import PokerCard from 'components/PokerCard';
 import PokerChip from 'components/PokerChip';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 
@@ -39,8 +38,6 @@ const PlayerPanel = ({ tableId, position, player }) => {
   }
   */
 
-  const showHand = player.handShow;
-
   return (
     <>
       <Box className={classes.panelContainer} onClick={openDialog}>
@@ -55,20 +52,6 @@ const PlayerPanel = ({ tableId, position, player }) => {
           <div className={classes.dealerButton}>
             <DealerButtonPlate />
           </div>
-        )}
-
-        {gameTable.inGame && !player.handShow && player.state !== null && player.state !== 'folded' && (
-          <Box display="flex" justifyContent="center" className={classes.handContainer}>
-            <PokerCard invisible={!showHand} size="small" />
-            <PokerCard invisible={!showHand} size="small" />
-          </Box>
-        )}
-
-        {player.handShow && player.state !== null && player.state !== 'folded' && (
-          <Box display="flex" justifyContent="center" className={classes.handContainer}>
-            <PokerCard rank={player.cards[0].rank} suit={player.cards[0].suit} />
-            <PokerCard rank={player.cards[1].rank} suit={player.cards[1].suit} />
-          </Box>
         )}
 
         {/* チップ増減結果 */}

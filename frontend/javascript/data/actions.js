@@ -1,14 +1,6 @@
 import { camelizeKeys } from 'humps';
 
-export const dealtCardsReceived = data => {
-  const { cards, playerId } = data;
-  return {
-    type: 'DEALT_CARD_RECEIVED',
-    cards,
-    playerId,
-  };
-};
-
+export const dealtCardsReceived = data => ({ type: 'DEALT_CARD_RECEIVED', ...data });
 export const playerActionReceived = data => {
   const camelizedData = camelizeKeys(data);
 
