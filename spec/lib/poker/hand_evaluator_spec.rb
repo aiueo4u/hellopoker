@@ -177,6 +177,17 @@ describe Poker::HandEvaluator do
       end
     end
 
+    context 'full house: 55588' do
+      let(:board_card_ids) { %w(5h 5s Tc Jd 5d) }
+      let(:hole_card_ids) { %w(8d 8c) }
+
+      it do
+        hand_evaluator.evaluate
+        expect(hand_evaluator.hands).to eq Poker::HandEvaluator::HANDS_FULL_HOUSE
+        expect(hand_evaluator.kickers).to eq [5, 8]
+      end
+    end
+
     context 'four of a kind' do
       let(:board_card_ids) { %w(5h 8h Tc Jd 8s) }
       let(:hole_card_ids) { %w(8d 8c) }

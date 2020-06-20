@@ -59,11 +59,11 @@ module Poker
         kickers << (@cards - cards_4).map(&:strength).sort.last
       elsif cards_fh = Poker::Hand.detect_hands_full_house(@cards)
         hands = HANDS_FULL_HOUSE
-        higher_card = cards_fh.max_by(&:strength)
-        lower_card = cards_fh.min_by(&:strength)
-        msg += "full house, #{higher_card.rank} #{lower_card.rank}"
-        kickers << higher_card.strength
-        kickers << lower_card.strength
+        three_cards = cards_fh.slice(0, 3)
+        two_cards = cards_fh.slice(3, 2)
+        msg += "full house, #{three_cards[0].rank} #{two_cards[0].rank}"
+        kickers << three_cards[0].strength
+        kickers << two_cards[0].strength
       elsif cards_f = Poker::Hand.detect_hands_flush(@cards)
         hands = HANDS_FLUSH
         msg += "flush, '#{cards_f.first.suit}'"

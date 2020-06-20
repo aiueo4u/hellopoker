@@ -13,16 +13,31 @@ const styles = theme => ({
   allin: {
     color: red[400],
   },
+  avatar: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '100%',
+  },
   container: {
     position: 'relative',
     width: '200px',
     height: '150px',
     margin: 'auto',
     boxShadow: theme.shadows[4],
+    overflow: 'hidden',
     [theme.breakpoints.only('xs')]: {
       width: '100px',
       height: '75px',
     },
+  },
+  emptyImage: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   isTurn: {
     animation: '$onHeroTurnAvatarBlinkAnimation 1s infinite',
