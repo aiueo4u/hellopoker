@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -10,7 +11,7 @@ import usePlayerSessionState from 'hooks/usePlayerSessionState';
 
 import useStyles from './ChipAmountControlContainerStyles';
 
-const ChipAmountControlContainer = () => {
+const ChipAmountControlContainer = ({ betButton, resetButton }) => {
   const classes = useStyles();
   const players = usePlayersState();
   const session = usePlayerSessionState();
@@ -21,19 +22,17 @@ const ChipAmountControlContainer = () => {
   );
 
   return (
-    <Box>
-      <Grid container>
+    <Box className={classes.container}>
+      <Grid container spacing={1}>
         <Grid item>
-          <Button className={classes.button} variant="outlined" onClick={() => setBetAmount(minimumBetAmount)}>
-            Min
+          <Button
+            className={classes.button}
+            variant="outlined"
+            onClick={() => setBetAmount(oneThirdPotAmount)}
+            disabled={oneThirdPotAmount < minimumBetAmount}
+          >
+            1 / 3 pot
           </Button>
-        </Grid>
-        <Grid item>
-          {oneThirdPotAmount > minimumBetAmount && (
-            <Button className={classes.button} variant="outlined" onClick={() => setBetAmount(oneThirdPotAmount)}>
-              1 / 3 pot
-            </Button>
-          )}
         </Grid>
         <Grid item>
           <Button className={classes.button} variant="outlined" onClick={() => potBetAmount(1 / 2)}>
@@ -51,7 +50,7 @@ const ChipAmountControlContainer = () => {
           </Button>
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container spacing={1}>
         <Grid item>
           <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(100)}>
             100
@@ -72,14 +71,18 @@ const ChipAmountControlContainer = () => {
             5000
           </Button>
         </Grid>
-        <Grid item>
-          <Button startIcon="+" className={classes.button} variant="outlined" onClick={() => increment(10000)}>
-            10000
-          </Button>
-        </Grid>
       </Grid>
+      <Box mt={2} display="flex" justifyContent="flex-end">
+        {resetButton}
+        {betButton}
+      </Box>
     </Box>
   );
+};
+
+ChipAmountControlContainer.propTypes = {
+  betButton: PropTypes.object.isRequired,
+  resetButton: PropTypes.object.isRequired,
 };
 
 export default ChipAmountControlContainer;

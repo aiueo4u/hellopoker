@@ -22,8 +22,8 @@ const styles = theme => ({
   },
   container: {
     position: 'relative',
-    width: '200px',
-    height: '150px',
+    width: '210px',
+    height: '140px',
     margin: 'auto',
     boxShadow: theme.shadows[4],
     overflow: 'hidden',

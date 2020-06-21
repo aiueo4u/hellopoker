@@ -3,7 +3,6 @@ import { useRouteMatch } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
 
-import PlayerActions from 'components/PlayerActions';
 import Loading from 'components/Loading';
 import NetworkStatusDialog from 'components/NetworkStatusDialog';
 import TableMessageDrawer from 'components/TableMessageDrawer';
@@ -31,7 +30,6 @@ const Room = () => {
   const playerSession = usePlayerSessionState();
   const players = usePlayersState();
   const [initializeAudio] = useInitializeAudio();
-  const currentPlayer = players.find(player => player.id === playerSession.playerId);
 
   const sortedPlayers = selectSortedPlayers(players, playerSession.playerId);
 
@@ -67,9 +65,6 @@ const Room = () => {
           <PlayerHand position={3} player={sortedPlayers[3]} />
           <PlayerHand position={4} player={sortedPlayers[4]} />
           <PlayerHand position={5} player={sortedPlayers[5]} />
-        </Box>
-        <Box className={classes.action}>
-          {currentPlayer && <PlayerActions tableId={tableId} player={currentPlayer} />}
         </Box>
       </div>
       <TableMessageDrawer tableId={tableId} />

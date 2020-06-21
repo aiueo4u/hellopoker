@@ -6,7 +6,7 @@ const styles = () => ({
     top: 'calc(50% + 200px)',
     left: '50%',
     transform: 'translate(-50%, 0%)',
-    height: '180px',
+    height: '160px',
     width: '300px',
     //border: `2px solid red`, // TODO
   },

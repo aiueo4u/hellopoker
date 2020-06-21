@@ -1,10 +1,10 @@
 import { makeStyles } from '@material-ui/styles';
 import { orange } from '@material-ui/core/colors';
 
-const styles = () => ({
+const styles = theme => ({
   button: {
-    color: orange[700],
-    borderColor: orange[700],
+    backgroundColor: orange[700],
+    color: theme.palette.common.white,
     width: '100px',
     //height: '100%',
     //margin: theme.spacing(0, 2),
@@ -15,11 +15,12 @@ const styles = () => ({
     },
   },
   container: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    //width: '400px',
+    padding: theme.spacing(2),
+    //height: '300px',
+    //display: 'flex',
+    //alignItems: 'center',
+    //justifyContent: 'space-around',
   },
 });
 

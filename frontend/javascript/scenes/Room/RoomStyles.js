@@ -2,10 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 
 const styles = theme => ({
-  action: {
-    position: 'relative',
-    height: '80px',
-  },
   background: {
     backgroundColor: green[50],
   },
@@ -25,7 +21,7 @@ const styles = theme => ({
   },
   table: {
     position: 'relative',
-    height: 'calc(100% - 80px)',
+    height: '100%',
     //border: `1px solid red`,
   },
 });

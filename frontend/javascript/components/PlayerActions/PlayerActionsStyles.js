@@ -2,9 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   button: {
-    //position: 'absolute',
-    //top: '50%',
-    //transform: 'translate(-50%, -50%)',
     textTransform: 'none',
     height: '64px',
     width: '64px',
@@ -15,30 +12,43 @@ const styles = theme => ({
       color: theme.palette.common.black,
     },
   },
+  betButton: {
+    textTransform: 'none',
+    touchAction: 'manipulation',
+  },
+  resetButton: {
+    color: theme.palette.grey[300],
+    textTransform: 'none',
+    touchAction: 'manipulation',
+  },
   container: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     //border: `1px solid red`,
   },
-  /*
   leftButton: {
-    [theme.breakpoints.only('xs')]: {
-      left: 'calc(50% - 112px)',
-    },
-    [theme.breakpoints.up('sm')]: {
-      left: 'calc(50% - 135px)',
-    },
+    left: 'calc(50% - 160px)',
   },
   rightButton: {
-    [theme.breakpoints.only('xs')]: {
-      left: 'calc(50% + 112px)',
-    },
-    [theme.breakpoints.up('sm')]: {
-      left: 'calc(50% + 135px)',
-    },
+    left: 'calc(50% + 160px)',
   },
-  */
+  leftContainer: {
+    position: 'absolute',
+    top: '15%',
+    left: 'calc(50% - 130px)',
+    transform: 'translate(-100%, 0%)',
+  },
+  rightContainer: {
+    position: 'absolute',
+    top: '15%',
+    left: 'calc(50% + 130px)',
+    transform: 'translate(0%, 0%)',
+    display: 'flex',
+  },
+  popper: {
+    maxWidth: '500px',
+  },
 });
 
 export default makeStyles(styles);

@@ -4,16 +4,16 @@ const styles = () => ({
   '@keyframes deal0l': {
     '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': {
-      top: 'calc(50% + 350px)',
-      left: 'calc(50% + 120px)',
+      top: 'calc(50% + 330px)',
+      left: 'calc(50% + 110px)',
       transform: 'translate(-50%, -50%) rotateZ(1800deg)',
     },
   },
   '@keyframes deal0r': {
     '0%': { transform: 'translate(-50%, -50%) rotateZ(0deg)' },
     '100%': {
-      top: 'calc(50% + 350px)',
-      left: 'calc(50% + 160px)',
+      top: 'calc(50% + 330px)',
+      left: 'calc(50% + 150px)',
       transform: 'translate(-50%, -50%) rotateZ(1800deg)',
     },
   },
@@ -103,8 +103,8 @@ const styles = () => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
   },
-  dealt0Left: { top: 'calc(50% + 350px)', left: 'calc(50% + 120px)' },
-  dealt0Right: { top: 'calc(50% + 350px)', left: 'calc(50% + 160px)' },
+  dealt0Left: { top: 'calc(50% + 330px)', left: 'calc(50% + 110px)' },
+  dealt0Right: { top: 'calc(50% + 330px)', left: 'calc(50% + 150px)' },
   dealt1Left: { top: 'calc(50% + 200px)', left: 'calc(50% - 380px)' },
   dealt1Right: { top: 'calc(50% + 200px)', left: 'calc(50% - 340px)' },
   dealt2Left: { top: 'calc(50% - 120px)', left: 'calc(50% - 380px)' },
