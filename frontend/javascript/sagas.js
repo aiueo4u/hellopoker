@@ -1,11 +1,10 @@
-import ActionCable from 'actioncable';
 import { camelizeKeys } from 'humps';
 import { eventChannel, END } from 'redux-saga';
 import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
 import Peer from 'skyway-js';
 
 import { nameByActionType } from 'helpers/actionType';
-import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer, postTest } from './api';
+import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer } from './api';
 
 function* handlePlayerTakeSeat(action) {
   const { amount, tableId, playerId, seatNo, buyInAmount } = action;
@@ -169,7 +168,7 @@ const remoteStreams = {};
 
 function* initializeWebRTC(action) {
   const { onSuccess } = action.payload;
-  playerId = yield select(state => state.data.playerSession.playerId);
+  const playerId = yield select(state => state.data.playerSession.playerId);
 
   peer = new Peer(`${playerId}`, { key: '4e7556f9-8a3a-4fa1-a928-6905c1c7c2e1', debug: 3 });
 
@@ -210,21 +209,13 @@ function* handleJoinSession() {
   // ルームに入室
   const sfuRoom = peer.joinRoom('test-room', { mode: 'sfu', stream: localstream });
 
-  sfuRoom.on('open', () => {
-    console.log('joined sfu room');
-  });
-
+  //sfuRoom.on('open', () => {});
   sfuRoom.on('stream', stream => {
-    console.log('on stream', stream);
     const remotePlayerId = stream.peerId;
     const element = document.getElementById(`video-player-${remotePlayerId}`);
     element.autoplay = 'autoplay';
     element.srcObject = stream;
-    remoteStreams[userId] = stream;
-  });
-
-  sfuRoom.on('data', ({ src, data }) => {
-    console.log('on data', data);
+    remoteStreams[remotePlayerId] = stream;
   });
 }
 
