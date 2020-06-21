@@ -6,7 +6,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 //import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/styles';
 
-import PlayerAvatar from 'components/PlayerAvatar';
+import PlayerWindow from 'components/PlayerWindow';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerChip from 'components/PokerChip';
 import DealerButtonPlate from 'components/DealerButtonPlate';
@@ -41,7 +41,7 @@ const PlayerPanel = ({ tableId, position, player }) => {
   return (
     <>
       <Box className={classes.panelContainer} onClick={openDialog}>
-        <PlayerAvatar player={player} isTurn={isPlayerTurn} />
+        <PlayerWindow player={player} isTurn={isPlayerTurn} />
         <Box>
           {isPlayerTurn && !!remainTimePercentage && (
             <LinearProgress variant="determinate" value={remainTimePercentage} />

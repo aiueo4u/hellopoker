@@ -39,8 +39,24 @@ const styles = theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  inner: {
+    width: '100%',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+  },
   isTurn: {
     animation: '$onHeroTurnAvatarBlinkAnimation 1s infinite',
+  },
+  micOffIcon: {
+    position: 'absolute',
+    top: '4px',
+    right: '4px',
+    color: red[700],
+  },
+  micSwitchButton: {
+    visibility: 'hidden',
   },
   nickname: {
     position: 'absolute',
@@ -50,6 +66,10 @@ const styles = theme => ({
     fontSize: theme.typography.caption.fontSize,
     background: theme.palette.grey[900],
     padding: '2px 4px',
+  },
+  startAudioButton: {
+    color: theme.palette.grey[700],
+    fontSize: theme.typography.caption.fontSize,
   },
   status: {
     position: 'absolute',
@@ -77,6 +97,10 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
     maskImage: 'radial-gradient(circle, white 100%, black 100%)',
+    '&:hover $micSwitchButton': {
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      visibility: 'visible',
+    },
   },
 });
 

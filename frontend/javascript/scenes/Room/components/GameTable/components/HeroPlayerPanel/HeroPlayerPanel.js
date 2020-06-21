@@ -5,7 +5,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import EmptySeat from 'components/EmptySeat';
 
-import PlayerAvatar from 'components/PlayerAvatar';
+import PlayerWindow from 'components/PlayerWindow';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 
 import useDialogState from 'hooks/useDialogState';
@@ -37,7 +37,7 @@ const HeroPlayerPanel = ({ player, tableId }) => {
     <>
       <div className={classes.container}>
         {/* プレイヤーのアバターorビデオ */}
-        <PlayerAvatar player={player} isTurn={isHeroTurn} />
+        <PlayerWindow player={player} isTurn={isHeroTurn} />
 
         {/* プレイヤーのスタックと残り時間 */}
         <div className={classes.statusCard} onClick={openDialog}>
