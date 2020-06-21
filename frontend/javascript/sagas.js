@@ -2,6 +2,7 @@ import ActionCable from 'actioncable';
 import { camelizeKeys } from 'humps';
 import { eventChannel, END } from 'redux-saga';
 import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
+import Peer from 'skyway-js';
 
 import { nameByActionType } from 'helpers/actionType';
 import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer, postTest } from './api';
@@ -162,26 +163,15 @@ function* handleSetupGameStartTimer(action) {
   yield race([call(startCountdown, action), take('GAME_START_BUTTON_CLICKED'), take('PLAYER_ACTION_RECEIVED')]);
 }
 
+let peer = {};
 let localstream;
 const remoteStreams = {};
 
-/*
-let currentStreamPlayerId = null;
-function handleChangedPlayerTurn() {
-  return;
-  const { player } = action;
-
-  const localVideo = document.getElementById('bg-video');
-
-  if (currentStreamPlayerId !== player.id) {
-    currentStreamPlayerId = player.id;
-    localVideo.srcObject = remoteStreams[player.id] || localstream;
-  }
-}
-*/
-
-function initializeWebRTC(action) {
+function* initializeWebRTC(action) {
   const { onSuccess } = action.payload;
+  playerId = yield select(state => state.data.playerSession.playerId);
+
+  peer = new Peer(`${playerId}`, { key: '4e7556f9-8a3a-4fa1-a928-6905c1c7c2e1', debug: 3 });
 
   navigator.mediaDevices
     .getUserMedia({
@@ -205,182 +195,38 @@ function initializeWebRTC(action) {
     .catch(error => console.log('Error!: ', error)); // eslint-disable-line
 }
 
-const jwt = localStorage.getItem('playerSession.jwt');
-const cable = ActionCable.createConsumer(`/cable?jwt=${jwt}`);
-let session; // eslint-disable-line
-let playerId;
-
+// カメラをONにした時の処理
 function* handleJoinSession() {
-  playerId = yield select(state => state.data.playerSession.playerId);
-  playerId = `${playerId}`;
+  if (!peer.open) return;
 
+  const playerId = yield select(state => state.data.playerSession.playerId);
+
+  // ローカルにカメラの映像を表示
   const element = document.getElementById(`video-player-${playerId}`);
   element.autoplay = 'autoplay';
   element.muted = true;
   element.srcObject = localstream;
 
-  session = yield cable.subscriptions.create(
-    { channel: 'TestChannel' },
-    {
-      connected: () => {
-        console.log('ActionCable connected.'); // eslint-disable-line
-        broadcastData({
-          type: 'JOIN_ROOM',
-          from: playerId,
-        });
-      },
-      received: data => {
-        if (data.from === playerId) return;
-        console.log('ActionCable received: ', data); // eslint-disable-line
-        switch (data.type) {
-          case 'JOIN_ROOM':
-            return joinRoom(data);
-          case 'EXCHANGE':
-            if (data.to !== playerId) return;
-            return exchange(data);
-          case 'REMOVE_USER':
-            return removeUser(data);
-          default:
-            return;
-        }
-      },
-    }
-  );
-}
+  // ルームに入室
+  const sfuRoom = peer.joinRoom('test-room', { mode: 'sfu', stream: localstream });
 
-const pcPeers = {};
+  sfuRoom.on('open', () => {
+    console.log('joined sfu room');
+  });
 
-/*
-function handleLeaveSession() {
-  for (const user in pcPeers) {
-    pcPeers[user].close();
-  }
-  pcPeers = {};
+  sfuRoom.on('stream', stream => {
+    console.log('on stream', stream);
+    const remotePlayerId = stream.peerId;
+    const element = document.getElementById(`video-player-${remotePlayerId}`);
+    element.autoplay = 'autoplay';
+    element.srcObject = stream;
+    remoteStreams[userId] = stream;
+  });
 
-  session.unsubscribe();
-
-  const remoteVideoContainer = document.getElementById(`video-players-${playerId}`);
-  remoteVideoContainer.innerHTML = '';
-
-  broadcastData({
-    type: 'REMOVE_USER',
-    from: playerId,
+  sfuRoom.on('data', ({ src, data }) => {
+    console.log('on data', data);
   });
 }
-*/
-
-const joinRoom = data => {
-  createPC(data.from, true);
-};
-
-const removeUser = data => {
-  console.log('Removing user', data.from); // eslint-disable-line
-  const video = document.getElementById(`video-player-${data.from}`);
-  if (video) {
-    video.srcObject = null;
-  }
-  delete pcPeers[data.from];
-};
-
-const ice = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
-
-function createPC(userId, isOffer) {
-  const pc = new RTCPeerConnection(ice);
-  pcPeers[userId] = pc;
-
-  for (const track of localstream.getTracks()) {
-    pc.addTrack(track, localstream);
-  }
-
-  pc.onicecandidate = event => {
-    event.candidate &&
-      broadcastData({
-        type: 'EXCHANGE',
-        from: playerId,
-        to: userId,
-        candidate: JSON.stringify(event.candidate),
-      });
-  };
-
-  pc.ontrack = event => {
-    const element = document.getElementById(`video-player-${userId}`);
-    element.autoplay = 'autoplay';
-    element.srcObject = event.streams[0];
-    remoteStreams[userId] = event.streams[0];
-  };
-
-  pc.oniceconnectionstatechange = _ => {
-    if (pc.iceConnectionState === 'disconnected') {
-      console.log('Disconnected: ', userId); // eslint-disable-line
-      broadcastData({
-        type: 'REMOVE_USER',
-        from: userId,
-      });
-    }
-  };
-
-  isOffer &&
-    pc
-      .createOffer()
-      .then(offer => {
-        return pc.setLocalDescription(offer);
-      })
-      .then(() => {
-        broadcastData({
-          type: 'EXCHANGE',
-          from: playerId,
-          to: userId,
-          sdp: JSON.stringify(pc.localDescription),
-        });
-      })
-      .catch(logError);
-
-  return pc;
-}
-
-const exchange = data => {
-  let pc;
-
-  if (!pcPeers[data.from]) {
-    pc = createPC(data.from, false);
-  } else {
-    pc = pcPeers[data.from];
-  }
-
-  if (data.candidate) {
-    pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)))
-      .then(() => console.log('Ice candidate added')) // eslint-disable-line
-      .catch(logError);
-  }
-
-  if (data.sdp) {
-    const sdp = JSON.parse(data.sdp);
-    pc.setRemoteDescription(new RTCSessionDescription(sdp))
-      .then(() => {
-        if (sdp.type === 'offer') {
-          pc.createAnswer()
-            .then(answer => {
-              return pc.setLocalDescription(answer);
-            })
-            .then(() => {
-              broadcastData({
-                type: 'EXCHANGE',
-                from: playerId,
-                to: data.from,
-                sdp: JSON.stringify(pc.localDescription),
-              });
-            });
-        }
-      })
-      .catch(logError);
-  }
-};
-
-function broadcastData(data) {
-  postTest(data);
-}
-
-const logError = error => console.log(error); // eslint-disable-line
 
 export default function* rootSage() {
   yield takeEvery('FETCH_PLAYER', handleFetchPlayer);

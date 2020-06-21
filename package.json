@@ -48,6 +48,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
+    "skyway-js": "^3.0.1",
     "smoothscroll-polyfill": "^0.4.4",
     "stats-webpack-plugin": "^0.7.0",
     "style-loader": "^1.1.3",
