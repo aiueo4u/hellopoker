@@ -9,6 +9,7 @@ import ChipAmountControlContainer from 'components/ChipAmountControlContainer';
 
 import useActions from 'hooks/useActions';
 import useBetAction from 'hooks/useBetAction';
+import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
 
 import useStyles from './PlayerActionsStyles';
@@ -21,6 +22,7 @@ const PlayerActions = ({ player, tableId }) => {
     player,
     gameTable
   );
+  const [isOpen, openTooltip, closeTooltip] = useDialogState();
   const { minimumBetAmount } = useBetAction(player);
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false;
@@ -66,7 +68,8 @@ const PlayerActions = ({ player, tableId }) => {
         )}
         <Box ml={2}>
           <Tooltip
-            //open
+            open={isOpen}
+            onClose={() => {}}
             classes={{ tooltip: classes.popper }}
             placement="left"
             title={
@@ -76,7 +79,10 @@ const PlayerActions = ({ player, tableId }) => {
                     className={classes.betButton}
                     disabled={player.betAmountInState + player.betSize < minimumBetAmount}
                     variant="contained"
-                    onClick={betAction}
+                    onClick={() => {
+                      betAction();
+                      closeTooltip();
+                    }}
                     color="primary"
                   >
                     Bet
@@ -87,12 +93,17 @@ const PlayerActions = ({ player, tableId }) => {
                     Reset
                   </Button>
                 }
+                closeButton={
+                  <Button className={classes.resetButton} onClick={closeTooltip}>
+                    キャンセル
+                  </Button>
+                }
               />
             }
             arrow
             interactive
           >
-            <Button className={classes.button} variant="contained">
+            <Button className={classes.button} variant="contained" onClick={openTooltip}>
               Bet
             </Button>
           </Tooltip>

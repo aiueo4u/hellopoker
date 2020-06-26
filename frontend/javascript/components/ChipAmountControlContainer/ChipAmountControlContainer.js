@@ -11,7 +11,7 @@ import usePlayerSessionState from 'hooks/usePlayerSessionState';
 
 import useStyles from './ChipAmountControlContainerStyles';
 
-const ChipAmountControlContainer = ({ betButton, resetButton }) => {
+const ChipAmountControlContainer = ({ betButton, resetButton, closeButton }) => {
   const classes = useStyles();
   const players = usePlayersState();
   const session = usePlayerSessionState();
@@ -73,6 +73,7 @@ const ChipAmountControlContainer = ({ betButton, resetButton }) => {
         </Grid>
       </Grid>
       <Box mt={2} display="flex" justifyContent="flex-end">
+        {closeButton}
         {resetButton}
         {betButton}
       </Box>
@@ -83,6 +84,7 @@ const ChipAmountControlContainer = ({ betButton, resetButton }) => {
 ChipAmountControlContainer.propTypes = {
   betButton: PropTypes.object.isRequired,
   resetButton: PropTypes.object.isRequired,
+  closeButton: PropTypes.object.isRequired,
 };
 
 export default ChipAmountControlContainer;
