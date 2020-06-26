@@ -26,7 +26,8 @@ const PlayerWindow = ({ player, isTurn }) => {
 
   return (
     <div className={classNames(classes.container, { [classes.isTurn]: isTurn })}>
-      {videoState.isConnected ? (
+      {//videoState.isConnected ? (
+        true ? (
         <div className={classes.videoContainer}>
           <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video} />
           {!videoState.isVideoEnabled && player.imageUrl && (
