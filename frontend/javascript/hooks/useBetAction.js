@@ -3,7 +3,7 @@ import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 
-const useChipAmountControlContainer = player => {
+const useBetAction = player => {
   const dispatch = useDispatch();
   const gameTable = useGameTableState();
   const players = usePlayersState();
@@ -20,7 +20,7 @@ const useChipAmountControlContainer = player => {
   const currentPot = prevRoundPot + currentRoundPot;
 
   // 現ラウンドの自分の追加分
-  const currentRoundHeroBetAmount = heroPlayer.betAmountInState;
+  const currentRoundHeroBetAmount = heroPlayer ? heroPlayer.betAmountInState : 0;
 
   // 現ラウンドの最高ベット額
   const currentRoundMaxBetAmount = Math.max(...players.map(player => player.betAmountInState));
@@ -87,4 +87,4 @@ const useChipAmountControlContainer = player => {
   return { allinBetAmount, increment, potBetAmount, minimumBetAmount, oneThirdPotAmount, setBetAmount };
 };
 
-export default useChipAmountControlContainer;
+export default useBetAction;
