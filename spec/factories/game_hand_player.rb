@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :game_hand_player do
     trait :active do
       state 0
