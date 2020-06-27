@@ -2,7 +2,6 @@ namespace :ridgepole do
   desc 'Apply database schema'
   task apply: :environment do
     ridgepole('--apply', "--file #{schema_file}")
-    Rake::Task['db:schema:dump'].invoke
   end
 
   desc 'Export database schema'
