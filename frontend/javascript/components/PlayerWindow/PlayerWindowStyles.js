@@ -4,7 +4,7 @@ import { orange, red, yellow } from '@material-ui/core/colors';
 const styles = theme => ({
   '@keyframes onHeroTurnAvatarBlinkAnimation': {
     '50%': {
-      boxShadow: `0px 0px 12px 4px ${yellow[700]}`,
+      boxShadow: `0px 0px 12px 12px ${yellow[500]}`,
     },
   },
   actionType: {
