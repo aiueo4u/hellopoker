@@ -13,6 +13,7 @@ import usePlayersState from 'hooks/usePlayersState';
 import GameStartCountdown from '../GameStartCountdown';
 
 import useStyles from './CentralCardStyles';
+import useCentralCard from './hooks/useCentralCard';
 
 const CentralCard = () => {
   const classes = useStyles();
@@ -21,6 +22,8 @@ const CentralCard = () => {
   const players = usePlayersState();
   const dispatch = useDispatch();
   const match = useRouteMatch();
+  const { onClickStartTournament } = useCentralCard();
+
   const tableId = match.params.id;
   const isSeated = players.some(player => player.id === session.playerId);
 
@@ -53,7 +56,17 @@ const CentralCard = () => {
         <div className={classes.information}>
           {gameTable.table.name}
           <div className={classes.blindInformation}>
-            レベル {gameTable.table.sbSize}/{gameTable.table.bbSize}
+            {gameTable.tournament ? (
+              <span>
+                レベル {gameTable.tournament.currentBlindStructure.level}
+                {'  '}
+                {gameTable.tournament.currentBlindStructure.sb}/{gameTable.tournament.currentBlindStructure.bb}
+              </span>
+            ) : (
+              <span>
+                レベル {gameTable.table.sbSize}/{gameTable.table.bbSize}
+              </span>
+            )}
           </div>
         </div>
 
@@ -61,6 +74,15 @@ const CentralCard = () => {
           <Box className={classes.buttonContainer}>
             <Button variant="contained" color="primary" onClick={onGameStart}>
               開始
+            </Button>
+          </Box>
+        )}
+
+        {/* TODO: condition */}
+        {gameTable.tournament && !gameTable.tournament.isStarted && isSeated && (
+          <Box className={classes.buttonContainer}>
+            <Button variant="contained" color="primary" onClick={onClickStartTournament}>
+              トーナメント開始！
             </Button>
           </Box>
         )}

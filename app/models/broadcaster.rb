@@ -28,10 +28,18 @@ class Broadcaster
       table: {
         id: table.id,
         name: table.name,
-        sb_size: table.sb_size,
-        bb_size: table.bb_size,
+        sb_size: table.current_sb_size,
+        bb_size: table.current_bb_size,
       },
     }
+
+    if table.tournament?
+      data[:tournament] = {
+        id: table.tournament.id,
+        is_started: table.tournament.started?,
+        current_blind_structure: table.tournament.current_blind_structure,
+      }
+    end
     ActionCable.server.broadcast "chip_channel_#{table.id}", data
   end
 

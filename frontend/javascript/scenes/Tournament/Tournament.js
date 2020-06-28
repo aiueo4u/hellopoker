@@ -6,12 +6,12 @@ import Grid from '@material-ui/core/Grid';
 
 import Loading from 'components/Loading';
 import TableCard from 'components/TableCard';
-import useTableList from './hooks/useTableList';
-import useStyles from './TableListStyles';
+import useTournament from './hooks/useTournament';
+import useStyles from './TournamentStyles';
 
-function TableList() {
+function Tournament() {
   const classes = useStyles();
-  const [tables, isReady] = useTableList();
+  const [tables, isReady] = useTournament();
 
   if (!isReady) {
     return (
@@ -23,7 +23,6 @@ function TableList() {
 
   return (
     <div className={classes.background}>
-      <Link to="/tournaments">トーナメントはこちら</Link>
       <div className={classes.container}>
         {tables.length > 0 && (
           <Grid container spacing={2}>
@@ -46,4 +45,4 @@ function TableList() {
   );
 }
 
-export default TableList;
+export default Tournament;

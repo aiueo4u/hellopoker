@@ -26,8 +26,7 @@ const PlayerWindow = ({ player, isTurn }) => {
 
   return (
     <div className={classNames(classes.container, { [classes.isTurn]: isTurn })}>
-      {//videoState.isConnected ? (
-        true ? (
+      {videoState.isConnected ? (
         <div className={classes.videoContainer}>
           <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video} />
           {!videoState.isVideoEnabled && player.imageUrl && (
@@ -70,20 +69,44 @@ const PlayerWindow = ({ player, isTurn }) => {
           {isMe && !videoState.isAudioEnabled && <MicOffIcon className={classes.micOffIcon} />}
         </div>
       ) : isMe ? (
-        <div className={classes.inner}>
-          <Box mb={2}>
-            <Button onClick={startVideo} startIcon={<VideocamIcon />} variant="contained" color="primary">
-              ビデオチャット参加
+        <div className={classes.videoContainer}>
+          <div className={classes.inner}>
+            <Box mb={2}>
+              <Button onClick={startVideo} startIcon={<VideocamIcon />} variant="contained" color="primary">
+                ビデオチャット参加
+              </Button>
+            </Box>
+            <Button onClick={startAudio} startIcon={<MicIcon />} size="small" className={classes.startAudioButton}>
+              音声のみで参加
             </Button>
-          </Box>
-          <Button onClick={startAudio} startIcon={<MicIcon />} size="small" className={classes.startAudioButton}>
-            音声のみで参加
-          </Button>
+          </div>
+          <span className={classes.status}>
+            {player.actionType ? (
+              <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
+            ) : player.stack - (player.betSize || 0) === 0 ? (
+              <div className={classes.allin}>オールイン</div>
+            ) : (
+              <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
+            )}
+          </span>
         </div>
-      ) : player.imageUrl ? (
-        <img src={player.imageUrl} alt={player.nickname} className={classes.avatar} />
       ) : (
-        <div className={classes.emptyImage}>{player.nickname}</div>
+        <div className={classes.videoContainer}>
+          {player.imageUrl ? (
+            <img src={player.imageUrl} alt={player.nickname} className={classes.avatar} />
+          ) : (
+            <span className={classes.avatar}>{player.nickname}</span>
+          )}
+          <span className={classes.status}>
+            {player.actionType ? (
+              <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
+            ) : player.stack - (player.betSize || 0) === 0 ? (
+              <div className={classes.allin}>オールイン</div>
+            ) : (
+              <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
+            )}
+          </span>
+        </div>
       )}
     </div>
   );

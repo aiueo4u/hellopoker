@@ -1,4 +1,8 @@
-json.tables @tables.map do |table|
+json.id tournament.id
+json.name tournament.name
+json.is_started tournament.started?
+
+json.tables tournament.tables do |table|
   json.id table.id
   json.name table.name
   json.sb_size table.current_sb_size

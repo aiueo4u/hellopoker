@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/', to: 'home#index'
   get '/login', to: 'home#index'
   resources :tables, to: 'home#index'
+  resources :tournaments, only: %i(index show),  to: 'home#index'
   get '/settings', to: 'home#index'
 
   namespace :api do
@@ -12,6 +13,10 @@ Rails.application.routes.draw do
     resources :players
     resources :tables do
       resources :table_messages, only: %i(index create)
+    end
+
+    resources :tournaments, only: %i(index show create) do
+      post :start, on: :member
     end
 
     resource :game_dealer, only: %i(create) do

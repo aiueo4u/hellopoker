@@ -6,7 +6,17 @@ class Api::TablesController < Api::ApplicationController
   end
 
   def create
-    @table = Table.create!(new_params)
+    command = CreateTableCommand.run(
+      name: new_params[:name],
+      sb_size: new_params[:sb_size],
+      bb_size: new_params[:bb_size],
+    )
+
+    if command.success?
+      @table = command.table
+    else
+      head :bad_request
+    end
   end
 
   private

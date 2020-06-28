@@ -19,7 +19,15 @@ ApiClient.interceptors.response.use(response => {
   return response;
 });
 
+export const createTournament = data => {
+  const body = new FormData();
+  Object.keys(data).map(key => body.append(key, data[key]));
+  return ApiClient.post('tournaments', body);
+};
+
 export const fetchTableMessages = tableId => ApiClient.get(`/tables/${tableId}/table_messages`);
+export const fetchTournament = id => ApiClient.get(`/tournaments/${id}`);
+export const fetchTournaments = () => ApiClient.get(`/tournaments`);
 export const postTest = data => {
   const body = new FormData();
   Object.keys(data).map(key => body.append(key, data[key]));
@@ -87,3 +95,4 @@ export const fetchCurrentUser = () => ApiClient.get(`/players/@me`);
 export const fetchTables = () => ApiClient.get(`/tables`);
 
 export const logout = () => ApiClient.delete(`/session`);
+export const startTournament = id => ApiClient.post(`/tournaments/${id}/start`);

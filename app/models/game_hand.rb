@@ -8,7 +8,12 @@ class GameHand < ApplicationRecord
   MAX_PLAYER_NUM = 6
 
   def self.create_new_game(table)
-    game_hand = self.new(table_id: table.id)
+    game_hand = self.new(
+      table_id: table.id,
+      sb_size: table.current_sb_size,
+      bb_size: table.current_bb_size,
+      ante_size: table.current_ante_size,
+    )
     deck = Poker::Deck.new
 
     # TODO: validate active table player exists
@@ -49,12 +54,12 @@ class GameHand < ApplicationRecord
 
     # SB,BBからブラインド徴収
     sb_table_player = joining_table_players.find { |tp| tp.seat_no == sb_seat_no }
-    sb_amount = [table.sb_size, sb_table_player.stack].min
+    sb_amount = [game_hand.sb_size, sb_table_player.stack].min
     sb_table_player.stack -= sb_amount
     game_hand.build_blind_action(sb_table_player.player_id, sb_amount)
 
     bb_table_player = joining_table_players.find { |tp| tp.seat_no == bb_seat_no }
-    bb_amount = [table.bb_size, bb_table_player.stack].min
+    bb_amount = [game_hand.bb_size, bb_table_player.stack].min
     bb_table_player.stack -= bb_amount
     game_hand.build_blind_action(bb_table_player.player_id, bb_amount)
 
