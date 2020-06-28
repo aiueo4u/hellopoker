@@ -32,12 +32,8 @@ function TournamentList() {
           <Grid container spacing={2}>
             {tournaments.map(tournament => (
               <Grid item key={tournament.id}>
-                <Link to={`/tournaments/${tournament.id}`}>
-                  {tournament.name}
-                </Link>
-                {tournament.isStarted && (
-                  <span>開催中</span>
-                )}
+                <Link to={`/tournaments/${tournament.id}`}>{tournament.name}</Link>
+                {tournament.isStarted && <span>開催中</span>}
               </Grid>
             ))}
           </Grid>

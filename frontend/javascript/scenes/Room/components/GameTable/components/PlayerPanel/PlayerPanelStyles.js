@@ -54,20 +54,20 @@ const styles = theme => ({
         return {
           ...base,
           left: '50%',
-          bottom: 0,
+          bottom: '-30px',
           transform: 'translate(-50%, 100%)',
         };
       case 'left':
         return {
           ...base,
-          top: '50%',
+          top: '55%',
           right: '-40px',
           transform: 'translate(100%, -100%)',
         };
       case 'right':
         return {
           ...base,
-          top: '50%',
+          top: '55%',
           left: '-40px',
           transform: 'translate(-100%, -100%)',
         };

@@ -97,6 +97,102 @@ const styles = () => ({
       transform: 'translate(-50%, -50%) rotateZ(1800deg)',
     },
   },
+  '@keyframes show0l': {
+    '0%': { top: 'calc(50% + 330px)', left: 'calc(50% + 110px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 100px)' },
+  },
+  '@keyframes show0r': {
+    '0%': { top: 'calc(50% + 330px)', left: 'calc(50% + 150px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 140px)' },
+  },
+  '@keyframes show1l': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% - 380px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% - 240px)' },
+  },
+  '@keyframes show1r': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% - 380px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% - 200px)' },
+  },
+  '@keyframes show2l': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% - 380px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% - 240px)' },
+  },
+  '@keyframes show2r': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% - 340px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% - 200px)' },
+  },
+  '@keyframes show3l': {
+    '0%': { top: 'calc(50% - 260px)', left: 'calc(50% + 100px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 100px)' },
+  },
+  '@keyframes show3r': {
+    '0%': { top: 'calc(50% - 260px)', left: 'calc(50% + 140px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 140px)' },
+  },
+  '@keyframes show4l': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% + 340px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 200px)' },
+  },
+  '@keyframes show4r': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% + 380px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 240px)' },
+  },
+  '@keyframes show5l': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% + 340px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 200px)' },
+  },
+  '@keyframes show5r': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% + 380px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 240px)' },
+  },
+  '@keyframes muck0l': {
+    '0%': { top: 'calc(50% + 330px)', left: 'calc(50% + 110px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 100px)', opacity: 0 },
+  },
+  '@keyframes muck0r': {
+    '0%': { top: 'calc(50% + 330px)', left: 'calc(50% + 150px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 140px)', opacity: 0 },
+  },
+  '@keyframes muck1l': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% - 380px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% - 240px)', opacity: 0 },
+  },
+  '@keyframes muck1r': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% - 380px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% - 200px)', opacity: 0 },
+  },
+  '@keyframes muck2l': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% - 380px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% - 240px)', opacity: 0 },
+  },
+  '@keyframes muck2r': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% - 340px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% - 200px)', opacity: 0 },
+  },
+  '@keyframes muck3l': {
+    '0%': { top: 'calc(50% - 260px)', left: 'calc(50% + 100px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 100px)', opacity: 0 },
+  },
+  '@keyframes muck3r': {
+    '0%': { top: 'calc(50% - 260px)', left: 'calc(50% + 140px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 140px)', opacity: 0 },
+  },
+  '@keyframes muck4l': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% + 340px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 200px)', opacity: 0 },
+  },
+  '@keyframes muck4r': {
+    '0%': { top: 'calc(50% - 120px)', left: 'calc(50% + 380px)' },
+    '100%': { top: 'calc(50% - 120px)', left: 'calc(50% + 240px)', opacity: 0 },
+  },
+  '@keyframes muck5l': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% + 340px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 200px)', opacity: 0 },
+  },
+  '@keyframes muck5r': {
+    '0%': { top: 'calc(50% + 200px)', left: 'calc(50% + 380px)' },
+    '100%': { top: 'calc(50% + 100px)', left: 'calc(50% + 240px)', opacity: 0 },
+  },
   base: {
     position: 'absolute',
     top: '50%',
@@ -127,6 +223,30 @@ const styles = () => ({
   position3Right: { animation: '$deal3r 0.6s 0.9s forwards' },
   position4Right: { animation: '$deal4r 0.6s 1.0s forwards' },
   position5Right: { animation: '$deal5r 0.6s 1.1s forwards' },
+  show0Left: { animation: '$show0l 0.6s 0.0s forwards' },
+  show1Left: { animation: '$show1l 0.6s 0.0s forwards' },
+  show2Left: { animation: '$show2l 0.6s 0.0s forwards' },
+  show3Left: { animation: '$show3l 0.6s 0.0s forwards' },
+  show4Left: { animation: '$show4l 0.6s 0.0s forwards' },
+  show5Left: { animation: '$show5l 0.6s 0.0s forwards' },
+  show0Right: { animation: '$show0r 0.6s 0.0s forwards' },
+  show1Right: { animation: '$show1r 0.6s 0.0s forwards' },
+  show2Right: { animation: '$show2r 0.6s 0.0s forwards' },
+  show3Right: { animation: '$show3r 0.6s 0.0s forwards' },
+  show4Right: { animation: '$show4r 0.6s 0.0s forwards' },
+  show5Right: { animation: '$show5r 0.6s 0.0s forwards' },
+  muck0Left: { animation: '$muck0l 0.6s 0.0s forwards' },
+  muck1Left: { animation: '$muck1l 0.6s 0.0s forwards' },
+  muck2Left: { animation: '$muck2l 0.6s 0.0s forwards' },
+  muck3Left: { animation: '$muck3l 0.6s 0.0s forwards' },
+  muck4Left: { animation: '$muck4l 0.6s 0.0s forwards' },
+  muck5Left: { animation: '$muck5l 0.6s 0.0s forwards' },
+  muck0Right: { animation: '$muck0r 0.6s 0.0s forwards' },
+  muck1Right: { animation: '$muck1r 0.6s 0.0s forwards' },
+  muck2Right: { animation: '$muck2r 0.6s 0.0s forwards' },
+  muck3Right: { animation: '$muck3r 0.6s 0.0s forwards' },
+  muck4Right: { animation: '$muck4r 0.6s 0.0s forwards' },
+  muck5Right: { animation: '$muck5r 0.6s 0.0s forwards' },
 });
 
 export default makeStyles(styles);

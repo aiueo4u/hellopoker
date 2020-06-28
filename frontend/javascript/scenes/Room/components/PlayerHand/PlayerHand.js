@@ -8,7 +8,7 @@ import useStyles from './PlayerHandStyles';
 
 const PlayerHand = ({ isHero, position, player }) => {
   if (!player.id) return null;
-  if (player.state === null || player.state === 'folded') return null;
+  if (player.state === null) return null;
 
   const classes = useStyles();
   const gameTable = useGameTableState();
@@ -40,8 +40,11 @@ const PlayerHand = ({ isHero, position, player }) => {
     <div>
       <div
         className={classNames(classes.base, {
-          [classes[`position${position}Left`]]: isDealt,
-          [classes[`dealt${position}Left`]]: !isDealt,
+          [classes[`position${position}Left`]]: !player.handShow && isDealt,
+          [classes[`dealt${position}Left`]]: !player.handShow && !isDealt,
+          [classes[`show${position}Left`]]: !!player.handShow,
+          [classes[`muck${position}Left`]]:
+            player.state === 'folded' || (typeof player.handShow === 'boolean' && !player.handShow),
         })}
         onAnimationEnd={onAnimationEnd}
       >
@@ -49,8 +52,11 @@ const PlayerHand = ({ isHero, position, player }) => {
       </div>
       <div
         className={classNames(classes.base, {
-          [classes[`position${position}Right`]]: isDealt,
-          [classes[`dealt${position}Right`]]: !isDealt,
+          [classes[`position${position}Right`]]: !player.handShow && isDealt,
+          [classes[`dealt${position}Right`]]: !player.handShow && !isDealt,
+          [classes[`show${position}Right`]]: !!player.handShow,
+          [classes[`muck${position}Right`]]:
+            player.state === 'folded' || (typeof player.handShow === 'boolean' && !player.handShow),
         })}
         onAnimationEnd={onAnimationEnd}
       >
