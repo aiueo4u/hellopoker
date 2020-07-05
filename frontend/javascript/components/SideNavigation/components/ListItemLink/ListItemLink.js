@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import useIsCurrentPath from 'hooks/useIsCurrentPath';
 import useStyles from './ListItemLinkStyles';
 
-const ListItemLink = ({ badgeCount, href, icon, label }) => {
+const ListItemLink = ({ badgeCount, closeMenu, href, icon, label }) => {
   const history = useHistory();
 
   const isActive = useIsCurrentPath(href);
@@ -18,6 +18,7 @@ const ListItemLink = ({ badgeCount, href, icon, label }) => {
 
   const onClickLink = () => {
     history.push(href);
+    closeMenu();
   };
 
   return (
@@ -31,6 +32,7 @@ const ListItemLink = ({ badgeCount, href, icon, label }) => {
 
 ListItemLink.propTypes = {
   badgeCount: PropTypes.number,
+  closeMenu: PropTypes.func.isRequired,
   href: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   icon: PropTypes.object.isRequired,

@@ -4,6 +4,9 @@ const styles = () => ({
   head: {
     height: '80px',
   },
+  list: {
+    width: '220px',
+  },
 });
 
 export default makeStyles(styles);

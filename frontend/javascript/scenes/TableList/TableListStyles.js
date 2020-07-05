@@ -15,6 +15,7 @@ const styles = theme => ({
     background: theme.palette.grey[200],
     border: `2px solid ${theme.palette.grey[300]}`,
     borderRadius: '16px',
+    margin: theme.spacing(4),
     padding: theme.spacing(2),
     boxShadow: theme.shadows[2],
   },

@@ -1,11 +1,14 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 import Loading from 'components/Loading';
 import PrivateRoute from 'components/PrivateRoute';
 import SideNavigation from 'components/SideNavigation';
 import useAdjustWindow from 'hooks/useAdjustWindow';
+import useDialogState from 'hooks/useDialogState';
 import useInitApp from 'hooks/useInitApp';
 
 import Home from 'scenes/Home/index.js';
@@ -22,6 +25,7 @@ import useStyles from './AppStyles';
 function App() {
   const classes = useStyles();
   const { isReady } = useSelector(state => state.data.playerSession);
+  const [isOpen, openMenu, closeMenu] = useDialogState();
   useAdjustWindow();
   useInitApp();
 
@@ -32,9 +36,6 @@ function App() {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route>
-          <div className={classes.sideBar}>
-            <SideNavigation />
-          </div>
           <div className={classes.content}>
             <Switch>
               <PrivateRoute exact path="/" component={Home} />
@@ -46,6 +47,10 @@ function App() {
               <PrivateRoute exact path="/tournaments/:id" component={Tournament} />
             </Switch>
           </div>
+          <IconButton className={classes.menuIconButton} onClick={openMenu}>
+            <MenuIcon />
+          </IconButton>
+          <SideNavigation isOpen={isOpen} onClose={closeMenu} />
         </Route>
       </Switch>
     </Router>
