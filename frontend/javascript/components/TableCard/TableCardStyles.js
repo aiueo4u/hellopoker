@@ -10,8 +10,6 @@ const styles = theme => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '150px',
-    height: '80px',
     borderRadius: '40px',
     border: `1px solid ${green[200]}`,
     backgroundColor: green[100],
@@ -21,6 +19,14 @@ const styles = theme => ({
       boxShadow: theme.shadows[8],
       backgroundColor: green[200],
     },
+    [theme.breakpoints.up('sm')]: {
+      width: '150px',
+      height: '80px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      width: '80px',
+      height: '120px',
+    },
   },
   tableContainer: {
     position: 'relative',
@@ -28,6 +34,9 @@ const styles = theme => ({
     height: '200px',
     background: theme.palette.grey[100],
     borderRadius: '8px',
+    [theme.breakpoints.only('xs')]: {
+      width: '140px',
+    },
   },
   tableBlind: {
     color: theme.palette.grey[700],

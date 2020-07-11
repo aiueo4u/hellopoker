@@ -26,7 +26,7 @@ function TableList() {
       {/*<Link to="/tournaments">トーナメントはこちら</Link>*/}
       <div className={classes.container}>
         {tables.length > 0 && (
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justify="space-around">
             {tables.map(table => (
               <Grid item key={table.id}>
                 <TableCard table={table} />

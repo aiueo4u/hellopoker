@@ -27,7 +27,7 @@ const BoardCard = ({ position, gameTable }) => {
     <div
       className={classNames(classes.card, {
         [classes[`card${position}`]]: animated,
-        [classes[`card${position}Animated`]]: !invisible,
+        [classes[`card${position}Animated`]]: !playAnimation && !invisible,
       })}
     >
       <PokerCard rank={rank} suit={suit} invisible={invisible} />

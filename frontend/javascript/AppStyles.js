@@ -2,9 +2,14 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   content: {
-    width: '100%',
-    //height: 'calc(var(--vh, 1vh) * 100)',
     overflow: 'scroll',
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '800px',
+      minHeight: '600px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      width: '100%',
+    },
   },
   menuIconButton: {
     position: 'fixed',

@@ -5,8 +5,8 @@ const styles = theme => ({
   background: {
     backgroundColor: green[50],
     width: '100%',
-    height: 'calc(var(--vh, 1vh) * 100)',
-    padding: theme.spacing(4),
+    minHeight: 'calc(var(--vh, 1vh) * 100)',
+    padding: theme.spacing(8, 2, 2),
   },
   button: {
     width: '220px',
@@ -15,7 +15,6 @@ const styles = theme => ({
     background: theme.palette.grey[200],
     border: `2px solid ${theme.palette.grey[300]}`,
     borderRadius: '16px',
-    margin: theme.spacing(4),
     padding: theme.spacing(2),
     boxShadow: theme.shadows[2],
   },
@@ -29,7 +28,6 @@ const styles = theme => ({
     //backgroundColor: theme.palette.grey[100],
     //borderRadius: theme.spacing(1 / 2),
     textAlign: 'right',
-    margin: theme.spacing(2, 0),
   },
 });
 

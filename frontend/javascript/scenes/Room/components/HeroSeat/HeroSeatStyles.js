@@ -1,13 +1,20 @@
 import { makeStyles } from '@material-ui/styles';
 
-const styles = () => ({
+const styles = theme => ({
   container: {
     position: 'absolute',
-    top: 'calc(50% + 200px)',
     left: '50%',
     transform: 'translate(-50%, 0%)',
-    height: '160px',
-    width: '300px',
+    [theme.breakpoints.up('sm')]: {
+      top: 'calc(50% + 200px)',
+      width: '320px',
+      height: '180px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      top: 'calc(50% + 240px)',
+      width: '94px',
+      height: '54px',
+    },
     //border: `2px solid red`, // TODO
   },
 });

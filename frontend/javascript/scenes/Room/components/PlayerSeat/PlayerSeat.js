@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import EmptySeat from 'components/EmptySeat';
 import PlayerPanel from '../GameTable/components/PlayerPanel';
@@ -11,7 +12,7 @@ const PlayerSeat = ({ player, position, tableId }) => {
   const panelPosition = position === 3 ? 'top' : position < 3 ? 'left' : 'right';
 
   return (
-    <div className={classes.playerContainer}>
+    <div className={classNames(classes.base, classes.playerContainer)}>
       {player.id ? (
         <PlayerPanel player={player} tableId={tableId} position={panelPosition} />
       ) : (

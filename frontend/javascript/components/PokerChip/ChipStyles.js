@@ -8,6 +8,9 @@ const styles = theme => ({
     width: '40px',
     height: '20px',
     //border: `1px solid ${theme.palette.common.black}`,
+    [theme.breakpoints.only('xs')]: {
+      width: '24px',
+    },
   }),
   label: {
     color: theme.palette.common.black,

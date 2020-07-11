@@ -11,10 +11,12 @@ const styles = theme => ({
   container: {
     position: 'relative',
     height: 'calc(var(--vh, 1vh) * 100)',
-    maxWidth: '1280px',
-    minWidth: '800px',
-    minHeight: '600px',
     margin: 'auto',
+    [theme.breakpoints.up('sm')]: {
+      maxWidth: '1280px',
+      minWidth: '800px',
+      minHeight: '600px',
+    },
     [theme.breakpoints.only('xs')]: {
       width: '100%',
     },

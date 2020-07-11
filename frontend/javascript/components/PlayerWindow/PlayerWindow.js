@@ -11,6 +11,7 @@ import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import { nameByActionType } from 'helpers/actionType';
 
+import PlayerAvatarWindow from './components/PlayerAvatarWindow';
 import usePlayerWindow from './hooks/usePlayerWindow';
 import useStyles from './PlayerWindowStyles';
 
@@ -19,7 +20,7 @@ const PlayerWindow = ({ player, isTurn }) => {
   const videoState = useSelector(state => state.data.video);
   const { playerId } = useSelector(state => state.data.playerSession);
 
-  const { startVideo, startAudio, enableAudio, disableAudio, enableVideo, disableVideo } = usePlayerWindow();
+  const { enableAudio, disableAudio, enableVideo, disableVideo } = usePlayerWindow();
 
   if (!player) return null;
   const isMe = playerId === player.id;
@@ -68,45 +69,8 @@ const PlayerWindow = ({ player, isTurn }) => {
           )}
           {isMe && !videoState.isAudioEnabled && <MicOffIcon className={classes.micOffIcon} />}
         </div>
-      ) : isMe ? (
-        <div className={classes.videoContainer}>
-          <div className={classes.inner}>
-            <Box mb={2}>
-              <Button onClick={startVideo} startIcon={<VideocamIcon />} variant="contained" color="primary">
-                ビデオチャット参加
-              </Button>
-            </Box>
-            <Button onClick={startAudio} startIcon={<MicIcon />} size="small" className={classes.startAudioButton}>
-              音声のみで参加
-            </Button>
-          </div>
-          <span className={classes.status}>
-            {player.actionType ? (
-              <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
-            ) : player.stack - (player.betSize || 0) === 0 ? (
-              <div className={classes.allin}>オールイン</div>
-            ) : (
-              <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
-            )}
-          </span>
-        </div>
       ) : (
-        <div className={classes.videoContainer}>
-          {player.imageUrl ? (
-            <img src={player.imageUrl} alt={player.nickname} className={classes.avatar} />
-          ) : (
-            <span className={classes.avatar}>{player.nickname}</span>
-          )}
-          <span className={classes.status}>
-            {player.actionType ? (
-              <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
-            ) : player.stack - (player.betSize || 0) === 0 ? (
-              <div className={classes.allin}>オールイン</div>
-            ) : (
-              <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
-            )}
-          </span>
-        </div>
+        <PlayerAvatarWindow player={player} isMe={isMe} />
       )}
     </div>
   );
