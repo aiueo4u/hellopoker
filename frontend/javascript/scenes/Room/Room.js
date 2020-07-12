@@ -19,6 +19,8 @@ import GameTable from './components/GameTable';
 import HeroSeat from './components/HeroSeat';
 import PlayerSeat from './components/PlayerSeat';
 import BoardCard from './components/BoardCard';
+import WelcomeDialog from './components/WelcomeDialog';
+import useRoom from './hooks/useRoom';
 import useStyles from './RoomStyles';
 import selectSortedPlayers from './selectors/selectSortedPlayers';
 
@@ -27,12 +29,13 @@ const Room = () => {
   const match = useRouteMatch();
   const tableId = match.params.id;
   const gameTable = useGameTableState();
-  const playerSession = usePlayerSessionState();
+  const { playerId } = usePlayerSessionState();
   const players = usePlayersState();
   const [initializeAudio] = useInitializeAudio();
 
-  const sortedPlayers = selectSortedPlayers(players, playerSession.playerId);
+  const sortedPlayers = selectSortedPlayers(players, playerId);
 
+  const { isOpenWelcomeDialog, enterRoomAsViewer, enterRoomAsPlayer } = useRoom();
   useChipChannel(tableId);
   useDealtCardChannel(tableId);
 
@@ -44,8 +47,15 @@ const Room = () => {
         {/* ネットワーク接続中のダイアログ */}
         <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
 
+        {/* WebRTC接続確認ダイアログ */}
+        <WelcomeDialog
+          isOpen={isOpenWelcomeDialog}
+          enterRoomAsViewer={enterRoomAsViewer}
+          enterRoomAsPlayer={enterRoomAsPlayer}
+        />
+
         <Box className={classes.table}>
-          <GameTable />
+          <GameTable heroPositionPlayer={sortedPlayers[0]} />
           <BoardCard position={0} gameTable={gameTable} />
           <BoardCard position={1} gameTable={gameTable} />
           <BoardCard position={2} gameTable={gameTable} />
@@ -59,7 +69,7 @@ const Room = () => {
           <PlayerSeat position={4} player={sortedPlayers[4]} tableId={tableId} />
           <PlayerSeat position={5} player={sortedPlayers[5]} tableId={tableId} />
 
-          <PlayerHand position={0} player={sortedPlayers[0]} isHero />
+          <PlayerHand position={0} player={sortedPlayers[0]} isHero={sortedPlayers[0].id === playerId} />
           <PlayerHand position={1} player={sortedPlayers[1]} />
           <PlayerHand position={2} player={sortedPlayers[2]} />
           <PlayerHand position={3} player={sortedPlayers[3]} />

@@ -35,7 +35,7 @@ class Api::GameDealersController < Api::ApplicationController
   def create
     command = CreateGameActionCommand.run(
       table_id: params[:table_id].to_i,
-      current_player_id: params[:player_id].to_i,
+      current_player_id: current_player.id,
       type: params[:type],
       amount: params[:amount].to_i,
     )

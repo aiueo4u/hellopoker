@@ -52,11 +52,10 @@ export const addNpcPlayer = (tableId, seatNo) => {
   return ApiClient.post('/game_dealer/add_npc_player', body);
 };
 
-export const actionToGameDealer = (type, tableId, playerId, amount = null) => {
+export const actionToGameDealer = (type, tableId, amount = null) => {
   const body = new FormData();
   body.append('type', type);
   body.append('table_id', tableId);
-  body.append('player_id', playerId);
   if (amount) body.append('amount', amount);
   return ApiClient.post('/game_dealer', body);
 };

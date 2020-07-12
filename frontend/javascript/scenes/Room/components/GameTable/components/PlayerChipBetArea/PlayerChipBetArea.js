@@ -1,25 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import PokerChip from 'components/PokerChip';
 import useGameTableState from 'hooks/useGameTableState';
-import usePlayersState from 'hooks/usePlayersState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 
 import styles from './PlayerChipBetAreaStyles';
 
 const useStyles = makeStyles(styles);
 
-const PlayerChipBetArea = () => {
+const PlayerChipBetArea = ({ player }) => {
   const gameTable = useGameTableState();
-  const players = usePlayersState();
   const session = usePlayerSessionState();
-
-  const player = players.find(player => player.id === session.playerId);
   const classes = useStyles({ player });
 
   if (!player) return null;
+
+  const isMe = player.id === session.playerId;
 
   return (
     <div className={classes.container}>
@@ -34,7 +33,7 @@ const PlayerChipBetArea = () => {
       {// ベット額
       gameTable.inGame && !!(player.betAmountInState || player.betSize) && (
         <span className={classes.betArea}>
-          {player.betSize
+          {player.betSize && isMe
             ? `${player.betAmountInState || 0} → ${player.betAmountInState + player.betSize}`
             : player.betAmountInState > 0 && <PokerChip amount={player.betAmountInState} />}
         </span>
@@ -44,6 +43,14 @@ const PlayerChipBetArea = () => {
       gameTable.inGame && player.seatNo === gameTable.buttonSeatNo && <DealerButtonPlate />}
     </div>
   );
+};
+
+PlayerChipBetArea.propTypes = {
+  player: PropTypes.object,
+};
+
+PlayerChipBetArea.defaultProps = {
+  player: null,
 };
 
 export default PlayerChipBetArea;

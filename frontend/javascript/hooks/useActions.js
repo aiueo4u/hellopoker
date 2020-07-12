@@ -12,27 +12,27 @@ const useActions = (tableId, player, gameTable) => {
 
   const betAction = async () => {
     setLoading(true);
-    await actionToGameDealer('PLAYER_ACTION_BET_CHIPS', tableId, player.id, player.betSize);
+    await actionToGameDealer('PLAYER_ACTION_BET_CHIPS', tableId, player.betSize);
   };
 
   const callAction = async () => {
     setLoading(true);
-    await actionToGameDealer('PLAYER_ACTION_CALL', tableId, player.id);
+    await actionToGameDealer('PLAYER_ACTION_CALL', tableId);
   };
 
   const checkAction = async () => {
     setLoading(true);
-    await actionToGameDealer('PLAYER_ACTION_CHECK', tableId, player.id);
+    await actionToGameDealer('PLAYER_ACTION_CHECK', tableId);
   };
 
   const foldAction = async () => {
     setLoading(true);
-    await actionToGameDealer('PLAYER_ACTION_FOLD', tableId, player.id);
+    await actionToGameDealer('PLAYER_ACTION_FOLD', tableId);
   };
 
   const muckAction = async () => {
     setLoading(true);
-    await actionToGameDealer('PLAYER_ACTION_MUCK_HAND', tableId, player.id);
+    await actionToGameDealer('PLAYER_ACTION_MUCK_HAND', tableId);
   };
 
   const resetBetSize = () => {
@@ -41,7 +41,7 @@ const useActions = (tableId, player, gameTable) => {
 
   const showAction = async () => {
     setLoading(true);
-    await actionToGameDealer('PLAYER_ACTION_SHOW_HAND', tableId, player.id);
+    await actionToGameDealer('PLAYER_ACTION_SHOW_HAND', tableId);
   };
 
   return [betAction, callAction, checkAction, foldAction, muckAction, resetBetSize, showAction, loading];

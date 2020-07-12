@@ -11,6 +11,7 @@ import useActions from 'hooks/useActions';
 import useBetAction from 'hooks/useBetAction';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
+import usePlayerSessionState from 'hooks/usePlayerSessionState';
 
 import useStyles from './PlayerActionsStyles';
 
@@ -24,10 +25,12 @@ const PlayerActions = ({ player, tableId }) => {
   );
   const [isOpen, openTooltip, closeTooltip] = useDialogState();
   const { minimumBetAmount } = useBetAction(player);
+  const { playerId } = usePlayerSessionState();
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false;
   const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seatNo;
 
+  if (playerId !== player.id) return null;
   if (loading || !gameTable.inGame || gameTable.currentSeatNo !== player.seatNo) return null;
 
   // Muck or Show

@@ -1,7 +1,6 @@
 import { camelizeKeys } from 'humps';
 import { eventChannel, END } from 'redux-saga';
 import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
-import Peer from 'skyway-js';
 
 import { nameByActionType } from 'helpers/actionType';
 import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer } from './api';
@@ -162,83 +161,6 @@ function* handleSetupGameStartTimer(action) {
   yield race([call(startCountdown, action), take('GAME_START_BUTTON_CLICKED'), take('PLAYER_ACTION_RECEIVED')]);
 }
 
-let peer = {};
-let localstream;
-const remoteStreams = {};
-
-function* initializeWebRTC(action) {
-  const { isAudioEnabled, isVideoEnabled, onSuccess } = action.payload;
-  const playerId = yield select(state => state.data.playerSession.playerId);
-
-  peer = new Peer(`${playerId}`, { key: '4e7556f9-8a3a-4fa1-a928-6905c1c7c2e1', debug: 3 });
-
-  const constraints = {
-    audio: isAudioEnabled,
-    video: isVideoEnabled
-      ? {
-          width: {
-            max: 320,
-          },
-          height: {
-            max: 240,
-          },
-          frameRate: {
-            max: 10,
-          },
-        }
-      : false,
-  };
-
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then(stream => {
-      localstream = stream;
-      if (onSuccess) onSuccess();
-    })
-    .catch(error => console.log('Error!: ', error)); // eslint-disable-line
-}
-
-// カメラをONにした時の処理
-function* handleJoinSession() {
-  if (!peer.open) return;
-
-  const playerId = yield select(state => state.data.playerSession.playerId);
-
-  // ローカルにカメラの映像を表示
-  const element = document.getElementById(`video-player-${playerId}`);
-  element.autoplay = 'autoplay';
-  element.muted = true;
-  element.srcObject = localstream;
-
-  // ルームに入室
-  const sfuRoom = peer.joinRoom('test-room', { mode: 'sfu', stream: localstream });
-
-  //sfuRoom.on('open', () => {});
-  sfuRoom.on('stream', stream => {
-    const remotePlayerId = stream.peerId;
-    const element = document.getElementById(`video-player-${remotePlayerId}`);
-    element.autoplay = 'autoplay';
-    element.srcObject = stream;
-    remoteStreams[remotePlayerId] = stream;
-  });
-}
-
-function handleDisableMicAudio() {
-  localstream.getAudioTracks().forEach(track => (track.enabled = false));
-}
-
-function handleEnableMicAudio() {
-  localstream.getAudioTracks().forEach(track => (track.enabled = true));
-}
-
-function handleDisableVideo() {
-  localstream.getVideoTracks().forEach(track => (track.enabled = false));
-}
-
-function handleEnableVideo() {
-  localstream.getVideoTracks().forEach(track => (track.enabled = true));
-}
-
 export default function* rootSage() {
   yield takeEvery('FETCH_PLAYER', handleFetchPlayer);
   yield takeEvery('GAME_START_BUTTON_CLICKED', handleGameStartButtonClicked);
@@ -248,13 +170,4 @@ export default function* rootSage() {
 
   // TODO: 観戦時にはこれを無効にしたい
   yield takeEvery('SETUP_GAME_START_TIMER', handleSetupGameStartTimer);
-
-  yield takeEvery('HANDLE_JOIN_SESSION', handleJoinSession);
-  //yield takeEvery("HANDLE_LEAVE_SESSION", handleLeaveSession);
-  yield takeEvery('INITIALIZE_WEBRTC', initializeWebRTC);
-  //yield takeEvery('CHANGED_PLAYER_TURN', handleChangedPlayerTurn);
-  yield takeEvery('DISABLE_MIC_AUDIO', handleDisableMicAudio);
-  yield takeEvery('ENABLE_MIC_AUDIO', handleEnableMicAudio);
-  yield takeEvery('DISABLE_VIDEO', handleDisableVideo);
-  yield takeEvery('ENABLE_VIDEO', handleEnableVideo);
 }

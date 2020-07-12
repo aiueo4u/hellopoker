@@ -19,18 +19,19 @@ const PlayerWindow = ({ player, isTurn }) => {
   const classes = useStyles({ player });
   const videoState = useSelector(state => state.data.video);
   const { playerId } = useSelector(state => state.data.playerSession);
+  const { enableAudio, disableAudio, enableVideo, disableVideo } = usePlayerWindow(player);
 
-  const { enableAudio, disableAudio, enableVideo, disableVideo } = usePlayerWindow();
+  const isVideoDistributor = playerId => !!videoState.streamByPlayerId[playerId];
 
   if (!player) return null;
   const isMe = playerId === player.id;
 
   return (
     <div className={classNames(classes.container, { [classes.isTurn]: isTurn })}>
-      {videoState.isConnected ? (
+      {isVideoDistributor(player.id) ? (
         <div className={classes.videoContainer}>
           <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video} />
-          {!videoState.isVideoEnabled && player.imageUrl && (
+          {!videoState.isVideoEnabledByPlayerId[player.id] && player.imageUrl && (
             <img src={player.imageUrl} alt={player.nickname} className={classes.avatar} />
           )}
           <span className={classes.nickname}>{player.nickname}</span>
@@ -46,7 +47,7 @@ const PlayerWindow = ({ player, isTurn }) => {
           {isMe && (
             <div className={classes.inner}>
               <Box mb={2}>
-                {videoState.isVideoEnabled ? (
+                {videoState.isVideoEnabledByPlayerId[player.id] ? (
                   <Button className={classes.micSwitchButton} startIcon={<VideocamIcon />} onClick={disableVideo}>
                     ビデオをOFFにする
                   </Button>
@@ -56,7 +57,7 @@ const PlayerWindow = ({ player, isTurn }) => {
                   </Button>
                 )}
               </Box>
-              {videoState.isAudioEnabled ? (
+              {videoState.isAudioEnabledByPlayerId[player.id] ? (
                 <Button className={classes.micSwitchButton} startIcon={<MicIcon />} onClick={disableAudio}>
                   マイクをOFFにする
                 </Button>
@@ -67,7 +68,7 @@ const PlayerWindow = ({ player, isTurn }) => {
               )}
             </div>
           )}
-          {isMe && !videoState.isAudioEnabled && <MicOffIcon className={classes.micOffIcon} />}
+          {isMe && !videoState.isAudioEnabledByPlayerId[player.id] && <MicOffIcon className={classes.micOffIcon} />}
         </div>
       ) : (
         <PlayerAvatarWindow player={player} isMe={isMe} />
