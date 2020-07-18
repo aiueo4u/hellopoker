@@ -4,6 +4,7 @@ import Peer from 'skyway-js';
 
 import useDialogState from 'hooks/useDialogState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
+import { startRoomViewing } from 'data/actions';
 
 const useRoom = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const useRoom = () => {
     };
   }, []);
 
+  // SFU接続
   const joinRoomAsViewer = () => {
     const sfuRoom = peer.joinRoom('test-room', { mode: 'sfu' });
     sfuRoom.on('stream', stream => {
@@ -45,10 +47,12 @@ const useRoom = () => {
 
   // 観戦者としてルーム入室
   const enterRoomAsViewer = () => {
+    dispatch(startRoomViewing());
     joinRoomAsViewer();
     closeWelcomeDialog();
   };
 
+  // プレイヤーとしてルーム入室
   const enterRoomAsPlayer = () => {
     joinRoomAsViewer();
     closeWelcomeDialog();

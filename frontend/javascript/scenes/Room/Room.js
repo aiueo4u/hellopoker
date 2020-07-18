@@ -13,6 +13,7 @@ import useGameTableState from 'hooks/useGameTableState';
 import useInitializeAudio from 'hooks/useInitializeAudio';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
+import useRoomViewerChannel from 'hooks/useRoomViewerChannel';
 
 import PlayerHand from './components/PlayerHand';
 import GameTable from './components/GameTable';
@@ -38,6 +39,7 @@ const Room = () => {
   const { isOpenWelcomeDialog, enterRoomAsViewer, enterRoomAsPlayer } = useRoom();
   useChipChannel(tableId);
   useDealtCardChannel(tableId);
+  useRoomViewerChannel(tableId);
 
   if (!gameTable.isReady) return <Loading />;
 

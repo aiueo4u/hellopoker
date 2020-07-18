@@ -13,10 +13,12 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 import Loading from 'components/Loading';
 import useStyles from './WelcomeDialogStyles';
+import useWelcomeDialog from './hooks/useWelcomeDialog';
 
 const WelcomeDialog = ({ isOpen, enterRoomAsPlayer, enterRoomAsViewer }) => {
   const classes = useStyles();
   const { isPeerOpen } = useSelector(state => state.data.video);
+  const { isSeated } = useWelcomeDialog();
 
   return (
     <Dialog open={isOpen}>
@@ -35,12 +37,14 @@ const WelcomeDialog = ({ isOpen, enterRoomAsPlayer, enterRoomAsViewer }) => {
                 プレイする
               </Button>
             </Box>
-            <Box mt={2}>
-              <Button onClick={enterRoomAsViewer} startIcon={<PeopleIcon />} variant="outlined" fullWidth>
-                観戦する
-              </Button>
-              <Typography className={classes.caption}>※ 参加プレイヤーのハンドを見ることができます。</Typography>
-            </Box>
+            {!isSeated && (
+              <Box mt={2}>
+                <Button onClick={enterRoomAsViewer} startIcon={<PeopleIcon />} variant="outlined" fullWidth>
+                  観戦する
+                </Button>
+                <Typography className={classes.caption}>※ 参加プレイヤーのハンドを見ることができます。</Typography>
+              </Box>
+            )}
           </Box>
         ) : (
           <Loading />

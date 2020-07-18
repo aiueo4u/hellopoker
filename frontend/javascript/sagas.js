@@ -75,41 +75,43 @@ function* openBoardCard(reachedRounds, boardCards, time) {
 const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
 function* handleBeforePlayerActionReceived(action) {
+  const { boardCards, gameHandState, lastAction, justActioned, reachingRounds, players, tableId } = action;
+
   // プレイヤーのアクション名を表示
-  if (action.lastAction && nameByActionType[action.lastAction.actionType]) {
+  if (lastAction && nameByActionType[lastAction.actionType]) {
     const playerSession = yield select(state => state.data.playerSession);
 
     yield put({
       type: 'OTHER_PLAYER_ACTION',
-      actionType: action.lastAction.actionType,
-      playerId: action.lastAction.playerId,
+      actionType: lastAction.actionType,
+      playerId: lastAction.playerId,
     });
 
     // 自分以外のアクションの場合は少し表示したままにする
-    if (action.lastAction.playerId !== playerSession.playerId) {
+    if (lastAction.playerId !== playerSession.playerId) {
       yield call(sleep, 500);
     }
   }
 
   // ALLIN時のボードオープン用
-  if (action.justActioned && action.reachingRounds.length > 0) {
+  if (justActioned && reachingRounds.length > 0) {
     // 対決するプレイヤーのハンドをオープン
-    yield put({ type: 'SHOW_ACTIVE_PLAYER_CARDS', players: action.players });
+    yield put({ type: 'SHOW_ACTIVE_PLAYER_CARDS', players });
 
     let reachedRounds = {};
-    if (!action.reachingRounds.includes('flop')) {
+    if (!reachingRounds.includes('flop')) {
       reachedRounds = {
-        flop: action.reachingRounds.includes('turn') || action.reachingRounds.includes('river'),
-        turn: !action.reachingRounds.includes('turn') && action.reachingRounds.includes('river'),
+        flop: reachingRounds.includes('turn') || reachingRounds.includes('river'),
+        turn: !reachingRounds.includes('turn') && reachingRounds.includes('river'),
       };
-      yield call(openBoardCard, reachedRounds, action.boardCards, 0);
+      yield call(openBoardCard, reachedRounds, boardCards, 0);
     }
 
     // 一枚ずつカードをオープンしていくやつ
     yield all(
-      action.reachingRounds.map((round, i) => {
+      reachingRounds.map((round, i) => {
         reachedRounds = { ...reachedRounds, [round]: true };
-        return call(openBoardCard, reachedRounds, action.boardCards, (i + 1) * 2);
+        return call(openBoardCard, reachedRounds, boardCards, (i + 1) * 2);
       })
     );
     yield call(sleep, 2000); // オープンし終わったら少し余韻を残す
@@ -119,10 +121,10 @@ function* handleBeforePlayerActionReceived(action) {
   yield put({ ...action, type: 'PLAYER_ACTION_RECEIVED' });
 
   // ゲーム終了なら次ゲームの自動開始タイマーをセット
-  if (action.gameHandState === 'finished') {
+  if (gameHandState === 'finished') {
     yield put({
       type: 'SETUP_GAME_START_TIMER',
-      tableId: action.tableId,
+      tableId,
       seconds: 30,
     });
   }

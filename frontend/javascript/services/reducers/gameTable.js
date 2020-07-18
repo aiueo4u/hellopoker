@@ -78,9 +78,9 @@ const GameTableReducer = (state = initialState, action) => {
         selectingSeatNo: null,
       });
     case 'ACTION_CABLE_CONNECTED':
-      return Object.assign({}, state, { reconnectingActionCable: false });
+      return { ...state, reconnectingActionCable: false };
     case 'ACTION_CABLE_DISCONNECTED':
-      return Object.assign({}, state, { reconnectingActionCable: true });
+      return { ...state, reconnectingActionCable: true };
     default:
       return state;
   }

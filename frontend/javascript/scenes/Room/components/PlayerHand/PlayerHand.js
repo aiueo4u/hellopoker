@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import PokerCard from 'components/PokerCard';
 import useGameTableState from 'hooks/useGameTableState';
 import useStyles from './PlayerHandStyles';
+import usePlayerHand from './hooks/usePlayerHand';
 
 const PlayerHand = ({ isHero, position, player }) => {
   if (!player.id) return null;
@@ -15,6 +16,8 @@ const PlayerHand = ({ isHero, position, player }) => {
 
   const [isDealt, setIsDealt] = useState(false);
   const [dealing, setDealing] = useState(false);
+  const { isRoomViewer, cardsByPlayerId } = usePlayerHand();
+
   const onAnimationEnd = () => {
     setDealing(false);
   };
@@ -24,8 +27,10 @@ const PlayerHand = ({ isHero, position, player }) => {
     if (gameTable.justCreated) setDealing(true);
   }, [gameTable.justCreated]);
 
-  const invisible = (!isHero && !player.handShow) || dealing;
-  const cards = isHero ? gameTable.dealtCards[player.id] : player.cards;
+  const cards =
+    (isRoomViewer ? cardsByPlayerId[player.id] : isHero ? gameTable.dealtCards[player.id] : player.cards) || [];
+  //const invisible = (!isHero && !player.handShow) || dealing;
+  const invisible = cards.length === 0 || dealing;
 
   const isCards = !invisible && cards && cards.length == 2;
 

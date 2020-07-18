@@ -24,6 +24,7 @@ class Broadcaster
       reaching_rounds: reaching_rounds,
       last_action: last_action,
       just_actioned: manager.just_actioned,
+      just_created: manager.just_created,
       table_id: table.id,
       table: {
         id: table.id,
@@ -57,6 +58,24 @@ class Broadcaster
       data = { player_id: table_player.player_id, cards: cards, just_created: manager.just_created }
       ActionCable.server.broadcast "dealt_card_channel_#{table.id}_#{table_player.player_id}", data
     end
+  end
+
+  def broadcast_room_viewer_channel
+    data = []
+    table_players.each do |table_player|
+      game_hand_player = game_hand_player_by_player_id[table_player.player_id]
+      cards = if game_hand_player
+                [
+                  { rank: game_hand_player.card1_id[0], suit: game_hand_player.card1_id[1] },
+                  { rank: game_hand_player.card2_id[0], suit: game_hand_player.card2_id[1] },
+                ]
+              else
+                []
+              end
+      data << { player_id: table_player.player_id, cards: cards, just_created: manager.just_created }
+    end
+
+    ActionCable.server.broadcast "room_viewer_channel_#{table.id}", data
   end
 
   private
