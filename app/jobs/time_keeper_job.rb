@@ -43,12 +43,17 @@ class TimeKeeperJob < ApplicationJob
 
         player_id = game_hand.player_id_by_seat_no(current_seat_no)
 
+        # タイムアウトカウント+1
         table_player = game_hand.table_player_by_player_id(player_id)
+        table_player.timeout_count += 1
+        table_player.save!
+
         if manager.current_state == 'result'
           type = 'PLAYER_ACTION_MUCK_HAND'
         else
           type = 'PLAYER_ACTION_FOLD'
         end
+
         manager = GameManager.new(table_id)
 
         if manager.game_hand.next_order_id == action_order_id + 1
@@ -56,6 +61,7 @@ class TimeKeeperJob < ApplicationJob
             table_id: table_id,
             current_player_id: player_id,
             type: type,
+            skip_timeout_count_reset: true,
           )
 
           Rails.logger.debug("Player #{player_id} #{type}")

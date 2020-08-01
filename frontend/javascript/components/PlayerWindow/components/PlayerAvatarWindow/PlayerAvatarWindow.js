@@ -41,9 +41,12 @@ const PlayerAvatarWindow = ({ isMe, player }) => {
           )}
         </div>
       ) : player.imageUrl ? (
-        <img src={player.imageUrl} alt={player.nickname} className={classes.avatar} />
+        <>
+          <img src={player.imageUrl} alt={player.nickname} className={classes.avatar} />
+          <span className={classes.nickname}>{player.nickname}</span>
+        </>
       ) : (
-        <span className={classes.avatar}>{player.nickname} in avatar window</span>
+        <span className={classes.avatar}>{player.nickname}</span>
       )}
       <span className={classes.status}>
         {player.actionType ? (

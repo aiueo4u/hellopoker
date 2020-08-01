@@ -27,6 +27,7 @@ const styles = theme => ({
     margin: 'auto',
     boxShadow: theme.shadows[4],
     overflow: 'hidden',
+    borderRadius: '6px',
     [theme.breakpoints.only('xs')]: {
       width: '100px',
       height: '75px',
@@ -93,6 +94,7 @@ const styles = theme => ({
   },
   videoContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    borderRadius: '6px',
     //border: `4px solid ${theme.palette.grey['500']}`,
     width: '100%',
     height: '100%',

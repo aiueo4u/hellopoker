@@ -6,8 +6,14 @@ class GameManager
   # 新規ゲームの開始
   def self.create_new_game(table_id, player)
     table = Table.find(table_id)
+
     # スタックが無いプレイヤーはゲーム開始時に除外しておく
-    table.table_players.each { |tp| tp.stack == 0 && tp.destroy! }
+    # タイムアウトを重ねたプレイヤーも除外
+    table.table_players.each do |table_player|
+      if !table_player.can_play_next_game?
+        table_player.destroy!
+      end
+    end
 
     GameHand.create_new_game(table)
 

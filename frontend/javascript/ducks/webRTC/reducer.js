@@ -45,6 +45,8 @@ const reducer = (state = initialState, action) => {
           [payload.playerId]: true,
         },
       };
+    case 'LEAVE_ROOM':
+      return initialState;
     case 'LEAVE_SFU_ROOM':
       return { ...state, sfuRoom: null };
     case 'ON_SUCCESS_GET_MEDIA_STREAM':

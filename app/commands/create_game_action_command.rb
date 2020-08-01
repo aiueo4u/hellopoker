@@ -1,15 +1,16 @@
 class CreateGameActionCommand
   include Command
 
-  attr_reader :table, :current_player, :type, :amount, :manager
+  attr_reader :table, :current_player, :type, :amount, :manager, :skip_timeout_count_reset
 
   validate :validate_table
 
-  def initialize(table_id:, current_player_id:, type:, amount: nil)
+  def initialize(table_id:, current_player_id:, type:, amount: nil, skip_timeout_count_reset: false)
     @table = Table.find(table_id)
     @current_player = Player.find(current_player_id)
     @type = type
     @amount = amount
+    @skip_timeout_count_reset = skip_timeout_count_reset
   end
 
   def run
@@ -23,6 +24,12 @@ class CreateGameActionCommand
       # ゲーム終了処理の実行
       if hand_finished?
         do_payment
+      end
+
+      # タイムアウトカウントのリセット
+      if !skip_timeout_count_reset
+        current_table_player.timeout_count = 0
+        current_table_player.save!
       end
     end
 

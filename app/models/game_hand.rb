@@ -20,7 +20,7 @@ class GameHand < ApplicationRecord
 
     # スタックがあるプレイヤーのみ参加
     #   - カードも配る
-    joining_table_players = table.table_players.filter { |tp| tp.stack > 0 }.sort_by(&:seat_no)
+    joining_table_players = table.table_players.filter(&:can_play_next_game?).sort_by(&:seat_no)
     joining_table_players.each do |table_player|
       game_hand.game_hand_players.build(
         player_id: table_player.player_id,

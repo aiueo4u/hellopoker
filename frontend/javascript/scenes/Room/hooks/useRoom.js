@@ -31,7 +31,7 @@ const useRoom = () => {
     return () => {
       if (sfuRoomRef.current) {
         sfuRoomRef.current.close();
-        dispatch({ type: 'LEAVE_SFU_ROOM' });
+        dispatch({ type: 'LEAVE_ROOM' });
       }
 
       peer.disconnect();
