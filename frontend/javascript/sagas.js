@@ -3,6 +3,7 @@ import { eventChannel, END } from 'redux-saga';
 import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
 
 import { nameByActionType } from 'helpers/actionType';
+import { webRTCSaga } from 'ducks/webRTC';
 import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer } from './api';
 
 function* handlePlayerTakeSeat(action) {
@@ -172,4 +173,6 @@ export default function* rootSage() {
 
   // TODO: 観戦時にはこれを無効にしたい
   yield takeEvery('SETUP_GAME_START_TIMER', handleSetupGameStartTimer);
+
+  yield all([...webRTCSaga]);
 }

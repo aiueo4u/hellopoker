@@ -1,16 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Peer from 'skyway-js';
 
 import useDialogState from 'hooks/useDialogState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
+import useSfuRoom from 'hooks/useSfuRoom';
 import { startRoomViewing } from 'data/actions';
 
 const useRoom = () => {
   const dispatch = useDispatch();
   const [isOpenWelcomeDialog, openWelcomeDialog, closeWelcomeDialog] = useDialogState(false);
   const { playerId } = usePlayerSessionState();
-  const { peer } = useSelector(state => state.data.video);
+  const videoState = useSelector(state => state.webRTC);
+  const { joinRoom } = useSfuRoom();
+  const sfuRoomRef = useRef();
+  sfuRoomRef.current = videoState.sfuRoom;
 
   useEffect(() => {
     openWelcomeDialog();
@@ -25,44 +29,29 @@ const useRoom = () => {
     });
 
     return () => {
+      if (sfuRoomRef.current) {
+        sfuRoomRef.current.close();
+        dispatch({ type: 'LEAVE_SFU_ROOM' });
+      }
+
       peer.disconnect();
       //peer.destroy();
       dispatch({ type: 'CLOSE_PEER_CONNECTION' });
     };
   }, []);
 
-  // SFU接続
-  const joinRoomAsViewer = () => {
-    const sfuRoom = peer.joinRoom('test-room', { mode: 'sfu' });
-    sfuRoom.on('stream', stream => {
-      const isAudioEnabled = stream.getAudioTracks().some(track => track.enabled);
-      const isVideoEnabled = stream.getVideoTracks().some(track => track.enabled);
-      const payload = { stream, playerId: stream.peerId, isAudioEnabled, isVideoEnabled };
-      dispatch({ type: 'ON_SUCCESS_GET_MEDIA_STREAM', payload });
-    });
-
-    const payload = { sfuRoom };
-    dispatch({ type: 'ON_SUCCESS_JOIN_SFU_ROOM', payload });
-  };
-
   // 観戦者としてルーム入室
   const enterRoomAsViewer = () => {
     dispatch(startRoomViewing());
-    joinRoomAsViewer();
+    joinRoom('test-room');
     closeWelcomeDialog();
   };
 
   // プレイヤーとしてルーム入室
   const enterRoomAsPlayer = () => {
-    joinRoomAsViewer();
+    joinRoom('test-room');
     closeWelcomeDialog();
   };
-
-  /*
-  const handleEnableVideo = () => {
-    localStream.getVideoTracks().forEach(track => (track.enabled = true));
-  };
-  */
 
   return {
     isOpenWelcomeDialog,

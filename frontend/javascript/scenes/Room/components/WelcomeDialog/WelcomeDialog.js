@@ -17,7 +17,7 @@ import useWelcomeDialog from './hooks/useWelcomeDialog';
 
 const WelcomeDialog = ({ isOpen, enterRoomAsPlayer, enterRoomAsViewer }) => {
   const classes = useStyles();
-  const { isPeerOpen } = useSelector(state => state.data.video);
+  const { isPeerOpen } = useSelector(state => state.webRTC);
   const { isSeated } = useWelcomeDialog();
 
   return (

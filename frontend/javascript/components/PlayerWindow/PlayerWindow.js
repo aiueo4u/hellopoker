@@ -16,19 +16,18 @@ import usePlayerWindow from './hooks/usePlayerWindow';
 import useStyles from './PlayerWindowStyles';
 
 const PlayerWindow = ({ player, isTurn }) => {
-  const classes = useStyles({ player });
-  const videoState = useSelector(state => state.data.video);
+  const videoState = useSelector(state => state.webRTC);
   const { playerId } = useSelector(state => state.data.playerSession);
-  const { enableAudio, disableAudio, enableVideo, disableVideo } = usePlayerWindow(player);
-
-  const isVideoDistributor = playerId => !!videoState.streamByPlayerId[playerId];
+  const { enableAudio, disableAudio, enableVideo, disableVideo, isActiveStream } = usePlayerWindow(player);
+  const classes = useStyles({ player });
 
   if (!player) return null;
+
   const isMe = playerId === player.id;
 
   return (
     <div className={classNames(classes.container, { [classes.isTurn]: isTurn })}>
-      {isVideoDistributor(player.id) ? (
+      {isActiveStream ? (
         <div className={classes.videoContainer}>
           <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video} />
           {!videoState.isVideoEnabledByPlayerId[player.id] && player.imageUrl && (
@@ -68,7 +67,7 @@ const PlayerWindow = ({ player, isTurn }) => {
               )}
             </div>
           )}
-          {isMe && !videoState.isAudioEnabledByPlayerId[player.id] && <MicOffIcon className={classes.micOffIcon} />}
+          {!videoState.isAudioEnabledByPlayerId[player.id] && <MicOffIcon className={classes.micOffIcon} />}
         </div>
       ) : (
         <PlayerAvatarWindow player={player} isMe={isMe} />

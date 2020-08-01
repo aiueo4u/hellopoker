@@ -7,7 +7,7 @@ const initialState = {
   isAudioEnabledByPlayerId: {},
 };
 
-const video = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   const payload = action.payload || {};
 
   switch (action.type) {
@@ -72,4 +72,4 @@ const video = (state = initialState, action) => {
   }
 };
 
-export default video;
+export default reducer;

@@ -1,44 +1,49 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useSfuRoom from 'hooks/useSfuRoom';
 
 const usePlayerWindow = player => {
   const dispatch = useDispatch();
-  const { streamByPlayerId } = useSelector(state => state.data.video);
+  const { streamByPlayerId } = useSelector(state => state.webRTC);
   const { playerId } = useSelector(state => state.data.playerSession);
+  const [isActiveStream, setIsActiveStream] = useState(false);
+  const { broadcastToSfuRoom } = useSfuRoom();
+  const stream = streamByPlayerId[player.id];
 
-  // TODO: ON/OFF状況をみんなにも伝える
   const enableAudio = () => {
-    const stream = streamByPlayerId[playerId];
-    if (!stream) return;
-    stream.getAudioTracks().forEach(track => (track.enabled = true));
-    dispatch({ type: 'ENABLE_MIC_AUDIO', payload: { playerId } });
+    const action = { type: 'ENABLE_MIC_AUDIO', payload: { playerId } };
+    dispatch(action);
+    broadcastToSfuRoom(action);
   };
 
   const disableAudio = () => {
-    const stream = streamByPlayerId[playerId];
-    if (!stream) return;
-    stream.getAudioTracks().forEach(track => (track.enabled = false));
-    dispatch({ type: 'DISABLE_MIC_AUDIO', payload: { playerId } });
+    const action = { type: 'DISABLE_MIC_AUDIO', payload: { playerId } };
+    dispatch(action);
+    broadcastToSfuRoom(action);
   };
 
   const enableVideo = () => {
-    const stream = streamByPlayerId[playerId];
-    if (!stream) return;
-    stream.getVideoTracks().forEach(track => (track.enabled = true));
-    dispatch({ type: 'ENABLE_VIDEO', payload: { playerId } });
+    const action = { type: 'ENABLE_VIDEO', payload: { playerId } };
+    dispatch(action);
+    broadcastToSfuRoom(action);
   };
 
   const disableVideo = () => {
-    const stream = streamByPlayerId[playerId];
-    if (!stream) return;
-    stream.getVideoTracks().forEach(track => (track.enabled = false));
-    dispatch({ type: 'DISABLE_VIDEO', payload: { playerId } });
+    const action = { type: 'DISABLE_VIDEO', payload: { playerId } };
+    dispatch(action);
+    broadcastToSfuRoom(action);
   };
 
   useEffect(() => {
-    if (streamByPlayerId[player.id]) {
+    const nextActiveStream = stream && stream.active;
+    setIsActiveStream(nextActiveStream);
+  }, [stream && stream.active]);
+
+  useEffect(() => {
+    const element = document.getElementById(`video-player-${player.id}`);
+
+    if (isActiveStream && element) {
       // ローカルにカメラの映像を表示
-      const element = document.getElementById(`video-player-${player.id}`);
       element.autoplay = 'autoplay';
 
       // 自分の音声はmute
@@ -48,9 +53,9 @@ const usePlayerWindow = player => {
 
       element.srcObject = streamByPlayerId[player.id];
     }
-  }, [streamByPlayerId[player.id]]);
+  }, [isActiveStream]);
 
-  return { enableAudio, disableAudio, enableVideo, disableVideo };
+  return { enableAudio, disableAudio, enableVideo, disableVideo, isActiveStream };
 };
 
 export default usePlayerWindow;
