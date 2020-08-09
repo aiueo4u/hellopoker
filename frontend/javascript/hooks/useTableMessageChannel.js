@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { camelizeKeys } from 'humps';
 import ActionCable from 'actioncable';
 import { fetchTableMessages } from 'api';
 
 const useTableMessageChannel = (tableId, scrollListId) => {
+  const dispatch = useDispatch();
   const [messages, setMessages] = useState([]);
 
   const scrollToBottom = () => {
@@ -31,6 +33,7 @@ const useTableMessageChannel = (tableId, scrollListId) => {
         received(data) {
           const message = camelizeKeys(data);
           setMessages(messages => [...messages, message]);
+          dispatch({ type: 'RECEIVE_TABLE_MESSAGE', payload: { message } });
           scrollToBottom();
         },
       }

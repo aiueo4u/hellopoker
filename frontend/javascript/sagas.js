@@ -1,8 +1,9 @@
 import { camelizeKeys } from 'humps';
 import { eventChannel, END } from 'redux-saga';
-import { all, cancelled, call, race, put, select, take, takeEvery } from 'redux-saga/effects';
+import { all, cancelled, call, fork, race, put, select, take, takeEvery } from 'redux-saga/effects';
 
 import { nameByActionType } from 'helpers/actionType';
+import { tableMessageSaga } from 'ducks/tableMessage';
 import { webRTCSaga } from 'ducks/webRTC';
 import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer } from './api';
 
@@ -175,4 +176,5 @@ export default function* rootSage() {
   yield takeEvery('SETUP_GAME_START_TIMER', handleSetupGameStartTimer);
 
   yield all([...webRTCSaga]);
+  yield fork(tableMessageSaga);
 }

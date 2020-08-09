@@ -10,6 +10,7 @@ import PlayerWindow from 'components/PlayerWindow';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import PokerChip from 'components/PokerChip';
 import DealerButtonPlate from 'components/DealerButtonPlate';
+import MessageTooltip from 'components/MessageTooltip';
 
 import useGameTableState from 'hooks/useGameTableState';
 import useDialogState from 'hooks/useDialogState';
@@ -41,6 +42,7 @@ const PlayerPanel = ({ tableId, position, player }) => {
   return (
     <>
       <Box className={classes.panelContainer} onClick={openDialog}>
+        <MessageTooltip player={player} />
         <PlayerWindow tableId={tableId} player={player} isTurn={isPlayerTurn} />
         <Box>
           {isPlayerTurn && !!remainTimePercentage && (

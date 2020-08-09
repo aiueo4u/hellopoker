@@ -7,6 +7,7 @@ import EmptySeat from 'components/EmptySeat';
 
 import PlayerWindow from 'components/PlayerWindow';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
+import MessageTooltip from 'components/MessageTooltip';
 
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
@@ -39,6 +40,8 @@ const HeroPlayerPanel = ({ player, tableId }) => {
   return (
     <>
       <div className={classes.container}>
+        <MessageTooltip player={player} />
+
         {/* プレイヤーのアバターorビデオ */}
         <PlayerWindow tableId={tableId} player={player} isTurn={isTurn} />
 
