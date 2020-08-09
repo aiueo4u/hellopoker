@@ -43,7 +43,6 @@ class Api::GameDealersController < Api::ApplicationController
   end
 
   def retry_npc_player_action
-    return if !Rails.env.development?
     game_hand = GameManager.new(params[:table_id]).game_hand
     table_player = game_hand.table_player_by_seat_no(game_hand.current_seat_no)
     if table_player.auto_play?
