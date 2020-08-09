@@ -19,8 +19,8 @@ const useRoomViewerChannel = tableId => {
         received(data) {
           const camelizedData = camelizeKeys(data);
           const cardsByPlayerId = {};
-          camelizedData.map(row => {
-            cardsByPlayerId[row.playerId] = row.cards;
+          Object.keys(camelizedData).map(playerId => {
+            cardsByPlayerId[playerId] = camelizedData[playerId].cards;
           });
           const payload = { cardsByPlayerId };
           dispatch(onReceiveRoomViewerChannel(payload));

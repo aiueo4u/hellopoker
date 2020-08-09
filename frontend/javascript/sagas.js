@@ -76,7 +76,7 @@ function* openBoardCard(reachedRounds, boardCards, time) {
 const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
 function* handleBeforePlayerActionReceived(action) {
-  const { boardCards, gameHandState, lastAction, justActioned, reachingRounds, players, tableId } = action;
+  const { boardCards, gameHandState, lastAction, justActioned, reachingRounds, players, tableId, tournament } = action;
 
   // プレイヤーのアクション名を表示
   if (lastAction && nameByActionType[lastAction.actionType]) {
@@ -126,7 +126,7 @@ function* handleBeforePlayerActionReceived(action) {
     yield put({
       type: 'SETUP_GAME_START_TIMER',
       tableId,
-      seconds: 30,
+      seconds: tournament ? 5 : 30,
     });
   }
 }

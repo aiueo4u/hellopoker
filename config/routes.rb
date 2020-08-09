@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
     resources :tournaments, only: %i(index show create) do
       post :start, on: :member
+      post :entry, on: :member
     end
 
     resource :game_dealer, only: %i(create) do
@@ -32,6 +33,9 @@ Rails.application.routes.draw do
     resources :client_versions, only: %i(create)
     resources :game_hands
     resources :tables
+    resources :tournaments do
+      post :debug_entry, on: :member
+    end
   end
 
   get 'auth/:provider/callback', to: 'sessions#callback'

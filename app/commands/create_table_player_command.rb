@@ -19,8 +19,7 @@ class CreateTablePlayerCommand
     end
 
     if success?
-      manager = GameManager.new(table.id)
-      manager.broadcast
+      GameManager.broadcast_all(table.id)
     end
   end
 
@@ -28,5 +27,6 @@ class CreateTablePlayerCommand
 
   def validate_table
     errors.add(:table, :invalid) if TablePlayer.where(table_id: table.id, player_id: current_player.id).exists?
+    errors.add(:table, :invalid) if table.tournament?
   end
 end

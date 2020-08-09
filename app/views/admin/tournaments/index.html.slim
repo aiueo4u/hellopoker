@@ -1,0 +1,16 @@
+.h3 トーナメント一覧
+
+.container
+  table.table.table-bordered
+    tr
+      th 名称
+      th テーブル数
+      th プレイヤー数
+      th
+    - @tournaments.each do |tournament|
+      tr
+        td= tournament.name
+        td= tournament.tables.size
+        td= tournament.tables.flat_map(&:table_players).size
+        td= link_to '詳細', admin_tournament_path(tournament)
+    

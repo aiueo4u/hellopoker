@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { camelizeKeys } from 'humps';
 
-import { fetchTournament } from 'api';
+import { entryTournament, fetchTournament } from 'api';
 
 const useTournament = () => {
   const [tables, setTables] = useState([]);
   const [isReady, setIsReady] = useState(false);
   const match = useRouteMatch();
+  const history = useHistory();
   const tournamentId = match.params.id;
 
   const load = async () => {
@@ -21,7 +22,13 @@ const useTournament = () => {
     load();
   }, []);
 
-  return [tables, isReady];
+  const onClickEntry = async () => {
+    const response = await entryTournament(tournamentId);
+    const { table } = camelizeKeys(response.data);
+    history.push(`/tables/${table.id}`);
+  };
+
+  return { tables, isReady, onClickEntry };
 };
 
 export default useTournament;

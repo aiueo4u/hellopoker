@@ -11,19 +11,22 @@ import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
+import usePlayerSessionState from 'hooks/usePlayerSessionState';
 
 import useStyles from './HeroPlayerPanelStyles';
 import usePlayAudioMyTurn from './hooks/usePlayAudioMyTurn';
 
 const HeroPlayerPanel = ({ player, tableId }) => {
   const gameTable = useGameTableState();
-  const isHeroTurn = player && player.seatNo === gameTable.currentSeatNo;
+  const { playerId } = usePlayerSessionState();
+  const isTurn = player && player.seatNo === gameTable.currentSeatNo;
+  const isMe = player && player.id == playerId;
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const [isOpen, openDialog, closeDialog] = useDialogState();
   const classes = useStyles({ player });
 
   // 自分の番が来たら音がなる
-  usePlayAudioMyTurn(isHeroTurn);
+  usePlayAudioMyTurn(isTurn && isMe);
 
   if (!player || !player.id) {
     return (
@@ -37,13 +40,11 @@ const HeroPlayerPanel = ({ player, tableId }) => {
     <>
       <div className={classes.container}>
         {/* プレイヤーのアバターorビデオ */}
-        <PlayerWindow tableId={tableId} player={player} isTurn={isHeroTurn} />
+        <PlayerWindow tableId={tableId} player={player} isTurn={isTurn} />
 
         {/* プレイヤーのスタックと残り時間 */}
         <div className={classes.statusCard} onClick={openDialog}>
-          {isHeroTurn && remainTimePercentage > 0 && (
-            <LinearProgress variant="determinate" value={remainTimePercentage} />
-          )}
+          {isTurn && remainTimePercentage > 0 && <LinearProgress variant="determinate" value={remainTimePercentage} />}
         </div>
       </div>
 

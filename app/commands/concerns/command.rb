@@ -21,4 +21,8 @@ module Command
   def initialize
     super
   end
+
+  def raise_rollback
+    raise ActiveRecord::Rollback
+  end
 end

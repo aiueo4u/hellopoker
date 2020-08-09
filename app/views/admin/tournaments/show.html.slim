@@ -1,0 +1,13 @@
+.h3 トーナメント詳細
+
+table
+  tr
+    th ID
+    th プレイヤー数
+  - @tournament.tables.each do |table|
+    tr
+      td= table.id
+      td= table.table_players.size
+      td
+        = form_with url: debug_entry_admin_tournament_path(@tournament) do |f|
+          = f.submit

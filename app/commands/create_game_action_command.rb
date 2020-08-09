@@ -118,7 +118,7 @@ class CreateGameActionCommand
   end
 
   def broadcast_result
-    manager.broadcast
+    manager.broadcast_all
   end
 
   def start_next_player_turn

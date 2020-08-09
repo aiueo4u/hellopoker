@@ -25,6 +25,19 @@ class Table < ApplicationRecord
     )
   end
 
+  def add_player_at_any_seat(player, stack)
+    table_players.create!(
+      player: player,
+      seat_no: random_empty_seat,
+      stack: stack,
+      auto_play: player.is_npc,
+    )
+  end
+
+  def random_empty_seat
+    (1.upto(6).to_a - table_players.map(&:seat_no)).shuffle.first
+  end
+
   def current_sb_size
     tournament? ? tournament.current_sb_size : sb_size
   end

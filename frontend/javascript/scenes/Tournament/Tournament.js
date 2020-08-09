@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 
@@ -11,7 +12,7 @@ import useStyles from './TournamentStyles';
 
 function Tournament() {
   const classes = useStyles();
-  const [tables, isReady] = useTournament();
+  const { tables, isReady, onClickEntry } = useTournament();
 
   if (!isReady) {
     return (
@@ -23,6 +24,11 @@ function Tournament() {
 
   return (
     <div className={classes.background}>
+      <div>
+        <Button onClick={onClickEntry} variant="contained">
+          トーナメントにエントリーする
+        </Button>
+      </div>
       <div className={classes.container}>
         {tables.length > 0 && (
           <Grid container spacing={2}>

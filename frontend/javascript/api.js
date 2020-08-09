@@ -25,6 +25,8 @@ export const createTournament = data => {
   return ApiClient.post('tournaments', body);
 };
 
+export const entryTournament = tournamentId => ApiClient.post(`/tournaments/${tournamentId}/entry`);
+
 export const fetchTableMessages = tableId => ApiClient.get(`/tables/${tableId}/table_messages`);
 export const fetchTournament = id => ApiClient.get(`/tournaments/${id}`);
 export const fetchTournaments = () => ApiClient.get(`/tournaments`);

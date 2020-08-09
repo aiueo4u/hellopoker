@@ -22,7 +22,7 @@ class CreateGameHandCommand
     end
 
     if success?
-      @manager.broadcast
+      @manager.broadcast_all
 
       # 最初のプレイヤーのターン開始
       table_player = @manager.game_hand.table_player_by_seat_no(@manager.game_hand.current_seat_no)

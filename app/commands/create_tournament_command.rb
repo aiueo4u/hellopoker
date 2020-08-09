@@ -11,7 +11,7 @@ class CreateTournamentCommand
 
   def run
     @tournament = Tournament.new(name: name)
-    @tournament.tables.build(name: name)
+    # @tournament.tables.build(name: name)
     @tournament.save!
   end
 

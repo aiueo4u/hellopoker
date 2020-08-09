@@ -3,7 +3,7 @@ class Player < ApplicationRecord
   has_many :tables, through: :table_players
 
   def self.create_npc_player
-    create!(nickname: 'AI', image_url: '')
+    create!(nickname: 'AI', image_url: '', is_npc: true)
   end
 
   def profile_image_url

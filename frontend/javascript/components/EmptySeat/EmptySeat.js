@@ -16,7 +16,9 @@ const useStyles = makeStyles(styles);
 const EmptySeat = ({ seatNo, tableId }) => {
   const classes = useStyles();
   const [isOpen, openDialog, closeDialog] = useDialogState();
-  const [isSeated] = useEmptySeat();
+  const { isSeated, isRoomViewer } = useEmptySeat();
+
+  if (isRoomViewer) return null;
 
   return (
     <div className={classes.container}>

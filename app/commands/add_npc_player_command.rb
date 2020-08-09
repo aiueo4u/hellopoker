@@ -18,8 +18,7 @@ class AddNpcPlayerCommand
     end
 
     if success?
-      manager = GameManager.new(table.id)
-      manager.broadcast
+      GameManager.broadcast_all(table.id)
     end
   end
 
