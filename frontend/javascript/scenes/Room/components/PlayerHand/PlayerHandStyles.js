@@ -43,22 +43,22 @@ const cardPosition = {
   },
   4: {
     l: {
-      sm: { top: 'calc(50% - 120px)', left: 'calc(50% + 380px)' },
-      xs: { top: 'calc(50% - 40px)', left: 'calc(50% + 160px)' },
-    },
-    r: {
       sm: { top: 'calc(50% - 120px)', left: 'calc(50% + 340px)' },
       xs: { top: 'calc(50% - 40px)', left: 'calc(50% + 130px)' },
+    },
+    r: {
+      sm: { top: 'calc(50% - 120px)', left: 'calc(50% + 380px)' },
+      xs: { top: 'calc(50% - 40px)', left: 'calc(50% + 160px)' },
     },
   },
   5: {
     l: {
-      sm: { top: 'calc(50% + 200px)', left: 'calc(50% + 380px)' },
-      xs: { top: 'calc(50% + 160px)', left: 'calc(50% + 160px)' },
-    },
-    r: {
       sm: { top: 'calc(50% + 200px)', left: 'calc(50% + 340px)' },
       xs: { top: 'calc(50% + 160px)', left: 'calc(50% + 130px)' },
+    },
+    r: {
+      sm: { top: 'calc(50% + 200px)', left: 'calc(50% + 380px)' },
+      xs: { top: 'calc(50% + 160px)', left: 'calc(50% + 160px)' },
     },
   },
 };
