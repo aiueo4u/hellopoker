@@ -56,9 +56,7 @@ const Room = () => {
           enterRoomAsPlayer={enterRoomAsPlayer}
         />
 
-        {gameTable.tournament && gameTable.tournament.isFinished && (
-          <div>トーナメントは終了しました</div>
-        )}
+        {gameTable.tournament && gameTable.tournament.isFinished && <div>トーナメントは終了しました</div>}
 
         <Box className={classes.table}>
           <GameTable heroPositionPlayer={sortedPlayers[0]} />

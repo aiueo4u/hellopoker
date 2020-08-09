@@ -50,6 +50,6 @@ class Tournament < ApplicationRecord
 
   # TODO: レイト時間を過ぎている事を追加
   def finished?
-    tables.map { |table| table.table_players.filter { |tp| tp.stack > 0 }.size }.sum == 1
+    tables.map { |table| table.table_players.filter { |tp| tp.stack > 0 }.size }.size == 1
   end
 end
