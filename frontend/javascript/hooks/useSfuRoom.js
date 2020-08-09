@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { parsePeerId } from 'helpers/webrtc';
 
 const useSfuRoom = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,6 @@ const useSfuRoom = () => {
       dispatch({ type: 'LEAVE_SFU_ROOM' });
     }
 
-    // TODO: test-room
     const options = { mode: 'sfu' };
     if (stream) options.stream = stream;
     const joinedSfuRoom = peer.joinRoom(roomName, options);
@@ -24,8 +24,8 @@ const useSfuRoom = () => {
     joinedSfuRoom.on('stream', remoteStream => {
       const isAudioEnabled = remoteStream.getAudioTracks().some(track => track.enabled);
       const isVideoEnabled = remoteStream.getVideoTracks().some(track => track.enabled);
-      const remotePlayerId = remoteStream.peerId;
-      const payload = { stream: remoteStream, playerId: remotePlayerId, isAudioEnabled, isVideoEnabled };
+      const parsed = parsePeerId(remoteStream.peerId);
+      const payload = { stream: remoteStream, playerId: parsed.playerId, isAudioEnabled, isVideoEnabled };
       dispatch({ type: 'ON_SUCCESS_GET_MEDIA_STREAM', payload });
     });
 

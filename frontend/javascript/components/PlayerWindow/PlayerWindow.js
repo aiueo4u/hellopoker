@@ -15,7 +15,7 @@ import PlayerAvatarWindow from './components/PlayerAvatarWindow';
 import usePlayerWindow from './hooks/usePlayerWindow';
 import useStyles from './PlayerWindowStyles';
 
-const PlayerWindow = ({ player, isTurn }) => {
+const PlayerWindow = ({ player, isTurn, tableId }) => {
   const videoState = useSelector(state => state.webRTC);
   const { playerId } = useSelector(state => state.data.playerSession);
   const { enableAudio, disableAudio, enableVideo, disableVideo, isActiveStream } = usePlayerWindow(player);
@@ -70,7 +70,7 @@ const PlayerWindow = ({ player, isTurn }) => {
           {!videoState.isAudioEnabledByPlayerId[player.id] && <MicOffIcon className={classes.micOffIcon} />}
         </div>
       ) : (
-        <PlayerAvatarWindow player={player} isMe={isMe} />
+        <PlayerAvatarWindow tableId={tableId} player={player} isMe={isMe} />
       )}
     </div>
   );
@@ -79,6 +79,7 @@ const PlayerWindow = ({ player, isTurn }) => {
 PlayerWindow.propTypes = {
   player: PropTypes.object.isRequired,
   isTurn: PropTypes.bool,
+  tableId: PropTypes.string.isRequired,
 };
 
 PlayerWindow.defaultProps = {

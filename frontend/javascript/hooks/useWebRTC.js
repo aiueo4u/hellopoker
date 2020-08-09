@@ -16,10 +16,11 @@ const useWebRTC = () => {
   const { playerId } = useSelector(state => state.data.playerSession);
   const { joinRoom } = useSfuRoom();
 
-  const startWebRTC = options => {
+  const startWebRTC = (roomName, options) => {
     // 非対応ブラウザ
-    if (!navigator.mediaDevices) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       console.warn('mediaDevices not found'); // eslint-disable-line
+      return;
     }
 
     navigator.mediaDevices
@@ -34,7 +35,7 @@ const useWebRTC = () => {
         dispatch({ type: 'ON_SUCCESS_GET_MEDIA_STREAM', payload });
 
         // ルーム入室
-        joinRoom('test-room', localStream);
+        joinRoom(roomName, localStream);
       })
       .catch(error => console.error('Error!: ', error)) // eslint-disable-line
   };

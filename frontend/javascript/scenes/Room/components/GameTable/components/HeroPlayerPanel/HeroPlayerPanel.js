@@ -37,7 +37,7 @@ const HeroPlayerPanel = ({ player, tableId }) => {
     <>
       <div className={classes.container}>
         {/* プレイヤーのアバターorビデオ */}
-        <PlayerWindow player={player} isTurn={isHeroTurn} />
+        <PlayerWindow tableId={tableId} player={player} isTurn={isHeroTurn} />
 
         {/* プレイヤーのスタックと残り時間 */}
         <div className={classes.statusCard} onClick={openDialog}>

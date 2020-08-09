@@ -36,7 +36,7 @@ const Room = () => {
 
   const sortedPlayers = selectSortedPlayers(players, playerId);
 
-  const { isOpenWelcomeDialog, enterRoomAsViewer, enterRoomAsPlayer } = useRoom();
+  const { isOpenWelcomeDialog, enterRoomAsViewer, enterRoomAsPlayer } = useRoom(tableId);
   useChipChannel(tableId);
   useDealtCardChannel(tableId);
   useRoomViewerChannel(tableId);

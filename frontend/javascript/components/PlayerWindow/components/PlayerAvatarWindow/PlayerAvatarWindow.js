@@ -11,9 +11,9 @@ import { isTouchDevise } from 'utils/devise';
 import usePlayerAvatarWindow from './hooks/usePlayerAvatarWindow';
 import useStyles from './PlayerAvatarWindowStyles';
 
-const PlayerAvatarWindow = ({ isMe, player }) => {
+const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
   const classes = useStyles();
-  const { startAudio, startVideo } = usePlayerAvatarWindow();
+  const { startAudio, startVideo } = usePlayerAvatarWindow(tableId);
 
   return (
     <div className={classes.videoContainer}>
@@ -64,6 +64,7 @@ const PlayerAvatarWindow = ({ isMe, player }) => {
 PlayerAvatarWindow.propTypes = {
   isMe: PropTypes.bool.isRequired,
   player: PropTypes.object.isRequired,
+  tableId: PropTypes.string.isRequired,
 };
 
 export default PlayerAvatarWindow;

@@ -41,7 +41,7 @@ const PlayerPanel = ({ tableId, position, player }) => {
   return (
     <>
       <Box className={classes.panelContainer} onClick={openDialog}>
-        <PlayerWindow player={player} isTurn={isPlayerTurn} />
+        <PlayerWindow tableId={tableId} player={player} isTurn={isPlayerTurn} />
         <Box>
           {isPlayerTurn && !!remainTimePercentage && (
             <LinearProgress variant="determinate" value={remainTimePercentage} />
