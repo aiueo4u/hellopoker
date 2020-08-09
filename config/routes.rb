@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       post :start, on: :collection
       post :take_seat, on: :collection
       post :add_npc_player, on: :collection
+      post :retry_npc_player_action, on: :collection
     end
   end
 

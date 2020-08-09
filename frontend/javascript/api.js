@@ -94,4 +94,5 @@ export const fetchCurrentUser = () => ApiClient.get(`/players/@me`);
 export const fetchTables = () => ApiClient.get(`/tables`);
 
 export const logout = () => ApiClient.delete(`/session`);
+export const retryNpcPlayerAction = body => ApiClient.post(`/game_dealer/retry_npc_player_action`, body);
 export const startTournament = id => ApiClient.post(`/tournaments/${id}/start`);

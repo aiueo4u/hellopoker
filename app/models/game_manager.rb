@@ -3,23 +3,6 @@ class GameManager
 
   attr_reader :table_id, :table, :game_hand, :just_actioned, :just_created
 
-  # 新規ゲームの開始
-  def self.create_new_game(table_id, player)
-    table = Table.find(table_id)
-
-    # スタックが無いプレイヤーはゲーム開始時に除外しておく
-    # タイムアウトを重ねたプレイヤーも除外
-    table.table_players.each do |table_player|
-      if !table_player.can_play_next_game?
-        table_player.destroy!
-      end
-    end
-
-    GameHand.create_new_game(table)
-
-    self.new(table_id, just_created: true)
-  end
-
   # 最新のゲームを取得
   def self.current_game_hand(table_id)
     GameHand.where(table_id: table_id).order(:id).last
@@ -159,14 +142,6 @@ class GameManager
     game_hand.last_action.state
   end
 
-  def bb_seat_no
-    if game_hand.seat_nos.size > 2
-      GameUtils.sort_seat_nos(game_hand.seat_nos, game_hand.button_seat_no)[1]
-    else
-      game_hand.seat_nos.find { |seat_no| seat_no != game_hand.button_seat_no }
-    end
-  end
-
   def last_aggressive_seat_no
     return nil if game_hand.nil?
     return nil if game_hand.last_action_finished_round?
@@ -175,9 +150,5 @@ class GameManager
       action.state == current_state && (action.bet? || action.blind?)
     end.last&.player_id
     game_hand.table_player_by_player_id(last_aggressive_player_id)&.seat_no
-  end
-
-  def check_your_turn!(table_player)
-    raise "This is not your turn" unless table_player.seat_no == game_hand.current_seat_no
   end
 end

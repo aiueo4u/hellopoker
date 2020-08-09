@@ -103,6 +103,7 @@ class Broadcaster
         remain_time_to_action: remain_time_to_action,
         max_remain_time_to_action: GameAction::ACTION_TIMEOUT,
         amount_diff: amount_diff_by_player_id(table_player.player_id),
+        is_auto_play: table_player.auto_play?,
       }
     end
   end
@@ -189,7 +190,7 @@ class Broadcaster
   end
 
   def bb_option_usable_by_table_player?(table_player)
-    game_hand && manager.bb_seat_no == table_player.seat_no && !game_hand.current_bb_used_option?
+    game_hand && game_hand.bb_seat_no == table_player.seat_no && !game_hand.current_bb_used_option?
   end
 
   def show_or_muck_by_player_id

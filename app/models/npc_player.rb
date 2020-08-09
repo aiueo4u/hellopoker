@@ -1,6 +1,13 @@
 class NpcPlayer
   attr_reader :manager, :game_hand, :table_player
 
+  PLAYER_ACTION_BET_CHIPS = 'PLAYER_ACTION_BET_CHIPS'
+  PLAYER_ACTION_CALL = 'PLAYER_ACTION_CALL'
+  PLAYER_ACTION_CHECK = 'PLAYER_ACTION_CHECK'
+  PLAYER_ACTION_FOLD = 'PLAYER_ACTION_FOLD'
+  PLAYER_ACTION_SHOW_HAND = 'PLAYER_ACTION_SHOW_HAND'
+  PLAYER_ACTION_MUCK_HAND = 'PLAYER_ACTION_MUCK_HAND'
+
   def initialize(table_id, player_id)
     @manager = GameManager.new(table_id)
     @game_hand = @manager.game_hand
@@ -8,40 +15,39 @@ class NpcPlayer
   end
 
   def output
-    type = 'PLAYER_ACTION_CHECK'
+    type = PLAYER_ACTION_CHECK
     amount = nil
 
     if manager.current_state == 'result'
-      type = lot(80) ? 'PLAYER_ACTION_SHOW_HAND' : 'PLAYER_ACTION_MUCK_HAND'
+      type = lot(80) ? PLAYER_ACTION_SHOW_HAND : PLAYER_ACTION_MUCK_HAND
     else
       # TODO
       current_round = manager.current_state
       current_round_actions = game_hand.all_actions.group_by(&:state)[current_round] || []
 
       # 本フェーズでの最高ベット額を取得
-      amount_to_call = game_hand.amount_to_call_by_player_id(table_player.player_id)
+      amount_to_call = calc_call
 
       # 誰もベットしていない場合
       if current_round_actions.none? { |action| action.bet? || action.blind? }
         # オリジナルがいないorオリジナルならば、50%の確率でベット
         if (!last_aggressive_player_id || last_aggressor?) && lot(50)
-          type = 'PLAYER_ACTION_BET_CHIPS'
-          amount = calc_bet(amount_to_call) # 1/2 pot bet
-          # amount = [table_player.stack / 2, game_hand.pot_amount].max # TODO: 強制AI
+          type = PLAYER_ACTION_BET_CHIPS
+          amount = calc_bet(amount_to_call)
         end
       # 誰かがベットしていたら（ブラインド含む）
       else
         weights = [
-          ['PLAYER_ACTION_BET_CHIPS', 20],
-          ['PLAYER_ACTION_CALL', 60],
-          ['PLAYER_ACTION_FOLD', 40],
+          [PLAYER_ACTION_BET_CHIPS, 20],
+          [PLAYER_ACTION_CALL, 60],
+          [PLAYER_ACTION_FOLD, 40],
         ]
         type = lot_by_weights(weights)
         case type
-        when 'PLAYER_ACTION_CALL'
+        when PLAYER_ACTION_CALL
           amount = amount_to_call
-        when 'PLAYER_ACTION_BET_CHIPS'
-          amount = [cals_raise(amount_to_call), game_hand.game_hand_player_by_id(table_player.player_id).stack].min
+        when PLAYER_ACTION_BET_CHIPS
+          amount = cals_raise(amount_to_call)
         end
       end
     end
@@ -49,8 +55,22 @@ class NpcPlayer
     [type, amount]
   end
 
+  private
+
+  def current_stack
+    current_game_hand_player.stack
+  end
+
+  def current_game_hand_player
+    game_hand.game_hand_player_by_id(table_player.player_id)
+  end
+
+  def calc_call
+    game_hand.amount_to_call_by_player_id(table_player.player_id)
+  end
+
   def cals_raise(amount_to_call)
-    amount_to_call * 3
+    [amount_to_call * 3, current_stack].min
   end
 
   def calc_bet(amount_to_call)
@@ -62,7 +82,8 @@ class NpcPlayer
     if amount > 1000
       amount = (amount / 100) * 100
     end
-    amount
+
+    [amount, current_stack].min
   end
 
   def lot_by_weights(weights)

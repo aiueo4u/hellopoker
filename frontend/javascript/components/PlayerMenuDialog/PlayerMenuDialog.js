@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-//import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 //import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -9,9 +9,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import BuyInDialog from 'components/BuyInDialog';
 import useDialogState from 'hooks/useDialogState';
+import usePlayerMenuDialog from './hooks/usePlayerMenuDialog';
 
 const PlayerMenuDialog = ({ player, isOpen, onClose, tableId }) => {
   const [isOpenBuyInDialog, openBuyInDialog, closeBuyInDialog] = useDialogState(); // eslint-disable-line
+  const { retryNpcPlayerAction } = usePlayerMenuDialog(tableId);
 
   return (
     <>
@@ -27,6 +29,7 @@ const PlayerMenuDialog = ({ player, isOpen, onClose, tableId }) => {
           </Button>
         </DialogActions>
           */}
+        {player.isAutoPlay && <Button onClick={retryNpcPlayerAction}>リトライ</Button>}
       </Dialog>
       <BuyInDialog tableId={tableId} seatNo={player.seatNo} isOpen={isOpenBuyInDialog} onClose={closeBuyInDialog} />
     </>

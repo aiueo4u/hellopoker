@@ -14,7 +14,11 @@ class CreateGameHandCommand
     table.with_lock do
       raise ActiveRecord::Rollback if invalid?
 
-      @manager = GameManager.create_new_game(table.id, current_player)
+      exclude_non_active_players
+
+      GameHand.create_new_game(table)
+
+      @manager = GameManager.new(table.id, just_created: true)
     end
 
     if success?
@@ -41,5 +45,15 @@ class CreateGameHandCommand
 
     # 前回のゲームが終了状態になっているかチェック
     errors.add(:table, :invalid) if manager.game_hand && manager.current_state != 'finished'
+  end
+
+  def exclude_non_active_players
+    # スタックが無いプレイヤーはゲーム開始時に除外しておく
+    # タイムアウトを重ねたプレイヤーも除外
+    table.table_players.each do |table_player|
+      if !table_player.can_play_next_game?
+        table_player.destroy!
+      end
+    end
   end
 end

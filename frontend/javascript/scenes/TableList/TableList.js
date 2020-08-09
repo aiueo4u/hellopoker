@@ -23,7 +23,7 @@ function TableList() {
 
   return (
     <div className={classes.background}>
-      {/*<Link to="/tournaments">トーナメントはこちら</Link>*/}
+      <Link to="/tournaments">トーナメントはこちら</Link>
       <div className={classes.container}>
         {tables.length > 0 && (
           <Grid container spacing={2} justify="space-around">

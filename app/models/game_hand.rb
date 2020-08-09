@@ -208,79 +208,35 @@ class GameHand < ApplicationRecord
   end
 
   def build_taken_action(player_id, amount, state)
-    game_actions.build(
-      order_id: next_order_id,
-      state: state,
-      player_id: player_id,
-      action_type: self.class.action_types[:taken],
-      amount: amount
-    )
+    game_actions << GameAction.build_taken_action(player_id, state, next_order_id, amount)
   end
 
   def build_blind_action(player_id, amount)
-    game_actions.build(
-      order_id: next_order_id,
-      state: 'preflop',
-      player_id: player_id,
-      action_type: self.class.action_types[:blind],
-      amount: amount
-    )
+    game_actions << GameAction.build_blind_action(player_id, next_order_id, amount)
   end
 
   def build_fold_action(player_id, state)
-    game_actions.build(
-      order_id: next_order_id,
-      state: state,
-      player_id: player_id,
-      action_type: self.class.action_types[:fold]
-    )
+    game_actions << GameAction.build_fold_action(player_id, state, next_order_id)
   end
 
   def build_check_action(player_id, state)
-    game_actions.build(
-      order_id: next_order_id,
-      state: state,
-      player_id: player_id,
-      action_type: self.class.action_types[:check]
-    )
+    game_actions << GameAction.build_check_action(player_id, state, next_order_id)
   end
 
   def build_call_action(player_id, amount, state)
-    game_actions.build(
-      order_id: next_order_id,
-      state: state,
-      player_id: player_id,
-      action_type: self.class.action_types[:call],
-      amount: amount
-    )
+    game_actions << GameAction.build_call_action(player_id, state, next_order_id, amount)
   end
 
   def build_bet_action(player_id, amount, state)
-    game_actions.build(
-      order_id: next_order_id,
-      state: state,
-      player_id: player_id,
-      action_type: self.class.action_types[:bet],
-      amount: amount
-    )
+    game_actions << GameAction.build_bet_action(player_id, state, next_order_id, amount)
   end
 
   def build_show_action(player_id, state)
-    game_actions.build(
-      order_id: next_order_id,
-      state: state,
-      player_id: player_id,
-      action_type: self.class.action_types[:show],
-    )
+    game_actions << GameAction.build_show_action(player_id, state, next_order_id)
   end
 
   def build_muck_action(player_id, state)
-    game_actions.build(
-      order_id: next_order_id,
-      state: state,
-      player_id: player_id,
-      action_type: self.class.action_types[:muck],
-    )
+    game_actions << GameAction.build_muck_action(player_id, state, next_order_id)
   end
 
   def min_total_bet_amount_in_not_folded_players
@@ -408,6 +364,14 @@ class GameHand < ApplicationRecord
 
     GameUtils.sort_seat_nos(seat_nos, base_seat_no).find do |seat_no|
       active_player_by_seat_no?(seat_no)
+    end
+  end
+
+  def bb_seat_no
+    if seat_nos.size > 2
+      GameUtils.sort_seat_nos(seat_nos, button_seat_no)[1]
+    else
+      seat_nos.find { |seat_no| seat_no != button_seat_no }
     end
   end
 end
