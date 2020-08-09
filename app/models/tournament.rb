@@ -11,7 +11,7 @@ class Tournament < ApplicationRecord
     { level: 7, sb: 500, bb: 1000, ante: 500, time: 1.minutes },
   ]
 
-  INITIAL_STACK = 5000
+  INITIAL_STACK = 10000
 
   def current_blind_structure(time = Time.current)
     if !opened_at
@@ -50,6 +50,6 @@ class Tournament < ApplicationRecord
 
   # TODO: レイト時間を過ぎている事を追加
   def finished?
-    tables.map { |table| table.table_players.filter { |tp| tp.stack > 0 }.size }.size == 1
+    tables.map { |table| table.table_players.filter { |tp| tp.stack > 0 }.size }.sum == 1
   end
 end

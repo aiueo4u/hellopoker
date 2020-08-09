@@ -144,9 +144,16 @@ class GameHand < ApplicationRecord
   end
 
   def amount_to_call_by_player_id(player_id)
-    max_bet_amount = game_hand_players.map { |ghp| ghp.bet_amount_by_state(state) }.max
+    # 現在最高のベット額
+    max_bet_amount = [
+      game_hand_players.map { |ghp| ghp.bet_amount_by_state(state) }.max,
+      bb_size,
+    ].max
+
     current_game_hand_player = game_hand_player_by_id(player_id)
-    [max_bet_amount - current_game_hand_player.bet_amount_by_state(state), current_game_hand_player.stack].min
+    amount_to_call = max_bet_amount - current_game_hand_player.bet_amount_by_state(state)
+
+    [amount_to_call, current_game_hand_player.stack].min
   end
 
   def all_actions
@@ -155,6 +162,10 @@ class GameHand < ApplicationRecord
 
   # もうこれ以上プレイヤーのアクションがないか？
   #   - resultのShow or Muckまでがアクション
+  #   1. オールイン状態
+  #   2. フォールド状態
+  #   3. 前回のアクションが存在して、結果フェーズのものである（結果画面表示用？）
+  #   4. 自分のベット額が一番大きい（ブラインドショートの場合）
   def no_more_action?
     game_hand_players.all? { |ghp| ghp.allin? || ghp.folded? || ghp.last_action&.result? }
   end
