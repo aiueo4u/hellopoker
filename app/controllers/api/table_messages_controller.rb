@@ -3,7 +3,11 @@ class Api::TableMessagesController < Api::ApplicationController
 
   def index
     table = Table.find(params[:table_id])
-    @table_messages = table.table_messages.includes(:player).limit(30)
+    @table_messages = table.table_messages
+      .order(id: :desc)
+      .includes(:player)
+      .limit(30)
+      .sort_by(&:id)
   end
 
   def create

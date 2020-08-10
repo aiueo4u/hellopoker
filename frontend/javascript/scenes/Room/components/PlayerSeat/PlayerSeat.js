@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import EmptySeat from 'components/EmptySeat';
+import PlayerPanel from 'components/PlayerPanel';
 import useGameTableState from 'hooks/useGameTableState';
-import PlayerPanel from '../GameTable/components/PlayerPanel';
 
 import useStyles from './PlayerSeatStyles';
 
