@@ -8,12 +8,16 @@ class NpcPlayerJob < ApplicationJob
 
     Rails.logger.debug("[NPC Action] #{type}: #{amount}")
 
-    CreateGameActionCommand.run(
+    command = CreateGameActionCommand.run(
       table_id: table_id,
       current_player_id: player_id,
       type: type,
       amount: amount,
     )
+
+    if !command.success?
+      logger.debug("[NPC Action Failed] #{player_id}:#{type}:#{amount}")
+    end
   end
 
   private

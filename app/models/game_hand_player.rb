@@ -3,6 +3,7 @@ class GameHandPlayer < ApplicationRecord
 
   delegate :seat_no, :stack, to: :table_player
 
+  # ブラインドを含む、このラウンドで既に放出している額
   def bet_amount_by_state(state)
     actions
       .filter { |action| action.state == state && action.action_type.in?(%w(blind call bet)) }

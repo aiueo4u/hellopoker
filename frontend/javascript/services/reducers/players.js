@@ -48,7 +48,7 @@ const PlayerReducer = (state = initialState, action) => {
 const PlayersReducer = (state = [], action) => {
   switch (action.type) {
     case 'PLAYER_ACTION_RECEIVED':
-      return action.players;
+      return action.players.map(player => ({ ...player, betSize: 0, actionType: null }));
     case 'SHOW_ACTIVE_PLAYER_CARDS':
       return state.map(player => {
         const actionPlayer = action.players.find(ap => ap.id === player.id);

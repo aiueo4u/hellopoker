@@ -143,12 +143,34 @@ class GameHand < ApplicationRecord
     end
   end
 
+  # 最低ベット額
+  # TODO: ショートオールイン対応
+  def amount_to_min_bet_by_player_id(player_id)
+    amount_to_call_by_player_id(player_id) + prev_raise_amount
+  end
+
+  def current_max_bet_amount
+    game_hand_players.map { |ghp| ghp.bet_amount_by_state(state) }.max
+  end
+
+  def current_second_max_bet_amount
+    game_hand_players.map { |ghp| ghp.bet_amount_by_state(state) }.sort[-2]
+  end
+
+  def prev_raise_amount
+    [current_max_bet_amount - current_second_max_bet_amount, bb_size].max
+  end
+
+  # コールするのに必要な額
   def amount_to_call_by_player_id(player_id)
     # 現在最高のベット額
-    max_bet_amount = [
-      game_hand_players.map { |ghp| ghp.bet_amount_by_state(state) }.max,
-      bb_size,
-    ].max
+    max_bet_amount = current_max_bet_amount
+
+    # コールできる状況じゃなかったら0を戻す
+    return 0 if max_bet_amount <= 0
+
+    # 最低でもBB
+    max_bet_amount = [max_bet_amount, bb_size].max
 
     current_game_hand_player = game_hand_player_by_id(player_id)
     amount_to_call = max_bet_amount - current_game_hand_player.bet_amount_by_state(state)

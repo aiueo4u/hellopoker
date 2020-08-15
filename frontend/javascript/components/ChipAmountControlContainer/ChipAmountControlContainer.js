@@ -17,9 +17,7 @@ const ChipAmountControlContainer = ({ betButton, resetButton, closeButton }) => 
   const session = usePlayerSessionState();
   const player = players.find(player => player.id === session.playerId);
 
-  const { allinBetAmount, increment, minimumBetAmount, oneThirdPotAmount, potBetAmount, setBetAmount } = useBetAction(
-    player
-  );
+  const { allinBetAmount, increment, oneThirdPotAmount, potBetAmount, setBetAmount } = useBetAction(player);
 
   return (
     <Box className={classes.container}>
@@ -29,7 +27,7 @@ const ChipAmountControlContainer = ({ betButton, resetButton, closeButton }) => 
             className={classes.button}
             variant="outlined"
             onClick={() => setBetAmount(oneThirdPotAmount)}
-            disabled={oneThirdPotAmount < minimumBetAmount}
+            disabled={oneThirdPotAmount < player.minBetAmount}
           >
             1 / 3 pot
           </Button>

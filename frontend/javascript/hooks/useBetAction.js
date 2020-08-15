@@ -25,25 +25,8 @@ const useBetAction = player => {
   // 現ラウンドの最高ベット額
   const currentRoundMaxBetAmount = Math.max(...players.map(player => player.betAmountInState));
 
-  //console.log(players.map(player => player.betAmountInState), currentRoundMaxBetAmount);
-
-  const currentRoundSecondMaxBetAmount = Math.max(
-    ...players.map(player => player.betAmountInState).filter(amount => amount !== currentRoundMaxBetAmount),
-    0
-  );
-
   // 必要コール額
   const amountToCall = currentRoundMaxBetAmount - currentRoundHeroBetAmount;
-
-  //console.log(currentRoundMaxBetAmount, currentRoundSecondMaxBetAmount);
-
-  // 現ラウンドの最高ベット額のレイズ額
-  const prevRaiseAmount = Math.max(currentRoundMaxBetAmount - currentRoundSecondMaxBetAmount, gameTable.table.bbSize);
-
-  //console.log(amountToCall, prevRaiseAmount);
-
-  // ミニマムベット（レイズ）額
-  const minimumBetAmount = amountToCall + prevRaiseAmount;
 
   const oneThirdPotAmount = amountToCall + parseInt((currentPot + amountToCall) / 3);
 
@@ -84,7 +67,7 @@ const useBetAction = player => {
     });
   };
 
-  return { allinBetAmount, increment, potBetAmount, minimumBetAmount, oneThirdPotAmount, setBetAmount };
+  return { allinBetAmount, increment, potBetAmount, oneThirdPotAmount, setBetAmount };
 };
 
 export default useBetAction;

@@ -8,7 +8,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ChipAmountControlContainer from 'components/ChipAmountControlContainer';
 
 import useActions from 'hooks/useActions';
-import useBetAction from 'hooks/useBetAction';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
@@ -24,7 +23,6 @@ const PlayerActions = ({ player, tableId }) => {
     gameTable
   );
   const [isOpen, openTooltip, closeTooltip] = useDialogState();
-  const { minimumBetAmount } = useBetAction(player);
   const { playerId } = usePlayerSessionState();
 
   const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false;
@@ -80,7 +78,7 @@ const PlayerActions = ({ player, tableId }) => {
                 betButton={
                   <Button
                     className={classes.betButton}
-                    disabled={player.betAmountInState + player.betSize < minimumBetAmount}
+                    disabled={player.betSize < player.minBetAmount}
                     variant="contained"
                     onClick={() => {
                       betAction();

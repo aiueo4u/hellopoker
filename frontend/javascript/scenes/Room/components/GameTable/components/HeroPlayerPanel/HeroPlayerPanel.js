@@ -45,7 +45,7 @@ const HeroPlayerPanel = ({ player, tableId }) => {
         {/* プレイヤーのアバターorビデオ */}
         <PlayerWindow tableId={tableId} player={player} isTurn={isTurn} />
 
-        {/* プレイヤーのスタックと残り時間 */}
+        {/* プレイヤーの残り時間 */}
         <div className={classes.statusCard} onClick={openDialog}>
           {isTurn && remainTimePercentage > 0 && <LinearProgress variant="determinate" value={remainTimePercentage} />}
         </div>

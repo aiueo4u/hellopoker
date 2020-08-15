@@ -10,7 +10,6 @@ import TableMessageDrawer from 'components/TableMessageDrawer';
 import useChipChannel from 'hooks/useChipChannel';
 import useDealtCardChannel from 'hooks/useDealtCardChannel';
 import useGameTableState from 'hooks/useGameTableState';
-import useInitializeAudio from 'hooks/useInitializeAudio';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 import useRoomViewerChannel from 'hooks/useRoomViewerChannel';
@@ -32,7 +31,6 @@ const Room = () => {
   const gameTable = useGameTableState();
   const { playerId } = usePlayerSessionState();
   const players = usePlayersState();
-  const [initializeAudio] = useInitializeAudio();
 
   const sortedPlayers = selectSortedPlayers(players, playerId);
 
@@ -45,7 +43,7 @@ const Room = () => {
 
   return (
     <div className={classes.background}>
-      <div className={classes.container} onClick={initializeAudio}>
+      <div className={classes.container}>
         {/* ネットワーク接続中のダイアログ */}
         <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
 

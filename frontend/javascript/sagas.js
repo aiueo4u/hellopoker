@@ -127,7 +127,7 @@ function* handleBeforePlayerActionReceived(action) {
     yield put({
       type: 'SETUP_GAME_START_TIMER',
       tableId,
-      seconds: tournament ? 5 : 30,
+      seconds: tournament ? 5 : 5,
     });
   }
 }

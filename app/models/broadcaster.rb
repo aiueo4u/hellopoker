@@ -89,6 +89,7 @@ class Broadcaster
         max_remain_time_to_action: GameAction::ACTION_TIMEOUT,
         amount_diff: amount_diff_by_player_id(table_player.player_id),
         is_auto_play: table_player.auto_play?,
+        min_bet_amount: game_hand&.amount_to_min_bet_by_player_id(table_player.player_id),
       }
     end
   end

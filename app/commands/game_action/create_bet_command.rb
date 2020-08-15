@@ -32,6 +32,10 @@ class GameAction::CreateBetCommand
     game_hand.amount_to_call_by_player_id(table_player.player_id)
   end
 
+  def calculate_amount_to_min_bet
+    game_hand.amount_to_min_bet_by_player_id(table_player.player_id)
+  end
+
   def current_game_hand_player
     game_hand.game_hand_player_by_id(table_player.player_id)
   end
@@ -43,6 +47,8 @@ class GameAction::CreateBetCommand
     errors.add(:game_hand, :invalid) if calculate_amount_to_call >= amount
     # 指定ベット額を持っているか
     errors.add(:game_hand, :invalid) if table_player.stack < amount
+    # 最低ベット額
+    errors.add(:game_hand, :invalid) if amount < calculate_amount_to_min_bet
     # TODO: flop〜riverか
   end
 end
