@@ -2,13 +2,13 @@ class Tournament < ApplicationRecord
   has_many :tables
 
   BLIND_STRUCTURES = [
-    { level: 1, sb: 25, bb: 50, ante: 0, time: 10.minutes },
-    { level: 2, sb: 50, bb: 100, ante: 100, time: 10.minutes },
-    { level: 3, sb: 100, bb: 200, ante: 200, time: 10.minutes },
-    { level: 4, sb: 200, bb: 400, ante: 200, time: 10.minutes },
-    { level: 5, sb: 300, bb: 600, ante: 300, time: 10.minutes },
-    { level: 6, sb: 400, bb: 800, ante: 400, time: 10.minutes },
-    { level: 7, sb: 500, bb: 1000, ante: 500, time: 10.minutes },
+    { level: 1, sb: 25, bb: 50, ante: 0, time: 1.minutes },
+    { level: 2, sb: 50, bb: 100, ante: 100, time: 1.minutes },
+    { level: 3, sb: 100, bb: 200, ante: 200, time: 1.minutes },
+    { level: 4, sb: 200, bb: 400, ante: 200, time: 1.minutes },
+    { level: 5, sb: 300, bb: 600, ante: 300, time: 1.minutes },
+    { level: 6, sb: 400, bb: 800, ante: 400, time: 1.minutes },
+    { level: 7, sb: 500, bb: 1000, ante: 500, time: 1.minutes },
   ]
 
   INITIAL_STACK = 10000

@@ -29,7 +29,6 @@ const useRoom = tableId => {
 
   // プレイヤーとしてルーム入室
   const enterRoomAsPlayer = () => {
-    joinRoom(roomName);
     closeWelcomeDialog();
   };
 

@@ -15,40 +15,21 @@ class NpcPlayer
   end
 
   def output
-    type = PLAYER_ACTION_CHECK
-    amount = nil
+    type = amount = nil
 
     if manager.current_state == 'result'
-      type = lot(80) ? PLAYER_ACTION_SHOW_HAND : PLAYER_ACTION_MUCK_HAND
+      weights = build_weights(show: 80, muck: 20)
+      type = lot_by_weights(weights)
     else
-      # TODO
-      current_round = manager.current_state
-      current_round_actions = game_hand.all_actions.group_by(&:state)[current_round] || []
+      weights = action_candidates
+      type = lot_by_weights(weights)
+      amount = nil
 
-      # 本フェーズでの最高ベット額を取得
-      amount_to_call = calc_call
-
-      # 誰もベットしていない場合
-      if current_round_actions.none? { |action| action.bet? || action.blind? }
-        # オリジナルがいないorオリジナルならば、50%の確率でベット
-        if (!last_aggressive_player_id || last_aggressor?) && lot(50)
-          type = PLAYER_ACTION_BET_CHIPS
-          amount = calc_bet(amount_to_call)
-        end
-      # 誰かがベットしていたら（ブラインド含む）
-      else
-        weights = [
-          [PLAYER_ACTION_BET_CHIPS, 20],
-          [PLAYER_ACTION_CALL, 60],
-          [PLAYER_ACTION_FOLD, 40],
-        ]
-        type = lot_by_weights(weights)
-        case type
-        when PLAYER_ACTION_CALL
-          amount = amount_to_call
-        when PLAYER_ACTION_BET_CHIPS
-          amount = cals_raise(amount_to_call)
-        end
+      case type
+      when PLAYER_ACTION_CALL
+        amount = calc_amount_to_call
+      when PLAYER_ACTION_BET_CHIPS
+        amount = calc_amount_to_raise
       end
     end
 
@@ -56,6 +37,41 @@ class NpcPlayer
   end
 
   private
+
+  def action_candidates
+    # 現ラウンドでチェック可能な時
+    #   - 誰もベットしていない
+    #   - BBオプション
+    if calc_amount_to_call == 0
+      # 現ラウンドまででオリジナルがいないor自身がオリジナル
+      if !last_aggressive_player_id || last_aggressor?
+        build_weights(check: 50, bet: 50)
+      else
+        build_weights(check: 50, bet: 5) # donk bet
+      end
+    # 現ラウンドで誰かがベットしている時
+    else
+      # レイズすることができない場合（オールイン要求されている場合）
+      if calc_amount_to_call == calc_amount_to_raise
+        build_weights(fold: 60, call: 40)
+      # レイズすることができる場合
+      else
+        build_weights(fold: 30, call: 50, bet: 20)
+      end
+    end
+  end
+
+  def build_weights(check: 0, bet: 0, call: 0, fold: 0, show: 0, muck: 0)
+    raise 'invalid' if [check, bet, call, fold, show, muck].sum == 0
+    [
+      [PLAYER_ACTION_BET_CHIPS, bet],
+      [PLAYER_ACTION_CALL, call],
+      [PLAYER_ACTION_CHECK, check],
+      [PLAYER_ACTION_FOLD, fold],
+      [PLAYER_ACTION_SHOW_HAND, show],
+      [PLAYER_ACTION_MUCK_HAND, muck],
+    ]
+  end
 
   def current_stack
     current_game_hand_player.stack
@@ -65,16 +81,31 @@ class NpcPlayer
     game_hand.game_hand_player_by_id(table_player.player_id)
   end
 
-  def calc_call
+  def calc_amount_to_call
     game_hand.amount_to_call_by_player_id(table_player.player_id)
   end
 
-  def cals_raise(amount_to_call)
-    [amount_to_call * 3, current_stack].min
+  def calc_amount_to_raise
+    amount_to_bet = calc_amount_to_call * 3
+    amount_to_min_bet = game_hand.amount_to_min_bet_by_player_id(table_player.player_id)
+
+    # 誰もレイズしていない場合
+    return calc_amount_to_bet if amount_to_bet == 0
+
+    # ミニマムレイズ額に達しない場合は所持スタック量（オールイン）
+    return current_stack if current_stack < amount_to_min_bet
+
+    # ベットしようとしている額がミニマムベット学に足りないのなら補正
+    return amount_to_min_bet if amount_to_bet < amount_to_min_bet
+
+    # ベットしようとしている額がスタックを超えるならオールイン
+    return current_stack if amount_to_bet > current_stack
+
+    amount_to_bet
   end
 
-  def calc_bet(amount_to_call)
-    amount = amount_to_call + (amount_to_call + game_hand.pot_amount) / 2
+  def calc_amount_to_bet
+    amount = game_hand.pot_amount / 2
     if amount % 10 != 0
       amount = (amount / 10) * 10
     end
@@ -82,6 +113,9 @@ class NpcPlayer
     if amount > 1000
       amount = (amount / 100) * 100
     end
+
+    amount_to_min_bet = game_hand.amount_to_min_bet_by_player_id(table_player.player_id)
+    amount = amount_to_min_bet if amount < amount_to_min_bet
 
     [amount, current_stack].min
   end
@@ -96,10 +130,6 @@ class NpcPlayer
       end
     end
     return weights[0][0]
-  end
-
-  def lot(prob)
-    rand(100) < prob
   end
 
   def last_aggressor?

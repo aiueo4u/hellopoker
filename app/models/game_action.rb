@@ -1,7 +1,7 @@
 class GameAction < ApplicationRecord
   include ActionType
 
-  ACTION_TIMEOUT = Rails.env.development? ? 30.seconds : 60.seconds
+  ACTION_TIMEOUT = Rails.env.development? ? 10.seconds : 60.seconds
 
   belongs_to :game_hand
   belongs_to :player
