@@ -24,10 +24,13 @@ class GameAction::CreateCheckCommand
   private
 
   def validate_game_hand
+    # 適切なラウンドか
+    errors.add(:game_hand, :invalid) if !game_hand.current_state.in?(%w(preflop flop turn river))
+
     # 自分のターンか
     errors.add(:game_hand, :invalid) if table_player.seat_no != game_hand.current_seat_no
+
     # チェック可能か
     errors.add(:game_hand, :invalid) if !game_hand.checkable_by?(table_player)
-    # TODO: flop〜riverか
   end
 end

@@ -42,6 +42,10 @@ class GameHandPlayer < ApplicationRecord
     actions.any?(&:muck?)
   end
 
+  def show_or_muck_hand?
+    actions.any? { |action| action.muck? || action.show? }
+  end
+
   def taken_amount
     actions.filter(&:taken?).sum(&:amount)
   end

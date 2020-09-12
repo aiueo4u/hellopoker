@@ -41,10 +41,15 @@ class GameAction::CreateBetCommand
   end
 
   def validate_game_hand
+    # 適切なラウンドか
+    errors.add(:game_hand, :invalid) if !game_hand.current_state.in?(%w(preflop flop turn river))
+
     # 自分のターンか
     errors.add(:game_hand, :invalid) if table_player.seat_no != game_hand.current_seat_no
+
     # 指定ベット額はコール額を超えているか（同じならコールになり、ベットできない）
     errors.add(:game_hand, :invalid) if calculate_amount_to_call >= amount
+
     # 指定ベット額を持っているか
     errors.add(:game_hand, :invalid) if table_player.stack < amount
 
@@ -53,7 +58,5 @@ class GameAction::CreateBetCommand
       # 最低ベット額
       errors.add(:game_hand, :invalid) if amount < calculate_amount_to_min_bet
     end
-
-    # TODO: flop〜riverか
   end
 end

@@ -1,0 +1,14 @@
+.container
+  .row
+    .col-12
+      .h5 テーブル詳細
+  .row
+    .col-12
+      .h6 ハンド履歴
+    .col-12
+      table.table.table-bordered
+        - @table.game_hands.each do |game_hand|
+          tr
+            td= game_hand.id
+            td= l game_hand.created_at
+            td= link_to '詳細', admin_game_hand_path(id: game_hand.id), class: %w(btn btn-outline-primary)

@@ -4,6 +4,7 @@ div
       th 順番
       th ラウンド
       th プレイヤー名
+      th シート
       th アクション
       th 量
       th 日付
@@ -13,6 +14,7 @@ div
         td= gha.order_id
         td= gha.state
         td= @players_by_id[gha.player_id].nickname
+        td= @table_players_by_player_id[gha.player_id]&.seat_no
         td= gha.action_type
         td= gha.amount
         td= gha.created_at

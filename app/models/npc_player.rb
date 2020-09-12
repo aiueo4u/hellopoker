@@ -17,7 +17,7 @@ class NpcPlayer
   def output
     type = amount = nil
 
-    if manager.current_state == 'result'
+    if manager.current_state == 'hand_open'
       weights = build_weights(show: 80, muck: 20)
       type = lot_by_weights(weights)
     else
@@ -138,8 +138,8 @@ class NpcPlayer
 
   def last_aggressive_player_id
     unless @last_aggressive_player_id
-      last_action_round = game_hand.state
-      last_round_actions = game_hand.all_actions.group_by(&:state)[last_action_round]
+      last_action_round = game_hand.last_action_state
+      last_round_actions = game_hand.game_actions.group_by(&:state)[last_action_round]
       @last_aggressive_player_id = last_round_actions.select(&:bet?).sort_by(&:order_id).last&.player_id
     end
     @last_aggressive_player_id

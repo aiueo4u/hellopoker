@@ -22,7 +22,7 @@ class CreateGameActionCommand
       do_action
 
       # ゲーム終了処理の実行
-      if hand_finished?
+      if do_payment?
         do_payment
       end
 
@@ -69,8 +69,13 @@ class CreateGameActionCommand
     game_hand.next_action_timeout?
   end
 
-  def hand_finished?
-    manager.hand_finished?
+  def do_payment?
+    manager.do_payment?
+  end
+
+  # 精算処理の実行
+  def do_payment
+    manager.do_payment
   end
 
   def do_action
@@ -84,9 +89,9 @@ class CreateGameActionCommand
 
     case type
     when 'PLAYER_ACTION_SHOW_HAND'
-      command = GameAction::CreateShowCommand.run(game_hand: game_hand, table_player: current_table_player, last_action_state: last_action_state)
+      command = GameAction::CreateShowCommand.run(game_hand: game_hand, table_player: current_table_player)
     when 'PLAYER_ACTION_MUCK_HAND'
-      command = GameAction::CreateMuckCommand.run(game_hand: game_hand, table_player: current_table_player, last_action_state: last_action_state)
+      command = GameAction::CreateMuckCommand.run(game_hand: game_hand, table_player: current_table_player)
     when 'PLAYER_ACTION_CHECK'
       command = GameAction::CreateCheckCommand.run(game_hand: game_hand, table_player: current_table_player, last_action_state: last_action_state)
     when 'PLAYER_ACTION_BET_CHIPS' # Raiseも含んでいる
@@ -107,22 +112,12 @@ class CreateGameActionCommand
     end
   end
 
-  # 精算処理の実行
-  def do_payment
-    while manager.current_state == 'result' # TODO: 無限ループ防止策入れようかな。。
-      game_hand.create_taken_actions(
-        manager.calc_winning_player_ids,
-        manager.current_state,
-      )
-    end
-  end
-
   def broadcast_result
     manager.broadcast_all
   end
 
   def start_next_player_turn
-    table_player = game_hand.table_player_by_seat_no(game_hand.current_seat_no)
+    table_player = game_hand.current_seat_table_player
     if table_player.auto_play?
       NpcPlayerJob.perform_later(table.id, table_player.player_id)
     end

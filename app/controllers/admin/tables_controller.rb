@@ -1,4 +1,8 @@
 class Admin::TablesController < Admin::ApplicationController
+  def show
+    @table = Table.find(params[:id])
+  end
+
   def destroy
     table = Table.find(params[:id])
 

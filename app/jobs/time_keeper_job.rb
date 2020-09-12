@@ -41,10 +41,9 @@ class TimeKeeperJob < ApplicationJob
         current_seat_no = manager.game_hand.current_seat_no
         return unless current_seat_no # nilなら不要なジョブになっている
 
-        player_id = game_hand.player_id_by_seat_no(current_seat_no)
+        table_player = game_hand.current_seat_table_player
 
         # タイムアウトカウント+1
-        table_player = game_hand.table_player_by_player_id(player_id)
         table_player.timeout_count += 1
         table_player.save!
 
@@ -59,12 +58,12 @@ class TimeKeeperJob < ApplicationJob
         if manager.game_hand.next_order_id == action_order_id + 1
           CreateGameActionCommand.run(
             table_id: table_id,
-            current_player_id: player_id,
+            current_player_id: table_player.player_id,
             type: type,
             skip_timeout_count_reset: true,
           )
 
-          Rails.logger.debug("Player #{player_id} #{type}")
+          Rails.logger.debug("Player #{table_player.player_id} #{type}")
         else
           Rails.logger.debug('stale job')
         end

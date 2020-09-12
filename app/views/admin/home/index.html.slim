@@ -1,0 +1,51 @@
+.
+  ul
+    - @client_versions.each do |client_version|
+      li= client_version.version
+  = form_with url: admin_client_versions_path do |form|
+    = form.submit
+
+= link_to 'トーナメント', admin_tournaments_path
+
+table.table.table-bordered
+  - @tables.each do |table|
+    tr
+      td= "#{table.name}(#{table.id})"
+      td
+        .
+          = link_to '詳細', admin_table_path(id: table.id), class: %w(btn btn-outline-primary)
+        .mt-2
+          = link_to 'Delete', admin_table_path(id: table.id), class: %w(btn btn-outline-secondary), method: :delete
+
+.
+  - if @players
+    table style="border: 1px solid black"
+      tr
+        th Nickname
+        th Image
+      - @players.each do |player|
+        tr
+          td= player.nickname
+          td
+            img src=player.image_url
+  - else
+    | no players
+
+hr
+
+.
+  - if @other_service_accounts
+    table style="border: 1px solid black"
+      tr
+        th Player ID
+        th Provider
+        th UID
+      - @other_service_accounts.each do |other_service_account|
+        tr
+          td= other_service_account.player_id
+          td= other_service_account.provider
+          td= other_service_account.uid
+  - else
+    | 連携済みユーザはいません。
+
+hr

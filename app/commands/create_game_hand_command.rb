@@ -1,7 +1,7 @@
 class CreateGameHandCommand
   include Command
 
-  attr_reader :table, :current_player, :manager
+  attr_reader :table, :current_player, :manager, :game_hand
 
   validate :validate_table
 
@@ -16,7 +16,7 @@ class CreateGameHandCommand
 
       exclude_non_active_players
 
-      GameHand.create_new_game(table)
+      @game_hand = create_new_game
 
       @manager = GameManager.new(table.id, just_created: true)
     end
@@ -25,7 +25,7 @@ class CreateGameHandCommand
       @manager.broadcast_all
 
       # 最初のプレイヤーのターン開始
-      table_player = @manager.game_hand.table_player_by_seat_no(@manager.game_hand.current_seat_no)
+      table_player = @manager.game_hand.current_seat_table_player
       if table_player.auto_play?
         NpcPlayerJob.perform_later(table.id, table_player.player_id)
       end
@@ -34,6 +34,68 @@ class CreateGameHandCommand
   end
 
   private
+
+  def create_new_game
+    game_hand = GameHand.new(
+      table: table,
+      sb_size: table.current_sb_size,
+      bb_size: table.current_bb_size,
+      ante_size: table.current_ante_size,
+    )
+
+    deck = Poker::Deck.new
+
+    # スタックがあるプレイヤーのみ参加
+    #   - カードも配る
+    joining_table_players = table.table_players.filter(&:can_play_next_game?).sort_by(&:seat_no)
+    joining_table_players.each do |table_player|
+      game_hand.game_hand_players.build(
+        player_id: table_player.player_id,
+        initial_stack: table_player.stack,
+        card1_id: deck.draw.id,
+        card2_id: deck.draw.id,
+      )
+    end
+
+    # ボードのカードを決めちゃう
+    game_hand.board_card1_id = deck.draw.id
+    game_hand.board_card2_id = deck.draw.id
+    game_hand.board_card3_id = deck.draw.id
+    game_hand.board_card4_id = deck.draw.id
+    game_hand.board_card5_id = deck.draw.id
+
+    # ボタンポジションの決定
+    last_button_seat_no = GameHand.where(table: table).order(:id).last&.button_seat_no || joining_table_players[-1].seat_no
+
+    # btn, sb, bb, ...
+    sorted_seat_nos = GameUtils.sort_seat_nos(joining_table_players.map(&:seat_no), last_button_seat_no)
+    game_hand.button_seat_no = sorted_seat_nos[0]
+
+    # SB,BBのシート番号
+    if sorted_seat_nos.size == 2 # Heads up
+      sb_seat_no = sorted_seat_nos[0]
+      bb_seat_no = sorted_seat_nos[1]
+    else
+      sb_seat_no = sorted_seat_nos[1]
+      bb_seat_no = sorted_seat_nos[2]
+    end
+
+    # SB,BBからブラインド徴収
+    sb_table_player = joining_table_players.find { |tp| tp.seat_no == sb_seat_no }
+    sb_amount = [game_hand.sb_size, sb_table_player.stack].min
+    sb_table_player.stack -= sb_amount
+    game_hand.build_blind_action(sb_table_player.player_id, sb_amount)
+
+    bb_table_player = joining_table_players.find { |tp| tp.seat_no == bb_seat_no }
+    bb_amount = [game_hand.bb_size, bb_table_player.stack].min
+    bb_table_player.stack -= bb_amount
+    game_hand.build_blind_action(bb_table_player.player_id, bb_amount)
+
+    sb_table_player.save!
+    bb_table_player.save!
+    game_hand.save!
+    game_hand
+  end
 
   def validate_table
     manager = GameManager.new(table.id)

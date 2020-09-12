@@ -39,10 +39,13 @@ class GameAction::CreateCallCommand
   end
 
   def validate_game_hand
+    # 適切なラウンドか
+    errors.add(:game_hand, :invalid) if !game_hand.current_state.in?(%w(preflop flop turn river))
+
     # 自分のターンか
     errors.add(:game_hand, :invalid) if table_player.seat_no != game_hand.current_seat_no
+
     # 必要コール額を持っているか
     errors.add(:game_hand, :invalid) if table_player.stack < calculate_amount_to_call
-    # TODO: flop〜riverか
   end
 end

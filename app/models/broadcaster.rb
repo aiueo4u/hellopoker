@@ -27,7 +27,7 @@ class Broadcaster
       undoable: GameHand.where(table: table).exists?,
       game_hand_count: game_hand_count,
       board_cards: build_board_cards(game_hand, current_state),
-      show_or_muck: current_state == 'result' && !game_hand&.no_more_action?,
+      show_or_muck: current_state == 'hand_open' && !game_hand&.no_more_action?,
       reached_rounds: reached_rounds,
       reaching_rounds: reaching_rounds,
       last_action: last_action,
@@ -123,7 +123,7 @@ class Broadcaster
 
     return [reached_rounds, reaching_rounds] unless game_hand
 
-    game_hand.all_actions.map(&:state).uniq.each do |state|
+    game_hand.game_actions.map(&:state).uniq.each do |state|
       reached_rounds[state] = true
     end
     reached_rounds[game_hand.current_state] = true
@@ -185,7 +185,7 @@ class Broadcaster
 
     return @show_or_muck_by_player_id unless game_hand
 
-    if  game_hand.current_state != 'result' && game_hand.current_state != 'finished'
+    if  game_hand.current_state != 'hand_open' && game_hand.current_state != 'finished'
       return @show_or_muck_by_player_id
     end
 
@@ -247,7 +247,7 @@ class Broadcaster
       ]
     end
 
-    if current_state.in?(%w(river result finished))
+    if current_state.in?(%w(river hand_open finished))
       return [
         game_hand.board_card1_id,
         game_hand.board_card2_id,

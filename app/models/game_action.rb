@@ -1,19 +1,18 @@
 class GameAction < ApplicationRecord
   include ActionType
 
-  ACTION_TIMEOUT = Rails.env.development? ? 10.seconds : 60.seconds
+  ACTION_TIMEOUT = Rails.env.development? ? 30.seconds : 60.seconds
 
   belongs_to :game_hand
   belongs_to :player
 
-  # TODO: hand_open
-  # TODO: result -> payment
   enum state: %i(
     preflop
     flop
     turn
     river
-    result
+    hand_open
+    payment
   )
 
   def self.timeout_from_last_action?(last_action, time: Time.current)
@@ -40,15 +39,15 @@ class GameAction < ApplicationRecord
     new(player_id: player_id, state: state, order_id: order_id, action_type: :fold)
   end
 
-  def self.build_muck_action(player_id, state, order_id)
-    new(player_id: player_id, state: state, order_id: order_id, action_type: :muck)
+  def self.build_muck_action(player_id, order_id)
+    new(player_id: player_id, state: :hand_open, order_id: order_id, action_type: :muck)
   end
 
-  def self.build_show_action(player_id, state, order_id)
-    new(player_id: player_id, state: state, order_id: order_id, action_type: :show)
+  def self.build_show_action(player_id, order_id)
+    new(player_id: player_id, state: :hand_open, order_id: order_id, action_type: :show)
   end
 
-  def self.build_taken_action(player_id, state, order_id, amount)
-    new(player_id: player_id, state: state, order_id: order_id, action_type: :taken, amount: amount)
+  def self.build_taken_action(player_id, order_id, amount)
+    new(player_id: player_id, state: :payment, order_id: order_id, action_type: :taken, amount: amount)
   end
 end

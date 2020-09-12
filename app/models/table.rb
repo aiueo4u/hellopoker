@@ -2,6 +2,7 @@ class Table < ApplicationRecord
   has_many :table_players
   has_many :players, through: :table_players
   has_many :table_messages
+  has_many :game_hands
   belongs_to :tournament, optional: true
 
   validates :name, presence: true
