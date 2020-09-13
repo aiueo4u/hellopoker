@@ -106,22 +106,27 @@ class GameHand < ApplicationRecord
     [amount_to_call, current_game_hand_player.stack].min
   end
 
-  # paymentに進めるかどうか
-  #
-  #   下記いずれかを満たすこと
-  #   1. 全員がもうアクションできない
-  #   2. 参加済みでactiveなプレイヤーが自分だけ
+  # 現在のハンドで全てのプレイヤーアクションを終えているかどうか(paymentラウンドに進めるかどうか)
   def no_more_action?
-    game_hand_players.count { |ghp| can_any_action_by_ghp?(ghp) } == 0 ||
-      game_hand_players.count { |ghp| can_any_action_by_ghp?(ghp) } == 1 &&
+    # 自分以外の全員がfold or muck
+    return true if game_hand_players.count { |ghp| ghp.folded? || ghp.muck_hand? } == game_hand_players.size - 1
+
+    # 全員アクションを終えている場合
+    return true if game_hand_players.all? { |ghp| no_more_action_by_ghp?(ghp) }
+
+    # 自分以外の全員がアクションを終えており、必要なチップを出している場合
+    return true if game_hand_players.count { |ghp| no_more_action_by_ghp?(ghp) } == game_hand_players.size - 1 &&
       game_hand_players.count { |ghp| ghp.active? && ghp.bet_amount_by_state(last_action_state) >= current_max_bet_amount } == 1
+
+    # hand_openラウンドだが、オールインしているプレイヤーがいる場合（hand_openラウンドをスキップ）
+    return true if last_action_finished_round? && next_state.in?(['hand_open', nil]) && game_hand_players.any?(&:allin?)
+
+    false
   end
 
-  # オールイン状態じゃない
-  # フォールド状態じゃない
-  # 結果フェーズでハンドのshow or muckを選択していない
-  def can_any_action_by_ghp?(ghp)
-    !ghp.allin? && !ghp.folded? && !ghp.show_or_muck_hand?
+  # 現在のハンドのアクションを全て終えているかどうか
+  def no_more_action_by_ghp?(ghp)
+    ghp.allin? || ghp.folded? || ghp.show_or_muck_hand?
   end
 
   # 現在のラウンド

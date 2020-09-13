@@ -27,7 +27,7 @@ class Broadcaster
       undoable: GameHand.where(table: table).exists?,
       game_hand_count: game_hand_count,
       board_cards: build_board_cards(game_hand, current_state),
-      show_or_muck: current_state == 'hand_open' && !game_hand&.no_more_action?,
+      show_or_muck: current_state == 'hand_open',
       reached_rounds: reached_rounds,
       reaching_rounds: reaching_rounds,
       last_action: last_action,
