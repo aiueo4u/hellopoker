@@ -18,7 +18,7 @@ class NpcPlayer
     type = amount = nil
 
     if manager.current_state == 'hand_open'
-      weights = build_weights(show: 80, muck: 200)
+      weights = build_weights(show: 80, muck: 20)
       type = lot_by_weights(weights)
     else
       weights = action_candidates
