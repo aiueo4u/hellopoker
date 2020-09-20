@@ -24,8 +24,6 @@ COPY yarn.lock /app/yarn.lock
 COPY . /app
 
 ENV RAILS_ENV production
-ENV SECRET_KEY_BASE=null
-ENV DB_ADAPTER=nulldb
 
 RUN gem install bundler:2.1.4
 
@@ -38,4 +36,4 @@ RUN bundle install --jobs=4
 RUN yarn install
 
 RUN yarn run build
-RUN bundle exec rails assets:precompile
+RUN SECRET_KEY_BASE=null DB_ADAPTER=nulldb bundle exec rails assets:precompile
