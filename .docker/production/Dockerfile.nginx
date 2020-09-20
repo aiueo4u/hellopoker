@@ -1,0 +1,4 @@
+FROM fholzer/nginx-brotli:v1.16.1
+
+RUN rm -f /etc/nginx/conf.d/*
+COPY nginx.production.conf /etc/nginx/conf.d/youtrust.conf
