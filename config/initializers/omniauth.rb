@@ -1,5 +1,4 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  secrets = Rails.application.secrets
-  provider :twitter, secrets.twitter[:consumer_key], secrets.twitter[:consumer_secret]
-  provider :facebook, secrets.facebook[:app_id], secrets.facebook[:app_secret]
+  provider :twitter, Settings.twitter.consumer_key, Settings.twitter.consumer_secret
+  provider :facebook, Settings.facebook.app_id, Settings.facebook.app_secret
 end
