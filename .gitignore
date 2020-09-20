@@ -19,9 +19,6 @@
 
 .byebug_history
 
-# Ignore encrypted secrets key file.
-config/secrets.yml.key
-
 /public/webpacks
 
 *.sw[pon]
