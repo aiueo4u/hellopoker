@@ -1,0 +1,51 @@
+version: 0.2
+
+env:
+  parameter-store:
+    AWS_ACCESS_KEY_ID: "CLIENT_AWS_ACCESS_KEY_ID"
+    AWS_SECRET_ACCESS_KEY: "CLIENT_AWS_SECRET_ACCESS_KEY"
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - echo Logging in to ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Rails Docker image...
+      - docker build -f ./.docker/production/Dockerfile -t $IMAGE_REPO_NAME:latest .
+      - docker tag $IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+      - docker tag $IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Building the Nginx Docker image...
+      - docker build -f ./.docker/production/Dockerfile.nginx -t $NGINX_IMAGE_REPO_NAME:latest .
+      - docker tag $NGINX_IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_REPO_NAME:latest
+      - docker tag $NGINX_IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_REPO_NAME:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Rails Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Pushing the Nginx Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_REPO_NAME:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$NGINX_IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - echo "[{\"name\":\"rails-web\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}, {\"name\":\"nginx\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${NGINX_IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-web.json
+      - echo "[{\"name\":\"rails-worker\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker.json
+      - echo "[{\"name\":\"rails-worker-scheduler\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker-scheduler.json
+      - echo Migrating database...
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws ecs run-task --cluster ${ECS_CLUSTER_NAME} --task-definition ${ECS_DB_MIGRATE_TASK}
+      - echo Uploading assets to S3...
+      - RAILS_ASSET_CONTAINER_ID=$(docker create $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG)
+      - docker cp $RAILS_ASSET_CONTAINER_ID:/app/public .
+      - docker rm $RAILS_ASSET_CONTAINER_ID
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 sync --exact-timestamps public s3://${S3_BUCKET_NAME} --acl public-read
+artifacts:
+  files:
+    - hellopoker-rails-web.json
+    - hellopoker-rails-worker.json
+    - hellopoker-rails-worker-scheduler.json
