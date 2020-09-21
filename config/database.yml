@@ -52,4 +52,4 @@ production:
   encoding: utf8mb4
   collation: utf8mb4_bin
   adapter: <%= ENV['DB_ADAPTER'] || 'mysql2' %>
-  url: <%= ENV['CLEARDB_DATABASE_URL'] %>
+  url: <%= ENV['CLEARDB_DATABASE_URL'] || ENV['DATABASE_URL'] %>
