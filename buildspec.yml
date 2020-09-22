@@ -43,7 +43,7 @@ phases:
       - RAILS_ASSET_CONTAINER_ID=$(docker create $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG)
       - docker cp $RAILS_ASSET_CONTAINER_ID:/app/public .
       - docker rm $RAILS_ASSET_CONTAINER_ID
-      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 sync --exact-timestamps public s3://${S3_BUCKET_NAME} --acl public-read
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 sync --exact-timestamps public s3://${S3_BUCKET_NAME}
 artifacts:
   files:
     - hellopoker-rails-web.json
