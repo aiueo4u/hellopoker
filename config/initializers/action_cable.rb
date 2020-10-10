@@ -1,4 +1,5 @@
 Rails.application.config.action_cable.allowed_request_origins = %w(
+  http://192.168.3.2:3000
   http://192.168.100.100:3000
   http://192.168.100.101:3000
   http://192.168.100.102:3000
