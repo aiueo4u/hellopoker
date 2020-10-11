@@ -5,6 +5,8 @@ const styles = theme => ({
   chip: ({ index }) => ({
     position: 'absolute',
     bottom: `calc(${index} * 6px)`,
+    left: '50%',
+    transform: 'translate(-50%, 0%)',
     width: '40px',
     height: '20px',
     //border: `1px solid ${theme.palette.common.black}`,

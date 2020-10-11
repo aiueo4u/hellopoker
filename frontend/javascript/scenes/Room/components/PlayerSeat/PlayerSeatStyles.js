@@ -4,17 +4,19 @@ const styles = theme => ({
   base: {
     position: 'absolute',
     [theme.breakpoints.up('sm')]: {
-      width: '320px',
-      height: '180px',
+      width: '240px',
+      height: '150px',
     },
     [theme.breakpoints.only('xs')]: {
-      width: '94px',
-      height: '54px',
+      width: '80px',
+      height: '100px',
     },
     //border: `2px solid red`, // TODO
   },
   playerContainer: ({ position }) => {
-    const base = {};
+    const base = {
+      // border: '1px solid red',
+    };
 
     switch (position) {
       case 1: // bottom left
@@ -22,45 +24,50 @@ const styles = theme => ({
           ...base,
           [theme.breakpoints.up('sm')]: {
             top: 'calc(50% + 160px)',
+            left: 'calc(50% - 350px)',
           },
           [theme.breakpoints.only('xs')]: {
             top: 'calc(50% + 100px)',
+            left: 'calc(50% - 100px)',
           },
-          transform: 'translate(0%, -50%)',
+          transform: 'translate(-100%, -50%)',
         };
       case 2: // top left
         return {
           ...base,
           [theme.breakpoints.up('sm')]: {
             top: 'calc(50% - 160px)',
+            left: 'calc(50% - 350px)',
           },
           [theme.breakpoints.only('xs')]: {
             top: 'calc(50% - 100px)',
+            left: 'calc(50% - 100px)',
           },
-          transform: 'translate(0%, -50%)',
+          transform: 'translate(-100%, -50%)',
         };
       case 3: // top
         return {
           ...base,
           [theme.breakpoints.up('sm')]: {
-            top: 'calc(50% - 380px)',
+            top: 'calc(50% - 200px)',
           },
           [theme.breakpoints.only('xs')]: {
-            top: 'calc(50% - 280px)',
+            top: 'calc(50% - 200px)',
           },
           left: '50%',
-          transform: 'translate(-50%, 0%)',
+          transform: 'translate(-50%, -100%)',
         };
       case 4: // top right
         return {
           ...base,
           [theme.breakpoints.up('sm')]: {
             top: 'calc(50% - 160px)',
+            left: 'calc(50% + 350px)',
           },
           [theme.breakpoints.only('xs')]: {
             top: 'calc(50% - 100px)',
+            left: 'calc(50% + 100px)',
           },
-          right: 0,
           transform: 'translate(0%, -50%)',
         };
       case 5: // bottom right
@@ -68,11 +75,12 @@ const styles = theme => ({
           ...base,
           [theme.breakpoints.up('sm')]: {
             top: 'calc(50% + 160px)',
+            left: 'calc(50% + 350px)',
           },
           [theme.breakpoints.only('xs')]: {
             top: 'calc(50% + 100px)',
+            left: 'calc(50% + 100px)',
           },
-          right: 0,
           transform: 'translate(0%, -50%)',
         };
       default:

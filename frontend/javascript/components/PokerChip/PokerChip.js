@@ -43,7 +43,7 @@ const PokerChip = ({ amount }) => {
   let totalIndex = 0;
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <div className={classes.container}>
         {chips.map(chip => {
           return [...Array(chip.count).keys()].map(_ => {
@@ -52,7 +52,7 @@ const PokerChip = ({ amount }) => {
         })}
       </div>
       <div className={classes.amount}>{amount}</div>
-    </>
+    </div>
   );
 };
 

@@ -17,7 +17,7 @@ const styles = theme => ({
     },
     [theme.breakpoints.only('xs')]: {
       maxWidth: '300px',
-      maxHeight: '500px',
+      maxHeight: '450px',
       borderRadius: '150px',
     },
     backgroundImage: `url(${BackgroundImage})`,
@@ -32,6 +32,12 @@ const styles = theme => ({
     left: '50%',
     transform: 'translate(-50%, 0)',
     //border: `1px solid red`,
+    [theme.breakpoints.up('sm')]: {
+      bottom: '16px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      bottom: '55px',
+    },
   },
 });
 

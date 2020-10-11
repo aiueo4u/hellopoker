@@ -7,7 +7,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import VideocamIcon from '@material-ui/icons/Videocam';
 
 import { nameByActionType } from 'helpers/actionType';
-import { isTouchDevise } from 'utils/devise';
+import useIsMobile from 'hooks/useIsMobile';
 import usePlayerAvatarWindow from './hooks/usePlayerAvatarWindow';
 import useStyles from './PlayerAvatarWindowStyles';
 
@@ -15,12 +15,14 @@ const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
   const classes = useStyles();
   const { startAudio, startVideo } = usePlayerAvatarWindow(tableId);
 
+  const isMobile = useIsMobile();
+
   return (
     <div className={classes.videoContainer}>
       {isMe ? (
         <div className={classes.inner}>
           <Box mb={2}>
-            {isTouchDevise ? (
+            {isMobile ? (
               <Button onClick={startVideo} variant="contained" color="primary">
                 <VideocamIcon />
               </Button>
@@ -30,7 +32,7 @@ const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
               </Button>
             )}
           </Box>
-          {isTouchDevise ? (
+          {isMobile ? (
             <Button onClick={startAudio} size="small" className={classes.startAudioButton}>
               <MicIcon />
             </Button>

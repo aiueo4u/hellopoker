@@ -13,7 +13,7 @@ const styles = theme => ({
   container: {
     position: 'absolute',
     height: '300px',
-    width: '50%',
+    width: '100%',
     maxWidth: '300px',
     top: '50%',
     left: '50%',
@@ -22,10 +22,18 @@ const styles = theme => ({
   },
   information: {
     position: 'absolute',
-    top: 'calc(50% + 110px)',
     left: '50%',
-    transform: 'translate(-50%, -50%)',
-    color: theme.palette.grey[600],
+    width: '100%',
+    transform: 'translate(-50%, 0%)',
+    color: theme.palette.common.white,
+    //border: '1px solid red',
+    [theme.breakpoints.up('sm')]: {
+      top: 'calc(50% + 60px)',
+    },
+    [theme.breakpoints.only('xs')]: {
+      top: 'calc(50% + 35px)',
+      fontSize: theme.typography.caption.fontSize,
+    },
   },
   inner: {
     //border: `1px solid blue`, // TODO
@@ -46,15 +54,17 @@ const styles = theme => ({
   },
   pot: {
     position: 'absolute',
-    top: '40px',
     left: '50%',
-    transform: 'translate(-50%, 0)',
     display: 'inline-block',
-    //backgroundColor: 'rgba(0, 0, 0, 0.7)',
     color: theme.palette.common.white,
-    //padding: theme.spacing(1),
-    margin: '16px auto',
-    //borderRadius: '4px',
+    transform: 'translate(-50%, -100%)',
+    [theme.breakpoints.up('sm')]: {
+      top: 'calc(50% - 60px)',
+    },
+    [theme.breakpoints.only('xs')]: {
+      top: 'calc(50% - 35px)',
+    },
+    //border: '1px solid yellow',
   },
 });
 

@@ -3,11 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 const styles = theme => ({
   container: ({ player }) => ({
     position: 'absolute',
-    bottom: 0,
+    top: '50%',
     left: '50%',
-    transform: 'translate(-50%, 0%)',
-    //border: `3px solid red`, // TODO
-    textAlign: 'center',
+    transform: 'translate(-50%, -50%)',
     filter: player && player.state === 'folded' ? 'grayscale(100%)' : '',
   }),
   stackSize: {

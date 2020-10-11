@@ -14,7 +14,7 @@ const styles = theme => ({
     margin: 'auto',
     [theme.breakpoints.up('sm')]: {
       maxWidth: '1280px',
-      minWidth: '800px',
+      minWidth: '1000px',
       minHeight: '600px',
     },
     [theme.breakpoints.only('xs')]: {
@@ -24,6 +24,7 @@ const styles = theme => ({
   table: {
     position: 'relative',
     height: '100%',
+    width: '100%',
     //border: `1px solid red`,
   },
 });

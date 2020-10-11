@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import EmptySeat from 'components/EmptySeat';
@@ -40,7 +41,9 @@ const HeroPlayerPanel = ({ player, tableId }) => {
   return (
     <>
       <div className={classes.container}>
-        <MessageTooltip player={player} />
+        <Box textAlign="center">
+          <MessageTooltip player={player} />
+        </Box>
 
         {/* プレイヤーのアバターorビデオ */}
         <PlayerWindow tableId={tableId} player={player} isTurn={isTurn} />

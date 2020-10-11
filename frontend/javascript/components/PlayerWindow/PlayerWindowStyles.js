@@ -22,15 +22,18 @@ const styles = theme => ({
   },
   container: {
     position: 'relative',
-    width: '210px',
-    height: '140px',
     margin: 'auto',
     boxShadow: theme.shadows[4],
     overflow: 'hidden',
     borderRadius: '6px',
+    textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      width: '210px',
+      height: '140px',
+    },
     [theme.breakpoints.only('xs')]: {
-      width: '100px',
-      height: '75px',
+      width: '80px',
+      height: '100px',
     },
   },
   emptyImage: {

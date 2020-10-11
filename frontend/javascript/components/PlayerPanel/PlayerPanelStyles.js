@@ -22,23 +22,26 @@ const styles = theme => ({
         return {
           ...base,
           left: '50%',
-          bottom: '-30px',
-          transform: 'translate(50%, 100%)',
-          [theme.breakpoints.up('sm')]: {},
-          [theme.breakpoints.only('xs')]: {},
+          transform: 'translate(-50%, 100%)',
+          [theme.breakpoints.up('sm')]: {
+            bottom: '-48px',
+          },
+          [theme.breakpoints.only('xs')]: {
+            bottom: '-36px',
+          },
         };
       case 'right':
         return {
           ...base,
           [theme.breakpoints.up('sm')]: {
             top: '50%',
-            left: '-80px',
+            left: '-120px',
             transform: 'translate(-100%, -50%)',
           },
           [theme.breakpoints.only('xs')]: {
             top: '50%',
             left: 0,
-            transform: 'translate(-100%, 0%)',
+            transform: 'translate(-100%, -50%)',
           },
         };
       case 'left':
@@ -46,13 +49,13 @@ const styles = theme => ({
           ...base,
           [theme.breakpoints.up('sm')]: {
             top: '50%',
-            right: '-80px',
+            right: '-120px',
             transform: 'translate(100%, -50%)',
           },
           [theme.breakpoints.only('xs')]: {
             top: '50%',
             right: 0,
-            transform: 'translate(100%, 0%)',
+            transform: 'translate(100%, -50%)',
           },
         };
       default:
@@ -70,40 +73,40 @@ const styles = theme => ({
           ...base,
           [theme.breakpoints.up('sm')]: {
             left: '50%',
-            bottom: '-30px',
+            bottom: '-14px',
             transform: 'translate(-50%, 100%)',
           },
           [theme.breakpoints.only('xs')]: {
             left: '50%',
-            transform: 'translate(-50%, 50%)',
+            transform: 'translate(-50%, 20%)',
           },
         };
       case 'left':
         return {
           ...base,
           [theme.breakpoints.up('sm')]: {
-            top: '55%',
-            right: '-40px',
-            transform: 'translate(100%, -100%)',
+            top: '50%',
+            right: '-80px',
+            transform: 'translate(100%, -50%)',
           },
           [theme.breakpoints.only('xs')]: {
             bottom: 0,
             right: 0,
-            transform: 'translate(100%, 100%)',
+            transform: 'translate(120%, 0%)',
           },
         };
       case 'right':
         return {
           ...base,
           [theme.breakpoints.up('sm')]: {
-            top: '55%',
-            left: '-40px',
-            transform: 'translate(-100%, -100%)',
+            top: '50%',
+            left: '-80px',
+            transform: 'translate(-100%, -50%)',
           },
           [theme.breakpoints.only('xs')]: {
             bottom: 0,
             left: 0,
-            transform: 'translate(-100%, 100%)',
+            transform: 'translate(-120%, 0%)',
           },
         };
       default:

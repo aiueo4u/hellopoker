@@ -24,7 +24,7 @@ const TableMessageDrawer = ({ tableId }) => {
 
   return (
     <>
-      <Box position="fixed" bottom={24} right={24}>
+      <Box className={classes.buttonContainer}>
         <MailButton onClick={openDrawer} />
       </Box>
       <Drawer open={isOpen} onClose={closeDrawer} anchor="right" PaperProps={{ className: classes.drawer }}>

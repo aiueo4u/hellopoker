@@ -1,6 +1,17 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
+  buttonContainer: {
+    position: 'fixed',
+    [theme.breakpoints.up('sm')]: {
+      bottom: '32px',
+      right: '32px',
+    },
+    [theme.breakpoints.only('xs')]: {
+      bottom: '56px',
+      right: '12px',
+    },
+  },
   drawer: {
     width: '280px',
   },
