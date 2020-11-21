@@ -33,7 +33,7 @@ const PlayerPanel = ({ tableId, position, player }) => {
   if (!player.id) {
     player.id = 123;
     player.nickname = 'aiueo4u-hogehoge';
-    player.imageUrl = 'https://pbs.twimg.com/media/EUK26AJVAAAjUUr?format=jpg&name=240x240';
+    player.profileImageUrl = 'https://pbs.twimg.com/media/EUK26AJVAAAjUUr?format=jpg&name=240x240';
     player.stack = 12345;
     player.betAmountInState = 1234;
   }

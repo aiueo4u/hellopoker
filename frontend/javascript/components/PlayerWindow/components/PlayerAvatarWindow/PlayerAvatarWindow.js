@@ -42,9 +42,9 @@ const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
             </Button>
           )}
         </div>
-      ) : player.imageUrl ? (
+      ) : player.profileImageUrl ? (
         <>
-          <img src={player.imageUrl} alt={player.nickname} className={classes.avatar} />
+          <img src={player.profileImageUrl} alt={player.nickname} className={classes.avatar} />
           <span className={classes.nickname}>{player.nickname}</span>
         </>
       ) : (

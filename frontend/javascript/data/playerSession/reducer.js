@@ -3,7 +3,7 @@ const initialState = {
   isLoggedIn: false,
   nickname: null,
   playerId: null,
-  imageUrl: null,
+  profileImageUrl: null,
 };
 
 const playerSession = (state = initialState, action) => {
@@ -15,7 +15,7 @@ const playerSession = (state = initialState, action) => {
         isLoggedIn: true,
         nickname: action.nickname,
         playerId: action.playerId,
-        imageUrl: action.imageUrl,
+        profileImageUrl: action.profileImageUrl,
       };
     case 'FETCH_PLAYER_FAILED':
       return { ...state, isReady: true };

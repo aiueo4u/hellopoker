@@ -35,6 +35,7 @@ gem 'redis', '~> 3.0'
 # gem 'capistrano-rails', group: :development
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+gem 'aws-sdk-s3'
 gem 'rack-cors'
 gem 'ridgepole'
 gem 'jwt'
@@ -48,6 +49,7 @@ gem 'jquery-rails'
 gem 'slim'
 gem 'config'
 gem 'bootsnap'
+gem "paperclip", "~> 6.0.0"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -6,15 +6,16 @@ class SessionsController < ApplicationController
 
     if other_service_account.player_id.present?
       player = Player.find(other_service_account.player_id)
-      player.image_url = build_image_url(auth[:info][:image])
       player.save!
     else
       nickname = auth[:info][:nickname] # Twitter
       nickname ||= auth[:info][:name] # Facebook
-      player = Player.create!(nickname: nickname, image_url: build_image_url(auth[:info][:image]))
+      player = Player.create!(nickname: nickname)
       other_service_account.player_id = player.id
       other_service_account.save!
     end
+
+    UploadProfileImageJob.perform_later(player: player, profile_image_url: build_image_url(auth[:info][:image]))
 
     payload = { id: player.id }
     jwt = ::AuthToken.encode(payload)
