@@ -2,7 +2,7 @@ namespace :player do
   task copy_name: :environment do
     Player.find_each do |player|
       player.with_lock do
-        player.name = player.name
+        player.name = player.nickname
         player.save!
       end
     end
