@@ -6,6 +6,6 @@ json.table_messages @table_messages do |table_message|
   json.player do
     json.id table_message.player.id
     json.name table_message.player.name
-    json.profile_image_url table_message.player.image_url
+    json.profile_image_url table_message.player.profile_image_url
   end
 end

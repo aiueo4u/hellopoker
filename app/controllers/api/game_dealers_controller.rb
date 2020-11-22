@@ -27,6 +27,7 @@ class Api::GameDealersController < Api::ApplicationController
       table_id: params[:table_id].to_i,
       current_player_id: current_player.id,
       seat_no: params[:seat_no].to_i,
+      npc_type: NpcPlayer.profile_by_npc_type.keys.sample,
     )
     head command.success? ? :created : :bad_request
   end

@@ -15,7 +15,7 @@ const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
   const classes = useStyles();
   const { startAudio, startVideo } = usePlayerAvatarWindow(tableId);
 
-  const isMobile = useIsMobile();
+  const { isMobile } = useIsMobile();
 
   return (
     <div className={classes.videoContainer}>

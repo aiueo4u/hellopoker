@@ -15,8 +15,8 @@ class Table < ApplicationRecord
     )
   end
 
-  def add_npc_player(seat_no)
-    player = Player.create_npc_player
+  def add_npc_player(npc_type, seat_no)
+    player = Player.create_npc_player(npc_type)
     stack = current_bb_size * 100 # 100 BB Buy in
     table_players.create!(
       player_id: player.id,

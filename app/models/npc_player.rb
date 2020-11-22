@@ -8,6 +8,17 @@ class NpcPlayer
   PLAYER_ACTION_SHOW_HAND = 'PLAYER_ACTION_SHOW_HAND'
   PLAYER_ACTION_MUCK_HAND = 'PLAYER_ACTION_MUCK_HAND'
 
+  def self.profile_by_npc_type
+    {
+      tanuki: { name: 'たぬき', profile_image_name: 'animalface_tanuki.png', },
+      duck: { name: 'あひる', profile_image_name: 'animalface_duck.png' },
+      nezumi: { name: 'ねずみ', profile_image_name: 'animalface_nezumi.png' },
+      tora: { name: 'とら', profile_image_name: 'animalface_tora.png' },
+      usagi: { name: 'うさぎ', profile_image_name: 'animalface_usagi.png' },
+      zou: { name: 'ぞう', profile_image_name: 'animalface_zou.png' },
+    }
+  end
+
   def initialize(table_id, player_id)
     @manager = GameManager.new(table_id)
     @game_hand = @manager.game_hand

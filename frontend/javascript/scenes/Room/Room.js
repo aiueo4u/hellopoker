@@ -15,14 +15,13 @@ import useIsMobile from 'hooks/useIsMobile';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 import useRoomViewerChannel from 'hooks/useRoomViewerChannel';
+import useSkyWay from 'hooks/useSkyWay';
 
 import PlayerHand from './components/PlayerHand';
 import GameTable from './components/GameTable';
 import HeroSeat from './components/HeroSeat';
 import PlayerSeat from './components/PlayerSeat';
 import BoardCard from './components/BoardCard';
-import WelcomeDialog from './components/WelcomeDialog';
-import useRoom from './hooks/useRoom';
 import useStyles from './RoomStyles';
 import selectSortedPlayers from './selectors/selectSortedPlayers';
 
@@ -37,10 +36,10 @@ const Room = () => {
 
   const sortedPlayers = selectSortedPlayers(players, playerId);
 
-  const { isOpenWelcomeDialog, enterRoomAsViewer, enterRoomAsPlayer } = useRoom(tableId);
   useChipChannel(tableId);
   useDealtCardChannel(tableId);
   useRoomViewerChannel(tableId);
+  useSkyWay();
 
   if (!gameTable.isReady) return <Loading />;
 
@@ -49,13 +48,6 @@ const Room = () => {
       <div className={classes.container}>
         {/* ネットワーク接続中のダイアログ */}
         <NetworkStatusDialog isOpen={gameTable.reconnectingActionCable} />
-
-        {/* WebRTC接続確認ダイアログ */}
-        <WelcomeDialog
-          isOpen={isOpenWelcomeDialog}
-          enterRoomAsViewer={enterRoomAsViewer}
-          enterRoomAsPlayer={enterRoomAsPlayer}
-        />
 
         {gameTable.tournament && gameTable.tournament.isFinished && <div>トーナメントは終了しました</div>}
 

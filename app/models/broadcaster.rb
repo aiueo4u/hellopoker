@@ -75,7 +75,7 @@ class Broadcaster
       {
         id: table_player.player.id,
         name: table_player.player.name,
-        image_url: table_player.player.profile_image_url,
+        profile_image_url: table_player.player.profile_image_url,
         stack: game_hand_player&.stack || table_player.stack,
         seat_no: table_player.seat_no,
         position: game_hand&.position_by_seat_no(table_player.seat_no),

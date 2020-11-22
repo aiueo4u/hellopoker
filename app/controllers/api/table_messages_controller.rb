@@ -30,7 +30,7 @@ class Api::TableMessagesController < Api::ApplicationController
       player: {
         id: table_message.player.id,
         name: table_message.player.name,
-        profile_image_url: table_message.player.image_url,
+        profile_image_url: table_message.player.profile_image_url,
       }
     }
     ActionCable.server.broadcast "table_message_#{table_message.table_id}", data
