@@ -80,12 +80,10 @@ const PlayerPanel = ({ tableId, position, player }) => {
 
 PlayerPanel.propTypes = {
   tableId: PropTypes.string.isRequired,
-  position: PropTypes.string,
+  position: PropTypes.number.isRequired,
   player: PropTypes.object.isRequired,
 };
 
-PlayerPanel.defaultProps = {
-  position: null,
-};
+PlayerPanel.defaultProps = {};
 
 export default PlayerPanel;

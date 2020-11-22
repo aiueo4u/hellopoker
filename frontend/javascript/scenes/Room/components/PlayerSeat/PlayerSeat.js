@@ -10,13 +10,12 @@ import useStyles from './PlayerSeatStyles';
 
 const PlayerSeat = ({ player, position, tableId }) => {
   const classes = useStyles({ position });
-  const panelPosition = position === 3 ? 'top' : position < 3 ? 'left' : 'right';
   const { tournament } = useGameTableState();
 
   return (
     <div className={classNames(classes.base, classes.playerContainer)}>
       {player.id ? (
-        <PlayerPanel player={player} tableId={tableId} position={panelPosition} />
+        <PlayerPanel player={player} tableId={tableId} position={position} />
       ) : !tournament ? (
         <EmptySeat tableId={tableId} seatNo={player.seatNo} />
       ) : null}

@@ -19,6 +19,8 @@ const styles = theme => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
   container: {
     position: 'relative',
@@ -76,11 +78,13 @@ const styles = theme => ({
     bottom: 0,
     left: '50%',
     transform: 'translate(-50%, 0%)',
-    color: orange[700],
-    background: 'rgba(227, 227, 227, 0.5)',
+    background: 'rgba(255, 255, 255, 0.7)',
     width: '100%',
-    fontSize: '13px',
+    fontSize: '14px',
     lineHeight: '19px',
+  },
+  stackSize: {
+    color: orange[900],
   },
   video: {
     position: 'absolute',

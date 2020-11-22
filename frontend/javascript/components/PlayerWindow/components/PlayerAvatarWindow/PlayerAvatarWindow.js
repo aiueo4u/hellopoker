@@ -19,7 +19,14 @@ const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
 
   return (
     <div className={classes.videoContainer}>
-      {isMe ? (
+      {/* プロフィール画像 */}
+      {player.profileImageUrl && <img src={player.profileImageUrl} alt={player.name} className={classes.avatar} />}
+
+      {/* プレイヤー名 */}
+      <span className={classes.name}>{player.name}</span>
+
+      {/* 自分の場合、WebRTCのコントロールボタン */}
+      {isMe && (
         <div className={classes.inner}>
           <Box mb={2}>
             {isMobile ? (
@@ -42,13 +49,6 @@ const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
             </Button>
           )}
         </div>
-      ) : player.profileImageUrl ? (
-        <>
-          <img src={player.profileImageUrl} alt={player.name} className={classes.avatar} />
-          <span className={classes.name}>{player.name}</span>
-        </>
-      ) : (
-        <span className={classes.avatar}>{player.name}</span>
       )}
       <span className={classes.status}>
         {player.actionType ? (

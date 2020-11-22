@@ -33,7 +33,11 @@ const PlayerWindow = ({ player, isTurn, tableId }) => {
           {!videoState.isVideoEnabledByPlayerId[player.id] && player.profileImageUrl && (
             <img src={player.profileImageUrl} alt={player.name} className={classes.avatar} />
           )}
+
+          {/* プレイヤー名 */}
           <span className={classes.name}>{player.name}</span>
+
+          {/* ステータスバー */}
           <span className={classes.status}>
             {player.actionType ? (
               <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>
@@ -43,6 +47,7 @@ const PlayerWindow = ({ player, isTurn, tableId }) => {
               <div className={classes.stackSize}>{player.stack - (player.betSize || 0)}</div>
             )}
           </span>
+
           {isMe && (
             <div className={classes.inner}>
               <Box mb={2}>
