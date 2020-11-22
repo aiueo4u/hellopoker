@@ -25,7 +25,7 @@ table.table.table-bordered
         th Image
       - @players.each do |player|
         tr
-          td= player.nickname
+          td= player.name
           td
             img src=player.profile_image_url
   - else

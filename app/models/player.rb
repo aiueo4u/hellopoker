@@ -6,7 +6,7 @@ class Player < ApplicationRecord
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
   def self.create_npc_player
-    create!(nickname: 'AI', is_npc: true)
+    create!(name: 'AI', is_npc: true)
   end
 
   def profile_image_url

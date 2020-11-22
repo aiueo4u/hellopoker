@@ -18,7 +18,7 @@ const PlayerMenuDialog = ({ player, isOpen, onClose, tableId }) => {
   return (
     <>
       <Dialog open={isOpen} onClose={onClose}>
-        <DialogTitle>{'プレイヤー: ' + player.nickname}</DialogTitle>
+        <DialogTitle>{'プレイヤー: ' + player.name}</DialogTitle>
         <DialogContent>
           <div>Stack {player.stack}</div>
         </DialogContent>

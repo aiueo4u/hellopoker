@@ -5,7 +5,7 @@ json.table_messages @table_messages do |table_message|
 
   json.player do
     json.id table_message.player.id
-    json.nickname table_message.player.nickname
+    json.name table_message.player.name
     json.profile_image_url table_message.player.image_url
   end
 end

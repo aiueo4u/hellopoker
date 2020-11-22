@@ -29,7 +29,7 @@ class Api::TableMessagesController < Api::ApplicationController
       created_at: table_message.created_at.to_i,
       player: {
         id: table_message.player.id,
-        nickname: table_message.player.nickname,
+        name: table_message.player.name,
         profile_image_url: table_message.player.image_url,
       }
     }

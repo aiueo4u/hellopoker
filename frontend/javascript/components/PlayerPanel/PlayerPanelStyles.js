@@ -116,7 +116,7 @@ const styles = theme => ({
   foldedPanel: {
     filter: 'grayscale(100%)',
   },
-  nickname: {
+  name: {
     color: theme.palette.common.white,
     fontSize: '0.625rem',
     whiteSpace: 'nowrap',

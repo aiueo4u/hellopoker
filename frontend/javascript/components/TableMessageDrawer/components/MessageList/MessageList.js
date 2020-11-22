@@ -18,7 +18,7 @@ const MessageList = ({ messages }) => {
       {messages.map(message => (
         <ListItem key={message.id}>
           <ListItemAvatar>
-            <Avatar src={message.player.profileImageUrl} alt={message.player.nickname} />
+            <Avatar src={message.player.profileImageUrl} alt={message.player.name} />
           </ListItemAvatar>
           <ListItemText
             secondary={

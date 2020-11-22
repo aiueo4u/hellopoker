@@ -18,7 +18,7 @@ class LoginWithFacebookCommand
       if osa.player_id.present?
         player = osa.player
       else
-        player = Player.create!(nickname: fb_user.name)
+        player = Player.create!(name: fb_user.name)
         osa.player = player
         osa.save!
       end

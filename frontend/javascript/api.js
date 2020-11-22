@@ -88,7 +88,7 @@ export const createTableMessage = (tableId, form) => {
 
 export const debugLogin = ({ name }) => {
   const body = new FormData();
-  body.append('nickname', name);
+  body.append('name', name);
   return ApiClient.post(`/session`, body);
 };
 

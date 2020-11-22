@@ -31,9 +31,9 @@ const PlayerWindow = ({ player, isTurn, tableId }) => {
         <div className={classes.videoContainer}>
           <video id={`video-player-${player.id}`} playsInline autoPlay className={classes.video} />
           {!videoState.isVideoEnabledByPlayerId[player.id] && player.profileImageUrl && (
-            <img src={player.profileImageUrl} alt={player.nickname} className={classes.avatar} />
+            <img src={player.profileImageUrl} alt={player.name} className={classes.avatar} />
           )}
-          <span className={classes.nickname}>{player.nickname}</span>
+          <span className={classes.name}>{player.name}</span>
           <span className={classes.status}>
             {player.actionType ? (
               <div className={classes.actionType}>{nameByActionType[player.actionType]}</div>

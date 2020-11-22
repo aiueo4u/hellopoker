@@ -58,7 +58,7 @@ const styles = theme => ({
   micSwitchButton: {
     visibility: 'hidden',
   },
-  nickname: {
+  name: {
     position: 'absolute',
     top: 0,
     left: 0,

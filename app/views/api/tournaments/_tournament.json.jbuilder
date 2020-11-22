@@ -12,7 +12,7 @@ json.tables tournament.tables do |table|
     player = table_player.player
 
     json.id player.id
-    json.nickname player.nickname
+    json.name player.name
     json.profile_image_url player.profile_image_url
     json.seat_no table_player.seat_no
   end

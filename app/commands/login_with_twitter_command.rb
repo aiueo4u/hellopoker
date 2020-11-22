@@ -11,7 +11,7 @@ class LoginWithTwitterCommand
     if osa.player_id.present?
       player = osa.player
     else
-      player = Player.create!(nickname: tw_user.name)
+      player = Player.create!(name: tw_user.name)
       osa.player = player
       osa.save!
     end

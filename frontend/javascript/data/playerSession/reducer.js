@@ -1,7 +1,7 @@
 const initialState = {
   isReady: false,
   isLoggedIn: false,
-  nickname: null,
+  name: null,
   playerId: null,
   profileImageUrl: null,
 };
@@ -15,7 +15,7 @@ const playerSession = (state = initialState, action) => {
         ...state,
         isReady: true,
         isLoggedIn: true,
-        nickname: action.nickname,
+        name: action.name,
         playerId: action.playerId,
         profileImageUrl: action.profileImageUrl,
       };
@@ -24,7 +24,7 @@ const playerSession = (state = initialState, action) => {
     case 'UPDATE_PLAYER_SUCCEEDED':
       return {
         ...state,
-        nickname: payload.updatedPlayer.nickname,
+        name: payload.updatedPlayer.name,
         playerId: payload.updatedPlayer.playerId,
         profileImageUrl: payload.updatedPlayer.profileImageUrl,
       };

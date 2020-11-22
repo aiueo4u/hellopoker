@@ -6,7 +6,7 @@ class TimeKeeperJob < ApplicationJob
 
     Rails.logger.debug('time keeper job')
 
-    Rails.logger.debug("TableID: #{table_id}, PlayerID: #{player_id}(#{Player.find(player_id).nickname}), OrderID: #{action_order_id}")
+    Rails.logger.debug("TableID: #{table_id}, PlayerID: #{player_id}(#{Player.find(player_id).name}), OrderID: #{action_order_id}")
 
     ActiveRecord::Base.uncached do
       action_order_id ||= 0

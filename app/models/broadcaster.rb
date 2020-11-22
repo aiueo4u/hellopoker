@@ -74,7 +74,7 @@ class Broadcaster
       game_hand_player = game_hand_player_by_player_id[table_player.player_id]
       {
         id: table_player.player.id,
-        nickname: table_player.player.nickname,
+        name: table_player.player.name,
         image_url: table_player.player.profile_image_url,
         stack: game_hand_player&.stack || table_player.stack,
         seat_no: table_player.seat_no,

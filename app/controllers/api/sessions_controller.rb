@@ -1,11 +1,11 @@
 class Api::SessionsController < Api::ApplicationController
   def create
-    nickname = params[:nickname] || SecureRandom.hex(4)
-    player = Player.find_or_create_by(nickname: nickname)
+    name = params[:name] || SecureRandom.hex(4)
+    player = Player.find_or_create_by(name: name)
     payload = { id: player.id }
     jwt = AuthToken.encode(payload)
     session[:jwt] = jwt
-    @nickname = nickname
+    @name = name
     @player_id = player.id
   end
 

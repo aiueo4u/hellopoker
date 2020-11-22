@@ -8,7 +8,7 @@ const SeatedPlayer = ({ player }) => {
 
   return (
     <div className={classes.player}>
-      <Avatar src={player.profileImageUrl} alt={player.nickname} />
+      <Avatar src={player.profileImageUrl} alt={player.name} />
     </div>
   );
 };

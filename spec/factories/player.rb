@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :player do
-    sequence(:nickname) { |n| "nickname#{n}" }
+    sequence(:name) { |n| "name#{n}" }
   end
 end
