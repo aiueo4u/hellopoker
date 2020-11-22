@@ -38,5 +38,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'auth/:provider/callback', to: 'sessions#callback'
+  get 'auth/facebook/callback', to: 'players/omniauth_callbacks#facebook'
+  get 'auth/twitter/callback', to: 'players/omniauth_callbacks#twitter'
 end
