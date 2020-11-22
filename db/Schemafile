@@ -56,7 +56,6 @@ create_table "other_service_accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=u
 end
 
 create_table "players", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC", force: :cascade do |t|
-  t.string "nickname", null: false
   t.string "name", null: false
   t.string "image_url"
   t.string "profile_image_file_name"
