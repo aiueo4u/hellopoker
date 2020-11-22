@@ -15,7 +15,9 @@ class SessionsController < ApplicationController
       other_service_account.save!
     end
 
-    UploadProfileImageJob.perform_later(player: player, profile_image_url: build_image_url(auth[:info][:image]))
+    if !player.profile_image?
+      UploadProfileImageJob.perform_later(player: player, profile_image_url: build_image_url(auth[:info][:image]))
+    end
 
     payload = { id: player.id }
     jwt = ::AuthToken.encode(payload)
