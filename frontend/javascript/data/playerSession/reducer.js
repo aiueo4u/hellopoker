@@ -7,6 +7,8 @@ const initialState = {
 };
 
 const playerSession = (state = initialState, action) => {
+  const payload = action.payload;
+
   switch (action.type) {
     case 'FETCH_PLAYER_SUCCEEDED':
       return {
@@ -19,6 +21,13 @@ const playerSession = (state = initialState, action) => {
       };
     case 'FETCH_PLAYER_FAILED':
       return { ...state, isReady: true };
+    case 'UPDATE_PLAYER_SUCCEEDED':
+      return {
+        ...state,
+        nickname: payload.updatedPlayer.nickname,
+        playerId: payload.updatedPlayer.playerId,
+        profileImageUrl: payload.updatedPlayer.profileImageUrl,
+      };
     default:
       return state;
   }
