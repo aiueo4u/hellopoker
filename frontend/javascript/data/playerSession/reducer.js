@@ -4,6 +4,7 @@ const initialState = {
   name: null,
   playerId: null,
   profileImageUrl: null,
+  currentPlayer: null,
 };
 
 const playerSession = (state = initialState, action) => {
@@ -18,6 +19,11 @@ const playerSession = (state = initialState, action) => {
         name: action.name,
         playerId: action.playerId,
         profileImageUrl: action.profileImageUrl,
+        currentPlayer: {
+          id: action.playerId,
+          name: action.name,
+          profileImageUrl: action.profileImageUrl,
+        },
       };
     case 'FETCH_PLAYER_FAILED':
       return { ...state, isReady: true };
@@ -27,6 +33,11 @@ const playerSession = (state = initialState, action) => {
         name: payload.updatedPlayer.name,
         playerId: payload.updatedPlayer.playerId,
         profileImageUrl: payload.updatedPlayer.profileImageUrl,
+        currentPlayer: {
+          id: payload.updatedPlayer.playerId,
+          name: payload.updatedPlayer.name,
+          profileImageUrl: payload.updatedPlayer.profileImageUrl,
+        },
       };
     default:
       return state;

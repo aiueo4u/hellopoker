@@ -2,12 +2,10 @@ doctype html
 html
   head
     meta name="viewport" content="width=device-width initial-scale=1"
-    title Hello, Poker!
+    title Hello Poker
 
     <!-- Google fonts -->
     link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet"
 
-    = javascript_webpack_tag('index')
-
   body
-    #root
+    = yield

@@ -1,6 +1,11 @@
 import { makeStyles } from '@material-ui/styles';
 
-const styles = () => ({
+const styles = theme => ({
+  base: {
+    width: '100%',
+    height: '100%',
+    padding: theme.spacing(8),
+  },
   container: {
     display: 'flex',
     flexDirection: 'column',

@@ -6,7 +6,6 @@ const styles = theme => ({
     backgroundColor: green[50],
     width: '100%',
     minHeight: 'calc(var(--vh, 1vh) * 100)',
-    padding: theme.spacing(8, 2, 2),
   },
   button: {
     width: '220px',

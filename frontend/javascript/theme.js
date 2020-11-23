@@ -1,5 +1,12 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
+import { blue, red } from '@material-ui/core/colors';
+
+const primary = {
+  main: blue[500],
+  dark: blue[900],
+  sub: blue[300],
+  light: blue[100],
+};
 
 const theme = createMuiTheme({
   icon: {
@@ -10,6 +17,7 @@ const theme = createMuiTheme({
     },
   },
   palette: {
+    primary,
     secondary: {
       main: red['700'],
     },

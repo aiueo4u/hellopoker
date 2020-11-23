@@ -17,7 +17,7 @@ const SideNavigation = ({ isOpen, onClose }) => {
   return (
     <Drawer open={isOpen} anchor="left" onClose={onClose}>
       <List className={classes.list}>
-        <ListItem className={classes.head}>Hello, Poker!（仮）</ListItem>
+        <ListItem className={classes.head}>Hello Poker</ListItem>
         <ListItemLink label="ホーム" href="/" icon={<HomeIcon />} closeMenu={onClose} />
         <ListItemLink label="ポーカー" href="/tables" icon={<PlayArrowIcon />} closeMenu={onClose} />
         <ListItemLink label="メッセージ" href="/messages" icon={<MailIcon />} closeMenu={onClose} />

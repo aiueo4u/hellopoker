@@ -99,7 +99,8 @@ module.exports = (env, argv) => {
       ],
     },
     entry: {
-      index: path.join(contextPath, 'index.js'),
+      indexDesktop: path.join(contextPath, 'indexDesktop.js'),
+      indexMobile: path.join(contextPath, 'indexMobile.js'),
     },
     module: {
       strictExportPresence: true,
