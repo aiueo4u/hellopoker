@@ -13,12 +13,14 @@ class AddNpcPlayerCommand
   end
 
   def run
+    table_player = nil
+
     table.with_lock do
       raise ActiveRecord::Rollback if invalid?
       table_player = table.add_npc_player(npc_type, seat_no)
-
-      UploadProfileImageJob.perform_later(player: table_player.player, profile_image_url: choice_profile_image_url)
     end
+
+    UploadProfileImageJob.perform_later(player: table_player.player, profile_image_url: choice_profile_image_url)
 
     if success?
       GameManager.broadcast_all(table.id)

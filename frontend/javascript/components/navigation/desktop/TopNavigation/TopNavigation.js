@@ -11,7 +11,7 @@ const TopNavigation = () => {
   const [isOpen, openMenu, closeMenu] = useDialogState();
   const { currentPlayer, isLoggedIn } = usePlayerSessionState();
 
-  if (!isLoggedIn) return;
+  if (!isLoggedIn) return null;
 
   return (
     <>
