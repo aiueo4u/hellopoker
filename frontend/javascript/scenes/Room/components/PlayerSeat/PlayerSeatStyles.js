@@ -5,13 +5,13 @@ const styles = theme => ({
     position: 'absolute',
     [theme.breakpoints.up('sm')]: {
       width: '240px',
-      height: '150px',
+      height: '160px',
     },
     [theme.breakpoints.only('xs')]: {
       width: '80px',
       height: '100px',
     },
-    //border: `2px solid red`, // TODO
+    // border: `2px solid blue`, // TODO
   },
   playerContainer: ({ position }) => {
     const base = {

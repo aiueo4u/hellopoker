@@ -73,7 +73,7 @@ const styles = theme => ({
             transform: 'translate(-100%, -50%)',
           },
         };
-      case 5: // bottom right 
+      case 5: // bottom right
         return {
           ...base,
           [theme.breakpoints.up('sm')]: {
@@ -186,7 +186,7 @@ const styles = theme => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    //border: `1px solid red`, // TODO
+    // border: `1px solid red`, // TODO
     textAlign: 'center',
     filter: player && player.state === 'folded' ? 'grayscale(100%)' : '',
   }),

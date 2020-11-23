@@ -26,7 +26,7 @@ const PlayerPanel = ({ tableId, position, player }) => {
 
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const isPlayerTurn = player.seatNo === gameTable.currentSeatNo;
-  const classes = useStyles({ player, position, isPlayerTurn });
+  const classes = useStyles({ player, position });
 
   // TODO
   /*
