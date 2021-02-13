@@ -1,0 +1,52 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/local/Dockerfile
+    restart: always
+    tty: true
+    stdin_open: true
+    working_dir: /app
+    volumes:
+      - .:/app:cached
+      - /app/vendor
+      - /app/log
+      - /app/tmp
+      - /app/bin
+      - /app/node_modules
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+      - 3045:3045
+    depends_on:
+      - db
+    links:
+      - db
+    command: 'sh ./tools/run_server.sh'
+    container_name: hellopoker_app
+    networks:
+      - app-net
+
+  db:
+    image: mysql@sha256:b3b2703de646600b008cbb2de36b70b21e51e7e93a7fca450d2b08151658b2dd
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - hellopoker_db:/var/lib/mysql:delegated
+      - ./db/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    environment:
+      MYSQL_DATABASE: hellopoker_development
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - app-net
+    container_name: hellopoker_db
+
+volumes:
+  hellopoker_db:
+
+networks:
+  app-net:

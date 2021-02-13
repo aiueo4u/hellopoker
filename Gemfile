@@ -51,7 +51,8 @@ gem 'config'
 gem 'bootsnap'
 gem "paperclip", "~> 6.0.0"
 gem 'koala'
-gem 'browser';
+gem 'browser'
+gem 'dotenv-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
