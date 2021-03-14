@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "module": "esnext",
+    "jsx": "react",
+    "baseUrl": "frontend/javascript",
+    "rootDir": "frontend/javascript",
+    "moduleResolution": "node",
+    "paths": {
+      "assets/*": ["assets/*"],
+      "components/*": ["components/*"],
+      "helpers/*": ["helpers/*"],
+      "hooks/*": ["hooks/*"],
+      "scenes/*": ["scenes/*"],
+      "services/*": ["services/*"],
+      "utils/*": ["utils/*"]
+    }
+  },
+  "include": ["frontend/**/*"],
+  "exclude": ["node_modules"]
+}

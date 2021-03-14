@@ -57,6 +57,9 @@ module.exports = {
   },
   settings: {
     react: { version: '16.8.1' },
+    typescript: {
+      project: './tsconfig.json',
+    },
   },
   overrides: [
     {

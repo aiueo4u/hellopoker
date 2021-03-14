@@ -121,7 +121,7 @@
     "prettier": "^1.19.1",
     "prettier-eslint-cli": "^5.0.0",
     "ts-loader": "^6.2.2",
-    "typescript": "^3.7.4",
+    "typescript": "^4.2.3",
     "webpack-dev-server": "^3.5.1"
   },
   "lint-staged": {

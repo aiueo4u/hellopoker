@@ -113,7 +113,7 @@ module.exports = (env, argv) => {
         {
           test: /\.(ts|tsx)$/,
           exclude: /node_modules/,
-          use: ['ts-loader'],
+          use: { loader: 'ts-loader', options: { configFile: path.resolve(__dirname, 'tsconfig.json') } },
         },
         {
           test: /(.jpg|.jpeg|.png|.gif|.tiff|.ico|.svg|.eot|.otf|.ttf|.woff|.woff2|.mp3)$/i,

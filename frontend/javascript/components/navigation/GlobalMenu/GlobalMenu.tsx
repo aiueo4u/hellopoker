@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import { Box, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -6,7 +6,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SideNavigation from 'components/navigation/SideNavigation';
 import useDialogState from 'hooks/useDialogState';
 
-const GlobalMenu = () => {
+export const GlobalMenu = () => {
   const [isOpen, openMenu, closeMenu] = useDialogState();
 
   return (
@@ -20,5 +20,3 @@ const GlobalMenu = () => {
     </>
   );
 };
-
-export default GlobalMenu;

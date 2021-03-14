@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import GlobalMenu from 'components/navigation/GlobalMenu';
+import { GlobalMenu } from 'components/navigation/GlobalMenu';
 import Loading from 'components/Loading';
 import PrivateRoute from 'components/PrivateRoute';
 import useAdjustWindow from 'hooks/useAdjustWindow';

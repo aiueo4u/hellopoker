@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -17,8 +17,8 @@ import TournamentList from 'scenes/TournamentList';
 import Room from 'scenes/Room';
 import Setting from 'scenes/Setting';
 
-function App() {
-  const { isReady } = useSelector(state => state.data.playerSession);
+export const App = () => {
+  const { isReady } = useSelector((state: any) => state.data.playerSession);
 
   useAdjustWindow();
   useInitApp();
@@ -44,6 +44,4 @@ function App() {
       </Switch>
     </Router>
   );
-}
-
-export default App;
+};
