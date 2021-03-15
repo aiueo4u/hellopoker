@@ -18,16 +18,19 @@ table.table.table-bordered
           = link_to 'Delete', admin_table_path(id: table.id), class: %w(btn btn-outline-secondary), method: :delete
 
 .
-  - if @players
-    table style="border: 1px solid black"
-      tr
-        th Nickname
-        th Image
+  - if @players.present?
+    .container
       - @players.each do |player|
-        tr
-          td= player.name
-          td
-            img src=player.profile_image_url
+        - next if player.is_npc?
+        .row
+          .col-3
+            = "(#{player.id}) #{player.name}"
+          .col-3
+            img src=player.profile_image_url style="max-width: 80px"
+          .col-3
+            = player.other_service_accounts.map(&:provider).join(':')
+          .col-3
+            = l player.created_at
   - else
     | no players
 

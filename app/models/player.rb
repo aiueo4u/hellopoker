@@ -1,6 +1,7 @@
 class Player < ApplicationRecord
   has_many :table_players
   has_many :tables, through: :table_players
+  has_many :other_service_accounts
 
   has_attached_file :profile_image
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
