@@ -205,12 +205,6 @@ module.exports = (env, argv) => {
       watchOptions: { ignored: '**/node_modules/**' },
     };
     config.module.rules.push({
-      enforce: 'pre',
-      test: /\.(js|jsx)$/i,
-      exclude: /node_modules/,
-      loader: 'eslint-loader',
-    });
-    config.module.rules.push({
       test: /\.(js|jsx)$/,
       use: 'react-hot-loader/webpack',
       include: /node_modules/

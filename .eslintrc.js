@@ -41,13 +41,14 @@ module.exports = {
       ERROR,
       { argsIgnorePattern: '^_+$', ignoreRestSiblings: true },
     ],
+    'no-use-before-define': OFF,
     'operator-assignment': [ERROR, 'always'], // ショートハンドが使える場合はショートハンドで記載する
 
     'react/no-danger': OFF, // 危険なJSXプロパティの使用を禁止する
     'react/no-string-refs': OFF, // refsに文字列を渡すことを禁止する
     'react/forbid-prop-types': OFF, // 特定のpropTypeを禁止
     'react/display-name': OFF, // 一時的にOFF functional componentには必ず関数名をつける
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
 
     'jsx-a11y/label-has-for': OFF, // labelタグに対してhtmlForを設定すること
     'jsx-a11y/click-events-have-key-events': OFF, // TODO: remove 非対話型コンテンツにclickイベントを設定を禁止する
@@ -83,6 +84,8 @@ module.exports = {
             checkMethodDeclarations: false,
           },
         ],
+        '@typescript-eslint/no-unused-vars': ['error', { args: 'none' }],
+        'react/prop-types': 'off',
       },
     },
   ],
