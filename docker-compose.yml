@@ -24,6 +24,11 @@ services:
       - db
     links:
       - db
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_PORT=3306
     command: 'sh ./tools/run_server.sh'
     container_name: hellopoker_app
     networks:
