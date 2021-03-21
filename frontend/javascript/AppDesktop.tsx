@@ -8,14 +8,14 @@ import TopNavigation from 'components/navigation/desktop/TopNavigation';
 import useAdjustWindow from 'hooks/useAdjustWindow';
 import useInitApp from 'hooks/useInitApp';
 
-import Home from 'scenes/desktop/Home';
-import { Login } from 'scenes/Login';
-import Lobby from 'scenes/Lobby';
+import { Home } from 'scenes/desktop/Home';
+import { Login } from 'scenes/desktop/Login';
+import { Lobby } from 'scenes/desktop/Lobby';
 import TableList from 'scenes/TableList';
 import Tournament from 'scenes/Tournament';
 import TournamentList from 'scenes/TournamentList';
 import Room from 'scenes/Room';
-import Setting from 'scenes/Setting';
+import { Setting } from 'scenes/desktop/Setting';
 
 export const App = () => {
   const { isReady } = useSelector((state: any) => state.data.playerSession);

@@ -9,13 +9,13 @@ import useAdjustWindow from 'hooks/useAdjustWindow';
 import useInitApp from 'hooks/useInitApp';
 
 import Home from 'scenes/mobile/Home/index.js';
-import { Login } from 'scenes/Login';
-import Lobby from 'scenes/Lobby';
+import { Login } from 'scenes/mobile/Login';
+import { Lobby } from 'scenes/mobile/Lobby';
 import TableList from 'scenes/TableList';
 import Tournament from 'scenes/Tournament';
 import TournamentList from 'scenes/TournamentList';
 import Room from 'scenes/Room';
-import Setting from 'scenes/Setting';
+import { Setting } from 'scenes/mobile/Setting';
 
 function App() {
   const { isReady } = useSelector(state => state.data.playerSession);

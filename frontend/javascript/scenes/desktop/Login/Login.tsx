@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { Box, Typography } from '@material-ui/core';
@@ -7,12 +6,13 @@ import { Box, Typography } from '@material-ui/core';
 import { FacebookLoginButton } from 'components/button/FacebookLoginButton';
 import { TwitterLoginButton } from 'components/button/TwitterLoginButton';
 import { LoginForm } from 'components/form/LoginForm';
+import usePlayerSessionState from 'hooks/usePlayerSessionState';
 
 import { useStyles } from './LoginStyles';
 
 export const Login = () => {
   const classes = useStyles();
-  const { isLoggedIn } = useSelector((state: any) => state.data.playerSession);
+  const { isLoggedIn } = usePlayerSessionState();
 
   if (isLoggedIn) return <Redirect to="/" />;
 

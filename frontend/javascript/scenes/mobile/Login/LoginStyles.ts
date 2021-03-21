@@ -1,4 +1,6 @@
-const styles = theme => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+export const useStyles = makeStyles((theme: any) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -8,16 +10,12 @@ const styles = theme => ({
     width: '80%',
     textAlign: 'center',
     margin: 'auto',
+    padding: theme.spacing(2),
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: theme.palette.common.white,
-    borderRadius: theme.spacing(1),
+    background: 'rgba(200, 200, 200, 0.3)',
+    borderRadius: '30px',
   },
-  formGroup: {
-    marginBottom: theme.spacing(2),
-  },
-});
-
-export default styles;
+}));
