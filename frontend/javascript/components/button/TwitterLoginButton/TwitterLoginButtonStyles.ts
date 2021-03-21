@@ -1,4 +1,6 @@
-const styles = theme => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+export const useStyles = makeStyles((theme: any) => ({
   button: {
     color: theme.palette.common.white,
     width: '220px',
@@ -12,6 +14,4 @@ const styles = theme => ({
     width: '30px',
     height: 'auto',
   },
-});
-
-export default styles;
+}));

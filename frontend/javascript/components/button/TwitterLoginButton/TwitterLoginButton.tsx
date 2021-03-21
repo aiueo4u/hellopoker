@@ -1,15 +1,12 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import * as React from 'react';
+import { Avatar, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
 import TwitterIcon from 'assets/twitter-icon.svg';
 
-import styles from './TwitterLoginButtonStyles';
+import { useStyles } from './TwitterLoginButtonStyles';
 
-const useStyles = makeStyles(styles);
-
-const TwitterLoginButton = () => {
+export const TwitterLoginButton = () => {
   const classes = useStyles();
 
   return (
@@ -23,5 +20,3 @@ const TwitterLoginButton = () => {
     </Button>
   );
 };
-
-export default TwitterLoginButton;

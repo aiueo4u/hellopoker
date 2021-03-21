@@ -1,14 +1,11 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import * as React from 'react';
+import { Avatar, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import FacebookIcon from 'assets/facebook-icon.png';
 
-import styles from './FacebookLoginButtonStyles';
+import { useStyles } from './FacebookLoginButtonStyles';
 
-const useStyles = makeStyles(styles);
-
-const FacebookLoginButton = () => {
+export const FacebookLoginButton = () => {
   const classes = useStyles();
 
   return (
@@ -22,5 +19,3 @@ const FacebookLoginButton = () => {
     </Button>
   );
 };
-
-export default FacebookLoginButton;

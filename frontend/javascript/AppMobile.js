@@ -9,7 +9,7 @@ import useAdjustWindow from 'hooks/useAdjustWindow';
 import useInitApp from 'hooks/useInitApp';
 
 import Home from 'scenes/mobile/Home/index.js';
-import Login from 'scenes/Login';
+import { Login } from 'scenes/Login';
 import Lobby from 'scenes/Lobby';
 import TableList from 'scenes/TableList';
 import Tournament from 'scenes/Tournament';

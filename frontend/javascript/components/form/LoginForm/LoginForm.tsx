@@ -1,20 +1,18 @@
-import React from 'react';
+import * as React from 'react';
 
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { Box, Button, TextField } from '@material-ui/core';
 
 import useFormData from 'hooks/useFormData';
-import useSubmitFormData from './hooks/useSubmitFormData';
-import useStyles from './LoginFormStyles';
+import { useSubmitFormData } from './hooks/useSubmitFormData';
+import { useStyles } from './LoginFormStyles';
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const classes = useStyles();
-  const [formData, onChangeFormData] = useFormData({ name: '' });
+  const [formData, onChangeFormData]: any = useFormData({ name: '' });
   const onSubmitFormData = useSubmitFormData();
 
   return (
-    <Box className={classes.container}>
+    <Box>
       <TextField
         className={classes.textField}
         name="name"
@@ -32,5 +30,3 @@ const LoginForm = () => {
     </Box>
   );
 };
-
-export default LoginForm;

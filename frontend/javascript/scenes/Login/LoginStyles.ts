@@ -1,4 +1,6 @@
-const styles = theme => ({
+import { makeStyles } from '@material-ui/core/styles';
+
+export const useStyles = makeStyles((theme: any) => ({
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -16,6 +18,4 @@ const styles = theme => ({
     background: 'rgba(200, 200, 200, 0.3)',
     borderRadius: '30px',
   },
-});
-
-export default styles;
+}));
