@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
@@ -17,17 +17,18 @@ import usePlayersState from 'hooks/usePlayersState';
 import useRoomViewerChannel from 'hooks/useRoomViewerChannel';
 import useSkyWay from 'hooks/useSkyWay';
 
-import PlayerHand from './components/PlayerHand';
+import { HeroSeat } from 'components/gameTable/HeroSeat';
+import { PlayerHand } from 'components/gameTable/PlayerHand';
+
 import GameTable from './components/GameTable';
-import HeroSeat from './components/HeroSeat';
 import PlayerSeat from './components/PlayerSeat';
 import BoardCard from './components/BoardCard';
-import useStyles from './RoomStyles';
+import { useStyles } from './RoomStyles';
 import selectSortedPlayers from './selectors/selectSortedPlayers';
 
-const Room = () => {
+export const Room = () => {
   const classes = useStyles();
-  const match = useRouteMatch();
+  const match: any = useRouteMatch();
   const tableId = match.params.id;
   const gameTable = useGameTableState();
   const { playerId } = usePlayerSessionState();
@@ -63,7 +64,7 @@ const Room = () => {
           <BoardCard position={4} gameTable={gameTable} />
 
           {/* 各プレイヤーのシート */}
-          <HeroSeat position={0} player={sortedPlayers[0]} tableId={tableId} />
+          <HeroSeat player={sortedPlayers[0]} tableId={tableId} />
           <PlayerSeat position={1} player={sortedPlayers[1]} tableId={tableId} />
           <PlayerSeat position={2} player={sortedPlayers[2]} tableId={tableId} />
           <PlayerSeat position={3} player={sortedPlayers[3]} tableId={tableId} />
@@ -84,5 +85,3 @@ const Room = () => {
     </div>
   );
 };
-
-export default Room;

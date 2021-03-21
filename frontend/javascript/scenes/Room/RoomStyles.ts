@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 
-const styles = theme => ({
+export const useStyles = makeStyles((theme: any) => ({
   background: {
     backgroundColor: green[50],
   },
@@ -27,6 +27,4 @@ const styles = theme => ({
     width: '100%',
     //border: `1px solid red`,
   },
-});
-
-export default makeStyles(styles);
+}));

@@ -1,21 +1,21 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { GlobalMenu } from 'components/navigation/GlobalMenu';
-import Loading from 'components/Loading';
-import PrivateRoute from 'components/PrivateRoute';
-import useAdjustWindow from 'hooks/useAdjustWindow';
-import useInitApp from 'hooks/useInitApp';
+import { GlobalMenu } from "components/navigation/GlobalMenu";
+import Loading from "components/Loading";
+import PrivateRoute from "components/PrivateRoute";
+import useAdjustWindow from "hooks/useAdjustWindow";
+import useInitApp from "hooks/useInitApp";
 
-import Home from 'scenes/mobile/Home/index.js';
-import { Login } from 'scenes/mobile/Login';
-import { Lobby } from 'scenes/mobile/Lobby';
-import TableList from 'scenes/TableList';
-import Tournament from 'scenes/Tournament';
-import TournamentList from 'scenes/TournamentList';
-import Room from 'scenes/Room';
-import { Setting } from 'scenes/mobile/Setting';
+import Home from "scenes/mobile/Home/index.js";
+import { Login } from "scenes/mobile/Login";
+import { Lobby } from "scenes/mobile/Lobby";
+import { TableList } from "scenes/mobile/TableList";
+import Tournament from "scenes/Tournament";
+import TournamentList from "scenes/TournamentList";
+import { Room } from "scenes/Room";
+import { Setting } from "scenes/mobile/Setting";
 
 function App() {
   const { isReady } = useSelector(state => state.data.playerSession);

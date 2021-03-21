@@ -11,10 +11,10 @@ import useInitApp from 'hooks/useInitApp';
 import { Home } from 'scenes/desktop/Home';
 import { Login } from 'scenes/desktop/Login';
 import { Lobby } from 'scenes/desktop/Lobby';
-import TableList from 'scenes/TableList';
+import { TableList } from 'scenes/desktop/TableList';
 import Tournament from 'scenes/Tournament';
 import TournamentList from 'scenes/TournamentList';
-import Room from 'scenes/Room';
+import { Room } from 'scenes/Room';
 import { Setting } from 'scenes/desktop/Setting';
 
 export const App = () => {

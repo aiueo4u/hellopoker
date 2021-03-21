@@ -3,13 +3,13 @@ import { camelizeKeys } from 'humps';
 
 import { fetchTables } from 'api';
 
-const useTableList = () => {
+export const useTableList = () => {
   const [tables, setTables] = useState([]);
   const [isReady, setIsReady] = useState(false);
 
   const load = async () => {
     const response = await fetchTables();
-    const { tables } = camelizeKeys(response.data);
+    const { tables }: any = camelizeKeys(response.data);
     setTables(tables);
     setIsReady(true);
   };
@@ -20,5 +20,3 @@ const useTableList = () => {
 
   return [tables, isReady];
 };
-
-export default useTableList;

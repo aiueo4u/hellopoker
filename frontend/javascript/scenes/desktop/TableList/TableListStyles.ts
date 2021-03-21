@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 import { green } from '@material-ui/core/colors';
 
-const styles = theme => ({
+export const useStyles = makeStyles((theme: any) => ({
   background: {
     backgroundColor: green[50],
     width: '100%',
@@ -28,6 +28,4 @@ const styles = theme => ({
     //borderRadius: theme.spacing(1 / 2),
     textAlign: 'right',
   },
-});
-
-export default makeStyles(styles);
+}));

@@ -1,15 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 
 import EmptySeat from 'components/EmptySeat';
 import PlayerActions from 'components/PlayerActions';
 import useGameTableState from 'hooks/useGameTableState';
 import useIsMobile from 'hooks/useIsMobile';
-import HeroPlayerPanel from '../GameTable/components/HeroPlayerPanel';
+import HeroPlayerPanel from 'components/gameTable/HeroPlayerPanel';
 
-import useStyles from './HeroSeatStyles';
+import { useStyles } from './HeroSeatStyles';
 
-const HeroSeat = ({ player, tableId }) => {
+export const HeroSeat = ({ player, tableId }: { player: any; tableId: string; }) => {
   const classes = useStyles();
   const { tournament } = useGameTableState();
   const { isMobile } = useIsMobile();
@@ -27,10 +26,3 @@ const HeroSeat = ({ player, tableId }) => {
     </div>
   );
 };
-
-HeroSeat.propTypes = {
-  player: PropTypes.object.isRequired,
-  tableId: PropTypes.string.isRequired,
-};
-
-export default HeroSeat;

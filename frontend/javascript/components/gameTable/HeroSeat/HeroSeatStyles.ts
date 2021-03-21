@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 
-const styles = theme => ({
+export const useStyles = makeStyles((theme: any) => ({
   container: {
     position: 'absolute',
     left: '50%',
@@ -18,6 +18,4 @@ const styles = theme => ({
     },
     //border: `2px solid red`, // TODO
   },
-});
-
-export default makeStyles(styles);
+}));
