@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: .docker/local/Dockerfile
-    restart: always
     tty: true
     stdin_open: true
     working_dir: /app
@@ -22,21 +21,21 @@ services:
       - 3045:3045
     depends_on:
       - db
-    links:
-      - db
     environment:
       - MYSQL_HOST=db
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=password
       - MYSQL_PORT=3306
-    command: 'sh ./tools/run_server.sh'
+    command: bash -c "
+      bundle install --path vendor/bundle --jobs=4 &&
+      yarn install &&
+      ./tools/run_server.sh"
     container_name: hellopoker_app
     networks:
       - app-net
 
   db:
-    image: mysql@sha256:b3b2703de646600b008cbb2de36b70b21e51e7e93a7fca450d2b08151658b2dd
-    restart: always
+    image: mysql:5.7.30
     ports:
       - 3306:3306
     volumes:
