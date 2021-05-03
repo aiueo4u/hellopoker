@@ -5,12 +5,11 @@ import { useRouteMatch } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
+import GameStartCountdown from 'components/GameStartCountdown';
 import PokerChip from 'components/PokerChip';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
-
-import GameStartCountdown from '../GameStartCountdown';
 
 import useStyles from './CentralCardStyles';
 import useCentralCard from './hooks/useCentralCard';

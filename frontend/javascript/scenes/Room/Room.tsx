@@ -19,12 +19,34 @@ import useSkyWay from 'hooks/useSkyWay';
 
 import { HeroSeat } from 'components/gameTable/HeroSeat';
 import { PlayerHand } from 'components/gameTable/PlayerHand';
+import { GameTable } from 'components/room/GameTable';
+import BoardCard from 'components/room/BoardCard';
+import PlayerSeat from 'components/room/PlayerSeat';
 
-import GameTable from './components/GameTable';
-import PlayerSeat from './components/PlayerSeat';
-import BoardCard from './components/BoardCard';
 import { useStyles } from './RoomStyles';
-import selectSortedPlayers from './selectors/selectSortedPlayers';
+
+const selectSortedPlayers = (players: any[], currentUserId: any) => {
+  const currentPlayer = players.find(player => player.id === currentUserId);
+
+  let sortedPlayers = [];
+
+  /* 6 MAX */
+  for (let i = 0; i < 6; i++) {
+    const player = players.find(e => e.seatNo === i + 1);
+    if (player) {
+      sortedPlayers.push(player);
+    } else {
+      sortedPlayers.push({ seatNo: i + 1 });
+    }
+  }
+  if (currentPlayer) {
+    sortedPlayers = sortedPlayers
+      .slice(currentPlayer.seatNo - 1, 10)
+      .concat(sortedPlayers.slice(0, currentPlayer.seatNo - 1));
+  }
+
+  return sortedPlayers;
+};
 
 export const Room = () => {
   const classes = useStyles();

@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/styles';
 import { green } from '@material-ui/core/colors';
 import BackgroundImage from 'assets/climpek.png';
 
-const styles = theme => ({
+export const useStyles = makeStyles((theme: any) => ({
   container: {
     position: 'relative',
     top: '50%',
@@ -23,7 +23,7 @@ const styles = theme => ({
     backgroundImage: `url(${BackgroundImage})`,
     backgroundColor: green[200],
     border: `1px solid ${theme.palette.grey[700]}`,
-    //border: `1px solid blue`,
+    // border: `1px solid blue`,
     boxShadow: theme.shadows[8],
   },
   playerChipBetArea: {
@@ -31,7 +31,7 @@ const styles = theme => ({
     bottom: '16px',
     left: '50%',
     transform: 'translate(-50%, 0)',
-    //border: `1px solid red`,
+    // border: `1px solid red`,
     [theme.breakpoints.up('sm')]: {
       bottom: '16px',
     },
@@ -39,6 +39,4 @@ const styles = theme => ({
       bottom: '55px',
     },
   },
-});
-
-export default makeStyles(styles);
+}));
