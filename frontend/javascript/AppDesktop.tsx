@@ -12,9 +12,9 @@ import { Home } from 'scenes/desktop/Home';
 import { Login } from 'scenes/desktop/Login';
 import { Lobby } from 'scenes/desktop/Lobby';
 import { TableList } from 'scenes/desktop/TableList';
-import Tournament from 'scenes/Tournament';
-import TournamentList from 'scenes/TournamentList';
-import { Room } from 'scenes/Room';
+import { Tournament } from 'scenes/desktop/Tournament';
+import { TournamentList } from 'scenes/desktop/TournamentList';
+import { Room } from 'scenes/desktop/Room';
 import { Setting } from 'scenes/desktop/Setting';
 
 export const App = () => {

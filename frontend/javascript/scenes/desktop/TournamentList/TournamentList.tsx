@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import Fab from '@material-ui/core/Fab';
@@ -6,12 +6,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import Loading from 'components/Loading';
+import CreateTournamentFormDialog from 'components/tournament/CreateTournamentFormDialog';
 import useDialogState from 'hooks/useDialogState';
-import CreateTournamentFormDialog from './components/CreateTournamentFormDialog';
-import useTournamentList from './hooks/useTournamentList';
-import useStyles from './TournamentListStyles';
+import useTournamentList from 'hooks/useTournamentList';
+import { useStyles } from './TournamentListStyles';
 
-function TournamentList() {
+export const TournamentList = () => {
   const classes = useStyles();
   const { tournaments, isReady } = useTournamentList();
   const [isOpen, openDialog, closeDialog] = useDialogState();
@@ -30,7 +30,7 @@ function TournamentList() {
         <Typography>トーナメントの一覧</Typography>
         {tournaments.length > 0 && (
           <Grid container spacing={2}>
-            {tournaments.map(tournament => (
+            {tournaments.map((tournament: any) => (
               <Grid item key={tournament.id}>
                 <Link to={`/tournaments/${tournament.id}`}>{tournament.name}</Link>
                 {tournament.isStarted && <span>開催中</span>}
@@ -47,6 +47,4 @@ function TournamentList() {
       <CreateTournamentFormDialog isOpen={isOpen} onClose={closeDialog} />
     </div>
   );
-}
-
-export default TournamentList;
+};

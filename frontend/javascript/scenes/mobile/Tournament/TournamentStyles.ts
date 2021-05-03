@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/styles';
 import { green } from '@material-ui/core/colors';
 
-const styles = theme => ({
+export const useStyles = makeStyles((theme: any) => ({
   background: {
     backgroundColor: green[50],
     width: '100%',
@@ -25,11 +25,9 @@ const styles = theme => ({
     position: 'fixed',
     right: theme.spacing(3),
     bottom: theme.spacing(3),
-    //backgroundColor: theme.palette.grey[100],
-    //borderRadius: theme.spacing(1 / 2),
+    // backgroundColor: theme.palette.grey[100],
+    // borderRadius: theme.spacing(1 / 2),
     textAlign: 'right',
     margin: theme.spacing(2, 0),
   },
-});
-
-export default makeStyles(styles);
+}));
