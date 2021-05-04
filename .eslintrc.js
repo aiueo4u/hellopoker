@@ -1,6 +1,5 @@
-'use strict';
 const OFF = 0;
-const WARNING = 1;
+// const WARNING = 1;
 const ERROR = 2;
 
 module.exports = {
@@ -35,6 +34,7 @@ module.exports = {
     'import/extensions': OFF,
     'import/no-unresolved': OFF, // 絶対パスでインポートする
     'import/prefer-default-export': OFF, // デフォルトエクスポートを優先して使用する
+    'no-nested-ternary': OFF,
     'no-undef': [ERROR, { typeof: true }], // 未定義の変数は利用しない
     'no-unused-vars': [
       // 未使用の定義(変数、関数)は削除する
