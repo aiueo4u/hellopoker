@@ -1,10 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import classNames from 'classnames';
-import useStyles from './PokerCardStyles';
+import { useStyles } from './PokerCardStyles';
 
-const PokerCard = ({ position, rank, suit, invisible, size }) => {
-  const classes = useStyles({ position, rank, suit, invisible, size });
+type Props = {
+  rank: string;
+  suit?: string;
+  invisible?: boolean;
+  size?: string;
+};
+
+export const PokerCard: React.FC<Props> = ({ rank = '', suit = '', invisible = false, size = '' }) => {
+  const classes = useStyles({ rank, suit, invisible, size });
 
   return (
     <div className={classes.base}>
@@ -22,21 +28,3 @@ const PokerCard = ({ position, rank, suit, invisible, size }) => {
     </div>
   );
 };
-
-PokerCard.propTypes = {
-  invisible: PropTypes.bool,
-  rank: PropTypes.string,
-  position: PropTypes.string,
-  size: PropTypes.string,
-  suit: PropTypes.string,
-};
-
-PokerCard.defaultProps = {
-  invisible: false,
-  rank: null,
-  position: null,
-  size: null,
-  suit: null,
-};
-
-export default PokerCard;

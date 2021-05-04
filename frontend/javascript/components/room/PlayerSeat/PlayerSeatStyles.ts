@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 
-const styles = theme => ({
+export const useStyles = makeStyles((theme: any) => ({
   base: {
     position: 'absolute',
     [theme.breakpoints.up('sm')]: {
@@ -13,7 +13,7 @@ const styles = theme => ({
     },
     // border: `2px solid blue`, // TODO
   },
-  playerContainer: ({ position }) => {
+  playerContainer: ({ position }: { position: any }) => {
     const base = {
       // border: '1px solid red',
     };
@@ -87,6 +87,4 @@ const styles = theme => ({
         return base;
     }
   },
-});
-
-export default makeStyles(styles);
+}));

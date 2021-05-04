@@ -1,12 +1,20 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-import PokerCard from 'components/PokerCard';
+import { PokerCard } from 'components/PokerCard';
 import useGameTableState from 'hooks/useGameTableState';
 import { useStyles } from './PlayerHandStyles';
 import { usePlayerHand } from './hooks/usePlayerHand';
 
-export const PlayerHand = ({ isHero = false, position, player }: { isHero?: boolean; position: number; player: any }) => {
+export const PlayerHand = ({
+  isHero = false,
+  position,
+  player,
+}: {
+  isHero?: boolean;
+  position: number;
+  player: any;
+}) => {
   if (!player.id) return null;
   if (player.state === null) return null;
 
@@ -28,7 +36,7 @@ export const PlayerHand = ({ isHero = false, position, player }: { isHero?: bool
 
   const cards =
     (isRoomViewer ? cardsByPlayerId[player.id] : isHero ? gameTable.dealtCards[player.id] : player.cards) || [];
-  //const invisible = (!isHero && !player.handShow) || dealing;
+  // const invisible = (!isHero && !player.handShow) || dealing;
   const invisible = cards.length === 0 || dealing;
 
   const isCards = !invisible && cards && cards.length == 2;

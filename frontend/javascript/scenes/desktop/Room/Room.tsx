@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box';
 
 import Loading from 'components/Loading';
 import MobilePlayerActions from 'components/MobilePlayerActions';
-import NetworkStatusDialog from 'components/NetworkStatusDialog';
+import { NetworkStatusDialog } from 'components/dialog/NetworkStatusDialog';
 import TableMessageDrawer from 'components/TableMessageDrawer';
 
 import useChipChannel from 'hooks/useChipChannel';
@@ -20,8 +20,8 @@ import useSkyWay from 'hooks/useSkyWay';
 import { HeroSeat } from 'components/gameTable/HeroSeat';
 import { PlayerHand } from 'components/gameTable/PlayerHand';
 import { GameTable } from 'components/room/GameTable';
-import BoardCard from 'components/room/BoardCard';
-import PlayerSeat from 'components/room/PlayerSeat';
+import { BoardCard } from 'components/room/BoardCard';
+import { PlayerSeat } from 'components/room/PlayerSeat';
 
 import { useStyles } from './RoomStyles';
 
