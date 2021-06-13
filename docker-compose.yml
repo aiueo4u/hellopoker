@@ -9,11 +9,11 @@ services:
     working_dir: /app
     volumes:
       - .:/app:cached
-      - /app/vendor
       - /app/log
       - /app/tmp
       - /app/bin
-      - /app/node_modules
+      - bundle-volume:/app/vendor
+      - node_modules-volume:/app/node_modules
     env_file:
       - .env
     ports:
@@ -51,6 +51,10 @@ services:
 
 volumes:
   hellopoker_db:
+  bundle-volume:
+    driver: local
+  node_modules-volume:
+    driver: local
 
 networks:
   app-net:
