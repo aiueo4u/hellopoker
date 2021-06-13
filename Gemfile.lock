@@ -236,6 +236,9 @@ GEM
     omniauth-oauth2 (1.7.1)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
+    omniauth-rails_csrf_protection (1.0.0)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
@@ -390,6 +393,7 @@ DEPENDENCIES
   mysql2
   omniauth
   omniauth-facebook
+  omniauth-rails_csrf_protection
   omniauth-twitter
   paperclip (~> 6.0.0)
   pry

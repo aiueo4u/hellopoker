@@ -42,6 +42,7 @@ gem 'jwt'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
+gem "omniauth-rails_csrf_protection"
 gem 'rack-health'
 gem 'rack-proxy', require: false
 gem 'bootstrap'

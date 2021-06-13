@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Avatar, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 
 import TwitterIcon from 'assets/twitter-icon.svg';
 
@@ -8,15 +7,20 @@ import { useStyles } from './TwitterLoginButtonStyles';
 
 export const TwitterLoginButton = () => {
   const classes = useStyles();
+  const csrfToken = document.querySelector<HTMLMetaElement>('meta[name=csrf-token]');
+  const authenticityToken = csrfToken?.content || '';
 
   return (
-    <Button
-      variant="contained"
-      className={classes.button}
-      startIcon={<Avatar src={TwitterIcon} className={classes.icon} />}
-      href="/auth/twitter"
-    >
-      Twitterでログイン
-    </Button>
+    <form method="POST" action="/auth/twitter">
+      <input type="hidden" name="authenticity_token" value={authenticityToken} />
+      <Button
+        variant="contained"
+        className={classes.button}
+        startIcon={<Avatar src={TwitterIcon} className={classes.icon} />}
+        type="submit"
+      >
+        Twitterでログイン
+      </Button>
+    </form>
   );
 };
