@@ -1,5 +1,6 @@
 class GameHandPlayer < ApplicationRecord
   belongs_to :game_hand
+  belongs_to :player
 
   delegate :seat_no, :stack, to: :table_player
 

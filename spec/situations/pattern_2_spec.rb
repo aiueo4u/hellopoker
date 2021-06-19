@@ -15,7 +15,7 @@ require 'rails_helper'
 #   utg: call(80)
 #   hj: call(100)
 #   co: AI(150)
-#   btn: call(150)
+#   btn: call(120)
 #   sb: AI
 #   bb: call(150)
 #   hj: call(50)

@@ -20,7 +20,7 @@ class GameAction::CreateBetCommand
       current_game_hand_player.add_stack!(-1 * amount)
 
       # ベットアクションを記録
-      game_hand.build_bet_action(current_player_id, amount, last_action_state)
+      game_hand.build_bet_action(table_player.player, amount, last_action_state)
 
       game_hand.save!
     end
@@ -45,7 +45,7 @@ class GameAction::CreateBetCommand
     errors.add(:game_hand, :invalid) if !game_hand.current_state.in?(%w(preflop flop turn river))
 
     # 自分のターンか
-    errors.add(:game_hand, :invalid) if table_player.seat_no != game_hand.current_seat_no
+    errors.add(:game_hand, :invalid) if !game_hand.turn_of?(table_player)
 
     # 指定ベット額はコール額を超えているか（同じならコールになり、ベットできない）
     errors.add(:game_hand, :invalid) if calculate_amount_to_call >= amount

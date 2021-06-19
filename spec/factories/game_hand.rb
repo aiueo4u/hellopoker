@@ -1,26 +1,21 @@
-#FactoryBot.define do
-# factory :game_hand do i# i#   trait :init do i#     state  0 i#   end i# i#   trait :preflop do
-#     state 1
-#   end
-#
-#   trait :flop do
-#     state 2
-#   end
-#
-#   trait :turn do
-#     state 3
-#   end
-#
-#   trait :river do
-#     state 4
-#   end
-#
-#   trait :result do
-#     state 5
-#   end
-#
-#   trait :finished do
-#     state 6
-#   end
-# end
-#end
+# active
+# active: allin
+# active: show hand
+# folded
+# folded: muck hand
+FactoryBot.define do
+ factory :game_hand do
+   table { create(:table) }
+
+   sb_size { 50 }
+   bb_size { 100 }
+   ante_size { 0 }
+   button_seat_no { 1 }
+
+   board_card1_id { 'Ad' }
+   board_card2_id { 'Kh' }
+   board_card3_id { '9d' }
+   board_card4_id { '4c' }
+   board_card5_id { '3s' }
+ end
+end

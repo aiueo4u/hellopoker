@@ -19,8 +19,8 @@ class GameAction < ApplicationRecord
     last_action.created_at.since(ACTION_TIMEOUT) <= time
   end
 
-  def self.build_bet_action(player_id, state, order_id, amount)
-    new(player_id: player_id, state: state, order_id: order_id, action_type: :bet, amount: amount)
+  def self.build_bet_action(player, state, order_id, amount)
+    new(player: player, state: state, order_id: order_id, action_type: :bet, amount: amount)
   end
 
   def self.build_blind_action(player_id, order_id, amount)

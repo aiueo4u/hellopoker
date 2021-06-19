@@ -108,13 +108,13 @@ class GameHand < ApplicationRecord
 
   # 現在のハンドで全てのプレイヤーアクションを終えているかどうか(paymentラウンドに進めるかどうか)
   def no_more_action?
-    # 自分以外の全員がfold or muck
-    return true if game_hand_players.count { |ghp| ghp.folded? || ghp.muck_hand? } == game_hand_players.size - 1
+    # 1人以外全員fold or muck状態
+    return true if game_hand_players.count { |ghp| !ghp.folded? && !ghp.muck_hand? } == 1
 
     # 全員アクションを終えている場合
     return true if game_hand_players.all? { |ghp| no_more_action_by_ghp?(ghp) }
 
-    # 自分以外の全員がアクションを終えており、必要なチップを出している場合
+    # 自分以外の全員がアクションを終えており、必要なチップを出している場合→hand_openへ
     return true if game_hand_players.count { |ghp| no_more_action_by_ghp?(ghp) } == game_hand_players.size - 1 &&
       game_hand_players.count { |ghp| ghp.active? && ghp.bet_amount_by_state(last_action_state) >= current_max_bet_amount } == 1
 
@@ -193,8 +193,8 @@ class GameHand < ApplicationRecord
     game_actions << GameAction.build_call_action(player_id, state, next_order_id, amount)
   end
 
-  def build_bet_action(player_id, amount, state)
-    game_actions << GameAction.build_bet_action(player_id, state, next_order_id, amount)
+  def build_bet_action(player, amount, state)
+    game_actions << GameAction.build_bet_action(player, state, next_order_id, amount)
   end
 
   def build_show_action(player_id)
@@ -280,6 +280,7 @@ class GameHand < ApplicationRecord
 
   def checkable_by?(table_player)
     return false unless current_state.in?(%w(preflop flop turn river))
+
     no_bet_action = game_actions_in_state(current_state).none?(&:bet?)
 
     # preflopではBBのオプションチェック時のみ
@@ -290,6 +291,11 @@ class GameHand < ApplicationRecord
       # まだ誰もベットしていないときチェックできる
       no_bet_action
     end
+  end
+
+  # 指定テーブルユーザーの順番かどうか？
+  def turn_of?(table_player)
+    table_player == current_seat_table_player
   end
 
   def current_seat_no

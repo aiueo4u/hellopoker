@@ -27,6 +27,6 @@ class GameAction::CreateMuckCommand
     errors.add(:game_hand, :invalid) if game_hand.current_state != 'hand_open'
 
     # 自分のターンか
-    errors.add(:game_hand, :invalid) if table_player.seat_no != game_hand.current_seat_no
+    errors.add(:game_hand, :invalid) if !game_hand.turn_of?(table_player)
   end
 end
