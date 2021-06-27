@@ -1,4 +1,4 @@
-class GameHandPayment
+class GameHand::Evaluator
   attr_reader :cards_by_player_id, :board_cards
 
   def self.calc_winning_player_ids(board_cards, cards_by_player_id)

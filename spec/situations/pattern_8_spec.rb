@@ -37,7 +37,7 @@ describe 'pattern_8' do
       # utg: 5s5c
       # hj: 6s6c
       # co: 7s7c
-      # board: 9s9h9d9cAs
+      # board: 8s 9h 5d Jc As
       allow_any_instance_of(Poker::Deck).to receive(:draw).and_return(
         Poker::Card.new('2s'), # btn
         Poker::Card.new('2c'),

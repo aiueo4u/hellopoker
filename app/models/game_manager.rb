@@ -31,7 +31,7 @@ class GameManager
 
   def do_payment
     while do_payment?
-      game_hand.create_taken_actions
+      GameHand::Payment.run(game_hand: game_hand)
     end
   end
 
@@ -44,12 +44,6 @@ class GameManager
   end
 
   def last_aggressive_seat_no
-    return nil if game_hand.nil?
-    return nil if game_hand.last_action_finished_round?
-
-    last_aggressive_player_id = game_hand.game_actions.select do |action|
-      action.state == current_state && (action.bet? || action.blind?)
-    end.last&.player_id
-    game_hand.table_player_by_player_id(last_aggressive_player_id)&.seat_no
+    game_hand ? game_hand.last_aggressive_seat_no : nil
   end
 end

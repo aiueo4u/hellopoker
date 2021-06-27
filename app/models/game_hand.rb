@@ -20,6 +20,15 @@ class GameHand < ApplicationRecord
     game_hand_players.find { |ghp| ghp.player_id == last_action.player_id }.seat_no
   end
 
+  def last_aggressive_seat_no
+    return nil if last_action_finished_round?
+
+    last_aggressive_player_id = game_actions.select do |action|
+      action.state == current_state && (action.bet? || action.blind?)
+    end.last&.player_id
+    table_player_by_player_id(last_aggressive_player_id)&.seat_no
+  end
+
   # このハンドに参加しているプレイヤーのシート番号の配列を返す
   def seat_nos
     game_hand_players.map(&:seat_no)
@@ -32,11 +41,6 @@ class GameHand < ApplicationRecord
   # 一人以外全員フォールドしているかどうか
   def folded_except_one?
     game_hand_players.count(&:folded?) == game_hand_players.size - 1
-  end
-
-  def next_state
-    next_state_index = GameAction.states[last_action_state] + 1
-    GameAction.states.keys[next_state_index]
   end
 
   def game_hand_player_by_seat_no(seat_no)
@@ -106,29 +110,6 @@ class GameHand < ApplicationRecord
     [amount_to_call, current_game_hand_player.stack].min
   end
 
-  # 現在のハンドで全てのプレイヤーアクションを終えているかどうか(paymentラウンドに進めるかどうか)
-  def no_more_action?
-    # 1人以外全員fold or muck状態
-    return true if game_hand_players.count { |ghp| !ghp.folded? && !ghp.muck_hand? } == 1
-
-    # 全員アクションを終えている場合
-    return true if game_hand_players.all? { |ghp| no_more_action_by_ghp?(ghp) }
-
-    # 自分以外の全員がアクションを終えており、必要なチップを出している場合→hand_openへ
-    return true if game_hand_players.count { |ghp| no_more_action_by_ghp?(ghp) } == game_hand_players.size - 1 &&
-      game_hand_players.count { |ghp| ghp.active? && ghp.bet_amount_by_state(last_action_state) >= current_max_bet_amount } == 1
-
-    # hand_openラウンドだが、オールインしているプレイヤーがいる場合（hand_openラウンドをスキップ）
-    return true if last_action_finished_round? && next_state.in?(['hand_open', nil]) && game_hand_players.any?(&:allin?)
-
-    false
-  end
-
-  # 現在のハンドのアクションを全て終えているかどうか
-  def no_more_action_by_ghp?(ghp)
-    ghp.allin? || ghp.folded? || ghp.show_or_muck_hand?
-  end
-
   # 現在のラウンド
   #   - preflop
   #   - flop
@@ -138,12 +119,7 @@ class GameHand < ApplicationRecord
   #   - payment: 精算タイム（ユーザーには見えない。リクエスト処理中に一時的に発生）
   #   - finished: 終了（次回ゲームを開始できる）
   def current_state
-    # 全員のアクションが終了
-    if no_more_action?
-      return game_hand_players.sum(&:effective_total_bet_amount) > 0 ? 'payment' : 'finished'
-    end
-
-    last_action_finished_round? ? next_state : last_action_state
+    GameHand::CurrentState.calc_current_state(game_hand: self)
   end
 
   def last_action_state
@@ -205,14 +181,6 @@ class GameHand < ApplicationRecord
     game_actions << GameAction.build_muck_action(player_id, next_order_id)
   end
 
-  def min_total_bet_amount_in_not_folded_players
-    game_hand_players
-      .reject(&:folded?)
-      .map(&:effective_total_bet_amount)
-      .filter { |amount| amount > 0 }
-      .min
-  end
-
   def game_hand_player_by_id(player_id)
     game_hand_players.find { |ghp| ghp.player_id == player_id }
   end
@@ -221,27 +189,14 @@ class GameHand < ApplicationRecord
     game_hand_player_by_id(player_id).add_stack!(amount)
   end
 
-  def create_taken_actions
-    winning_player_ids = calc_winning_player_ids
-
-    min_total_bet_amount_in_not_folded_players = self.min_total_bet_amount_in_not_folded_players
-
-    game_hand_players.each do |ghp|
-      next unless ghp.effective_total_bet_amount > 0
-      amount = [min_total_bet_amount_in_not_folded_players, ghp.effective_total_bet_amount].min
-
-      # 取得版
-      chopped_amount = (amount / winning_player_ids.size).to_i # TOOD: 割り切れないときの誤差調整
-      winning_player_ids.each do |winning_player_id|
-        self.build_taken_action(winning_player_id, chopped_amount)
-        self.add_player_stack!(winning_player_id, chopped_amount)
-      end
-
-      # 奪われた版
-      self.build_taken_action(ghp.player_id, -1 * amount)
-    end
-
-    self.save!
+  def board_cards
+    @board_cards ||= [
+      Poker::Card.new(board_card1_id),
+      Poker::Card.new(board_card2_id),
+      Poker::Card.new(board_card3_id),
+      Poker::Card.new(board_card4_id),
+      Poker::Card.new(board_card5_id),
+    ]
   end
 
   # ショーダウン無しにゲームが終了？
@@ -324,26 +279,5 @@ class GameHand < ApplicationRecord
     else
       seat_nos.find { |seat_no| seat_no != button_seat_no }
     end
-  end
-
-  def calc_winning_player_ids
-    GameHandPayment.calc_winning_player_ids(board_cards, payment_cards_by_player_id)
-  end
-
-  def payment_cards_by_player_id
-    game_hand_players
-      .select { |ghp| !ghp.folded? && ghp.effective_total_bet_amount > 0 && !ghp.muck_hand? }
-      .map { |ghp| [ghp.player_id, [Poker::Card.new(ghp.card1_id), Poker::Card.new(ghp.card2_id)]] }
-      .to_h
-  end
-
-  def board_cards
-    @board_cards ||= [
-      Poker::Card.new(board_card1_id),
-      Poker::Card.new(board_card2_id),
-      Poker::Card.new(board_card3_id),
-      Poker::Card.new(board_card4_id),
-      Poker::Card.new(board_card5_id),
-    ]
   end
 end

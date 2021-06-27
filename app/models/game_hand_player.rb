@@ -44,7 +44,7 @@ class GameHandPlayer < ApplicationRecord
   end
 
   def show_or_muck_hand?
-    actions.any? { |action| action.muck? || action.show? }
+    show_hand? || muck_hand?
   end
 
   def taken_amount
@@ -53,6 +53,16 @@ class GameHandPlayer < ApplicationRecord
 
   def total_bet_amount
     actions.filter { |action| action.action_type.in?(%w(blind call bet)) }.sum(&:amount)
+  end
+
+  # 現在のハンドのアクションを全て終えているかどうか
+  def no_more_action?
+    allin? || folded? || show_or_muck_hand?
+  end
+
+  # 未精算のベットが残っているかどうか
+  def unsettled_bet_amount?
+    !folded? && !muck_hand? && effective_total_bet_amount > 0
   end
 
   # 他プレイヤーに持っていかれた分を除いた総ベット額
