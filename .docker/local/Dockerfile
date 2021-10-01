@@ -1,9 +1,11 @@
-FROM ruby:2.6.5
+FROM ruby:2.7.4
 
 ENV RAILS_ENV development
 ENV NODE_ENV development
 
 WORKDIR /app
+
+RUN bundle config set path 'vendor/bundle'
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
@@ -15,6 +17,4 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
       yarn && \
     rm -rf /var/lib/apt/lists/*
 
-RUN gem install bundler:2.1.4
-
-ADD . /app
+COPY . /app
