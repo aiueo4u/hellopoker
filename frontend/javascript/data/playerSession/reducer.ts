@@ -1,14 +1,37 @@
-const initialState = {
-  isReady: false,
-  isLoggedIn: false,
-  name: null,
-  playerId: null,
-  profileImageUrl: null,
-  currentPlayer: null,
+type CurrentPlayer = {
+  id: number;
+  name: string;
+  profileImageUrl: string;
 };
 
-const playerSession = (state = initialState, action) => {
-  const payload = action.payload;
+export type PlayerSessionState = {
+  isReady: boolean;
+  isLoggedIn: boolean;
+  name: string | undefined;
+  playerId: number | undefined;
+  profileImageUrl: string | undefined;
+  currentPlayer: CurrentPlayer | undefined;
+};
+
+type Action = {
+  type: 'FETCH_PLAYER_SUCCEEDED' | 'FETCH_PLAYER_FAILED' | 'UPDATE_PLAYER_SUCCEEDED';
+  payload: any;
+  name: string;
+  playerId: number;
+  profileImageUrl: string;
+};
+
+const initialState: PlayerSessionState = {
+  isReady: false,
+  isLoggedIn: false,
+  name: undefined,
+  playerId: undefined,
+  profileImageUrl: undefined,
+  currentPlayer: undefined,
+} as const;
+
+export const playerSession = (state: PlayerSessionState = initialState, action: Action): PlayerSessionState => {
+  const { payload } = action;
 
   switch (action.type) {
     case 'FETCH_PLAYER_SUCCEEDED':
@@ -43,5 +66,3 @@ const playerSession = (state = initialState, action) => {
       return state;
   }
 };
-
-export default playerSession;

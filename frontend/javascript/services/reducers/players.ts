@@ -1,9 +1,42 @@
-const initialState = {
-  actionType: null,
-  betSize: 0,
+type PlayerState = {
+  actionType: string | undefined;
+  betSize: number;
+  id: number | undefined;
+  cards: readonly any[];
+  handShow: boolean;
+  state: any;
 };
 
-const PlayerReducer = (state = initialState, action) => {
+type PlayersAction = {
+  type:
+    | 'PLAYER_ACTION_RECEIVED'
+    | 'SHOW_ACTIVE_PLAYER_CARDS'
+    | 'OTHER_PLAYER_ACTION'
+    | 'RESET_BET_SIZE'
+    | 'SET_BET_SIZE'
+    | 'INCREMENT_BET_SIZE'
+    | 'DECREMENT_BET_SIZE'
+    | 'BET_ACTION'
+    | 'CALL_ACTION'
+    | 'FOLD_ACTION'
+    | 'CHECK_ACTION';
+  actionType: string;
+  amount: number;
+  playerId: number;
+  players: PlayerState[];
+  playerStack: number;
+};
+
+const initialState: PlayerState = {
+  actionType: undefined,
+  betSize: 0,
+  id: undefined,
+  cards: [],
+  handShow: false,
+  state: undefined,
+} as const;
+
+const playerReducer = (state: PlayerState = initialState, action: PlayersAction): PlayerState => {
   const player = state;
 
   if (player.id !== action.playerId) return player;
@@ -45,13 +78,20 @@ const PlayerReducer = (state = initialState, action) => {
   }
 };
 
-const PlayersReducer = (state = [], action) => {
+export type PlayersState = PlayerState[];
+
+const initialPlayersState: PlayerState[] = [];
+
+export const playersReducer = (state: PlayersState = initialPlayersState, action: PlayersAction): PlayersState => {
   switch (action.type) {
     case 'PLAYER_ACTION_RECEIVED':
-      return action.players.map(player => ({ ...player, betSize: 0, actionType: null }));
+      return action.players.map(player => ({ ...player, betSize: 0, actionType: undefined }));
     case 'SHOW_ACTIVE_PLAYER_CARDS':
       return state.map(player => {
         const actionPlayer = action.players.find(ap => ap.id === player.id);
+        if (!actionPlayer) {
+          return player;
+        }
         return {
           ...player,
           cards: actionPlayer.cards,
@@ -60,8 +100,6 @@ const PlayersReducer = (state = [], action) => {
         };
       });
     default:
-      return state.map(player => PlayerReducer(player, action));
+      return state.map(player => playerReducer(player, action));
   }
 };
-
-export default PlayersReducer;
