@@ -1,3 +1,36 @@
+type State = {
+  peer: any;
+  sfuRoom: any;
+  isPeerOpen: boolean;
+  streamByPlayerId: any;
+  isVideoEnabledByPlayerId: {};
+  isAudioEnabledByPlayerId: {};
+};
+
+type Payload = {
+  playerId: number;
+  stream: any;
+  isVideoEnabled: boolean;
+  isAudioEnabled: boolean;
+  sfuRoom: any;
+  peer: any;
+};
+
+type Action = {
+  type:
+    | 'CLOSE_PEER_CONNECTION'
+    | 'DISABLE_MIC_AUDIO'
+    | 'DISABLE_VIDEO'
+    | 'ENABLE_MIC_AUDIO'
+    | 'ENABLE_VIDEO'
+    | 'LEAVE_ROOM'
+    | 'LEAVE_SFU_ROOM'
+    | 'ON_SUCCESS_GET_MEDIA_STREAM'
+    | 'ON_SUCCESS_JOIN_SFU_ROOM'
+    | 'ON_SUCCESS_OPEN_PEER_CONNECTION';
+  payload: Payload;
+};
+
 const initialState = {
   peer: null,
   sfuRoom: null,
@@ -7,7 +40,7 @@ const initialState = {
   isAudioEnabledByPlayerId: {},
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state: State = initialState, action: Action): State => {
   const payload = action.payload || {};
 
   switch (action.type) {
