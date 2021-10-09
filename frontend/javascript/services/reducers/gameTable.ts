@@ -20,16 +20,20 @@ type Action = {
   cards: any[];
   justCreated: boolean;
   playerId: number;
-  reachedRounds: any[];
+  reachedRounds: any;
   seatNo: number;
   seconds: number;
 };
+
+export type GameHandState = 'init' | 'finished' | 'flop' | 'turn' | 'river';
 
 export type GameTableState = {
   boardCards: readonly any[];
   buyInAmount: string;
   buyInPlayerId: number | undefined;
   dealtCards: readonly any[];
+  gameHandCount: number;
+  gameHandState: GameHandState | undefined;
   justActioned: boolean;
   justCreated: boolean;
   isOpenedBuyInDialog: boolean;
@@ -37,18 +41,21 @@ export type GameTableState = {
   isReady: boolean;
   openingPlayerMenuDialogPlayerId: number | undefined;
   pot: number;
-  reachedRounds: readonly any[];
+  reachedRounds: any;
   reconnectingActionCable: boolean;
   selectingSeatNo: number | undefined;
   timeToStart: number;
   table: any;
+  tournament: any;
 };
 
-const initialState: GameTableState = {
+export const initialState: GameTableState = {
   boardCards: [],
   buyInAmount: '',
   buyInPlayerId: undefined,
   dealtCards: [],
+  gameHandCount: 0,
+  gameHandState: undefined,
   justActioned: false,
   justCreated: false, // ゲーム開始直後かどうか
   isOpenedBuyInDialog: false,
@@ -61,6 +68,7 @@ const initialState: GameTableState = {
   selectingSeatNo: undefined,
   timeToStart: 0,
   table: {},
+  tournament: undefined,
 } as const;
 
 export const gameTableReducer = (state: GameTableState = initialState, action: Action): GameTableState => {

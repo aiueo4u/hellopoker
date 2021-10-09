@@ -1,27 +1,19 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { PokerCard } from 'components/PokerCard';
+import { GameTableState } from 'services/reducers/gameTable';
 import { useStyles } from './BoardCardStyles';
 
-export const BoardCard = ({ position, gameTable }: { position: number; gameTable: any }) => {
+const getRoundByPosition = (position: 0 | 1 | 2 | 3 | 4) => ['flop', 'flop', 'flop', 'turn', 'river'][position];
+
+export const BoardCard = ({ position, gameTable }: { position: 0 | 1 | 2 | 3 | 4; gameTable: GameTableState }) => {
   const classes = useStyles();
   const [animated, setAnimated] = React.useState(false);
 
   const rank = gameTable.boardCards[position] ? gameTable.boardCards[position][0] : null;
   const suit = gameTable.boardCards[position] ? gameTable.boardCards[position][1] : null;
 
-  let round;
-  switch (position) {
-    case 4:
-      round = 'river';
-      break;
-    case 3:
-      round = 'turn';
-      break;
-    default:
-      round = 'flop';
-      break;
-  }
+  const round = getRoundByPosition(position);
 
   const invisible = !gameTable.boardCards[position] || !gameTable.reachedRounds[round];
   const playAnimation = !invisible && gameTable.justActioned && gameTable.gameHandState === round;

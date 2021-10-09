@@ -4,14 +4,12 @@ import { useRouteMatch } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 
 import Loading from 'components/Loading';
-import MobilePlayerActions from 'components/MobilePlayerActions';
 import { NetworkStatusDialog } from 'components/dialog/NetworkStatusDialog';
 import TableMessageDrawer from 'components/TableMessageDrawer';
 
 import useChipChannel from 'hooks/useChipChannel';
 import useDealtCardChannel from 'hooks/useDealtCardChannel';
 import useGameTableState from 'hooks/useGameTableState';
-import useIsMobile from 'hooks/useIsMobile';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import usePlayersState from 'hooks/usePlayersState';
 import useRoomViewerChannel from 'hooks/useRoomViewerChannel';
@@ -55,7 +53,6 @@ export const Room = () => {
   const gameTable = useGameTableState();
   const { playerId } = usePlayerSessionState();
   const players = usePlayersState();
-  const { isMobile } = useIsMobile();
 
   const sortedPlayers = selectSortedPlayers(players, playerId);
 
@@ -102,7 +99,6 @@ export const Room = () => {
           <PlayerHand position={5} player={sortedPlayers[5]} />
         </Box>
       </div>
-      {isMobile && <MobilePlayerActions player={sortedPlayers[0]} tableId={tableId} />}
       <TableMessageDrawer tableId={tableId} />
     </div>
   );
