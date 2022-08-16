@@ -34,7 +34,7 @@ phases:
       - echo "[{\"name\":\"rails-worker\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker.json
       - echo "[{\"name\":\"rails-worker-scheduler\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker-scheduler.json
       - echo Migrating database...
-      - aws ecs run-task --cluster ${ECS_CLUSTER_NAME} --task-definition ${ECS_DB_MIGRATE_TASK} --launch-type=FARGATE --network-configuration ${NETWORK_CONFIGURATION}
+      - aws ecs run-task --cluster ${ECS_CLUSTER_NAME} --task-definition ${ECS_DB_MIGRATE_TASK}
       - echo Uploading assets to S3...
       - RAILS_ASSET_CONTAINER_ID=$(docker create $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG)
       - docker cp $RAILS_ASSET_CONTAINER_ID:/app/public .
