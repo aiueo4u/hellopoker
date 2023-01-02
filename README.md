@@ -1,4 +1,8 @@
 # README
 
 ### ローカル開発
-$ docker compose up
+1. `.env`
+2.
+  ```
+  $ docker compose up
+  ```
