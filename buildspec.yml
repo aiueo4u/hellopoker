@@ -38,7 +38,13 @@ phases:
       - echo "[{\"name\":\"rails-worker\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker.json
       - echo "[{\"name\":\"rails-worker-scheduler\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker-scheduler.json
       - echo Migrating database...
-      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws ecs run-task --cluster ${ECS_CLUSTER_NAME} --task-definition ${ECS_DB_MIGRATE_TASK}
+      - >
+        AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+        aws ecs run-task
+        --cluster ${ECS_CLUSTER_NAME}
+        --task-definition ${ECS_DB_MIGRATE_TASK}
+        --network-configuration "awsvpcConfiguration={subnets=[subnet-03c14754f0bc10bf0],securityGroups=[sg-51bb811a],assignPublicIp=ENABLED}"
       - echo Uploading assets to S3...
       - RAILS_ASSET_CONTAINER_ID=$(docker create $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG)
       - docker cp $RAILS_ASSET_CONTAINER_ID:/app/public .
