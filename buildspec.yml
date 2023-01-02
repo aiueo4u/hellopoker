@@ -1,5 +1,9 @@
 version: 0.2
 
+env:
+  parameter-store:
+    AWS_ACCESS_KEY_ID: "CLIENT_AWS_ACCESS_KEY_ID"
+    AWS_SECRET_ACCESS_KEY: "CLIENT_AWS_SECRET_ACCESS_KEY"
 phases:
   install:
     runtime-versions:
@@ -34,12 +38,12 @@ phases:
       - echo "[{\"name\":\"rails-worker\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker.json
       - echo "[{\"name\":\"rails-worker-scheduler\",\"imageUri\":\"${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}\"}]" > hellopoker-rails-worker-scheduler.json
       - echo Migrating database...
-      - aws ecs run-task --cluster ${ECS_CLUSTER_NAME} --task-definition ${ECS_DB_MIGRATE_TASK} --launch-type=FARGATE --network-configuration ${NETWORK_CONFIGURATION}
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws ecs run-task --cluster ${ECS_CLUSTER_NAME} --task-definition ${ECS_DB_MIGRATE_TASK} --launch-type=FARGATE --network-configuration ${NETWORK_CONFIGURATION}
       - echo Uploading assets to S3...
       - RAILS_ASSET_CONTAINER_ID=$(docker create $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG)
       - docker cp $RAILS_ASSET_CONTAINER_ID:/app/public .
       - docker rm $RAILS_ASSET_CONTAINER_ID
-      - aws s3 sync --exact-timestamps public s3://${S3_BUCKET_NAME}
+      - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 sync --exact-timestamps public s3://${S3_BUCKET_NAME}
 artifacts:
   files:
     - hellopoker-rails-web.json
