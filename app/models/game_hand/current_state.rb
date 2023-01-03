@@ -1,8 +1,8 @@
 class GameHand::CurrentState
   attr_reader :game_hand, :game_hand_players, :last_action_state
 
-  def self.calc_current_state(*args)
-    new(*args).calc_current_state
+  def self.calc_current_state(**args)
+    new(**args).calc_current_state
   end
 
   def calc_current_state

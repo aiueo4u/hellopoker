@@ -1,8 +1,8 @@
 class GameHand::Payment
   attr_reader :game_hand
 
-  def self.run(*args)
-    new(*args).tap { |payment| payment.run }
+  def self.run(**args)
+    new(**args).tap { |payment| payment.run }
   end
 
   def run
