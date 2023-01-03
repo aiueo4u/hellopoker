@@ -8,7 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 
-const contextPath = path.join(__dirname, 'frontend', 'javascript');
+const contextPath = path.join(__dirname, 'javascript');
 const sourcePath = 'app/javascript';
 const fileExtensions = [
   '.jpg',
@@ -51,7 +51,7 @@ module.exports = (env, argv) => {
       filename: filename,
       chunkFilename: chunkFilename,
       hotUpdateChunkFilename: 'js/[id]-[hash].hot-update.js',
-      path: path.resolve(__dirname, 'public/webpacks'),
+      path: path.resolve(__dirname, '../public/webpacks'),
       publicPath: publicPath,
       pathinfo: mode === 'development',
     },
@@ -186,7 +186,7 @@ module.exports = (env, argv) => {
       port: 3045,
       https: false,
       hot: true,
-      contentBase: path.resolve(__dirname, 'public/webpacks'),
+      contentBase: path.resolve(__dirname, '../public/webpacks'),
       inline: true,
       useLocalIp: false,
       public: 'localhost:3045',

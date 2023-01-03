@@ -8,8 +8,8 @@
     "strict": true,
     "module": "esnext",
     "jsx": "react",
-    "baseUrl": "frontend/javascript",
-    "rootDir": "frontend/javascript",
+    "baseUrl": "javascript",
+    "rootDir": "javascript",
     "moduleResolution": "node",
     "paths": {
       "assets/*": ["assets/*"],
@@ -21,6 +21,6 @@
       "utils/*": ["utils/*"]
     }
   },
-  "include": ["frontend/**/*"],
+  "include": ["**/*"],
   "exclude": ["node_modules"]
 }

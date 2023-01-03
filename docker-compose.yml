@@ -28,7 +28,7 @@ services:
       - MYSQL_PORT=3306
     command: bash -c "
       bundle install --path vendor/bundle --jobs=4 &&
-      yarn install &&
+      yarn --cwd frontend install &&
       ./tools/run_server.sh"
     container_name: hellopoker_app
     networks:
