@@ -326,6 +326,8 @@ GEM
       rspec-mocks (~> 3.10.0)
     rspec-core (3.10.2)
       rspec-support (~> 3.10.0)
+    rspec-default_http_header (0.0.6)
+      rspec-rails (> 3.0)
     rspec-expectations (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
@@ -430,6 +432,7 @@ DEPENDENCIES
   rails (~> 6.0)
   redis (~> 3.0)
   ridgepole
+  rspec-default_http_header
   rspec-rails
   sass-rails (~> 5.0)
   slim
