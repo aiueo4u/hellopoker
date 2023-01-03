@@ -1,4 +1,4 @@
-FROM ruby:2.7.4
+FROM ruby:3.0.4
 
 ENV RAILS_ENV development
 ENV NODE_ENV development
