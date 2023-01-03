@@ -54,6 +54,7 @@ gem "paperclip", "~> 6.0.0"
 gem 'koala'
 gem 'browser'
 gem 'dotenv-rails'
+gem 'webrick'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
