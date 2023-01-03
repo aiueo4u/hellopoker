@@ -6,17 +6,15 @@ class Api::PlayersController < Api::ApplicationController
   end
 
   def update
-    current_player.with_lock do
-      current_player.attributes = edit_params
-      current_player.save!
+    use_case = Player::UploadProfileImageUseCase.perform(
+      player: current_player,
+      profile_image: params[:player][:profile_image],
+    )
+
+    if use_case.success?
+      @player = use_case.player
+    else
+      head :bad_request
     end
-
-    @player = current_player
-  end
-
-  private
-
-  def edit_params
-    params.require(:player).permit(:profile_image)
   end
 end
