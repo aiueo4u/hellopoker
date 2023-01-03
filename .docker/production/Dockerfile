@@ -18,8 +18,8 @@ WORKDIR /app
 
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
-COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+COPY frontend/package.json /app/frontend/package.json
+COPY frontend/yarn.lock /app/frontend/yarn.lock
 
 COPY . /app
 
@@ -33,7 +33,7 @@ RUN bundle config specific_platform x86_64-linux \
 
 RUN bundle config set without 'development test'
 RUN bundle install --jobs=4
-RUN yarn install
+RUN yarn --cwd frontend install
 
-RUN yarn run build
+RUN yarn --cwd frontend run build
 RUN SECRET_KEY_BASE=null DB_ADAPTER=nulldb bundle exec rails assets:precompile
