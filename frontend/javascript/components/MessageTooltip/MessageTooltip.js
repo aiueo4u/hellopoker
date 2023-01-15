@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import Tooltip from '@material-ui/core/Tooltip';
+import PropTypes from 'prop-types';
 
 import useMessageTooltip from './hooks/useMessageTooltip';
 

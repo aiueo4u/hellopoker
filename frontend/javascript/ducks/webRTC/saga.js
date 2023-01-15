@@ -1,6 +1,6 @@
 import { select, takeEvery } from 'redux-saga/effects';
 
-//const getWebRTCState = state => state.webRTC;
+// const getWebRTCState = state => state.webRTC;
 const getStream = playerId => state => state.webRTC.streamByPlayerId[playerId];
 
 function* handleDisableMicAudio(action) {

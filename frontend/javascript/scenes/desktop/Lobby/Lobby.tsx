@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { Box } from '@material-ui/core';
+
 import { CreateTableForm } from 'components/form/CreateTableForm';
 
 export const Lobby = () => {

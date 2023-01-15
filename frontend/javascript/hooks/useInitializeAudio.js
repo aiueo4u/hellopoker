@@ -15,13 +15,13 @@ const useInitializeAudio = () => {
     audioCall.preload = 'auto';
     // TODO: canplaythrough listener
     audioCall.load();
-    //audioCall.play();
+    // audioCall.play();
 
     const audioMyTurn = new Audio(audioMyTurnPath);
     audioMyTurn.id = 'audio-myturn';
     audioMyTurn.preload = 'auto';
     audioMyTurn.load();
-    //audioMyTurn.play();
+    // audioMyTurn.play();
 
     const payload = { audioCall, audioMyTurn };
     dispatch({ type: 'INITIALIZED_AUDIO', payload });

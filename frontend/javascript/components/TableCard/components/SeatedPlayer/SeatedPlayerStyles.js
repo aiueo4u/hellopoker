@@ -4,7 +4,7 @@ const styles = () => ({
   player: ({ seatNo }) => {
     const base = {
       position: 'absolute',
-      //border: `1px solid blue`,
+      // border: `1px solid blue`,
     };
 
     switch (seatNo) {

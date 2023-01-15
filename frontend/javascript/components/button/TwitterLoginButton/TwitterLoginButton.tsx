@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { Avatar, Button } from '@material-ui/core';
 
 import TwitterIcon from 'assets/twitter-icon.svg';

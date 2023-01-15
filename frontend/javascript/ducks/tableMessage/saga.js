@@ -3,7 +3,7 @@ import { cancel, call, fork, put, take } from 'redux-saga/effects';
 const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
 
 function* handleReceiveTableMessage(action) {
-  const payload = action.payload;
+  const { payload } = action;
 
   yield call(sleep, 3000);
   yield put({ type: 'DISMISS_TABLE_MESSAGE', payload });

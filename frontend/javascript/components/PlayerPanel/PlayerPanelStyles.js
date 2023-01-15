@@ -14,7 +14,7 @@ const styles = theme => ({
       borderRadius: theme.spacing(1 / 4),
       color: theme.palette.common.white,
       padding: theme.spacing(1 / 4, 1 / 2),
-      //border: '1px solid red',
+      // border: '1px solid red',
     };
 
     switch (position) {

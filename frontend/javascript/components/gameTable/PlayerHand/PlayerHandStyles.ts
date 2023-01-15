@@ -300,4 +300,4 @@ const styles = (theme: any) => {
   return base;
 };
 
-export const useStyles  = makeStyles(styles);
+export const useStyles = makeStyles(styles);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { camelizeKeys } from 'humps';
 
 import { fetchTournaments } from 'api';
+import { camelizeKeys } from 'humps';
 
 const useTournamentList = () => {
   const [tournaments, setTournaments] = useState([]);

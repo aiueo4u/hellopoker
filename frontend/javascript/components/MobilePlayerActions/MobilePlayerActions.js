@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Tooltip from '@material-ui/core/Tooltip';
+import PropTypes from 'prop-types';
 
 import ChipAmountControlContainer from 'components/ChipAmountControlContainer';
-
 import useActions from 'hooks/useActions';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
@@ -26,7 +25,7 @@ const MobilePlayerActions = ({ player, tableId }) => {
   const [isOpen, openTooltip, closeTooltip] = useDialogState();
   const { playerId } = usePlayerSessionState();
 
-  const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false;
+  const aggressivePlayerExist = !!gameTable.lastAggressiveSeatNo;
   const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seatNo;
 
   if (playerId !== player.id) return null;
@@ -77,7 +76,7 @@ const MobilePlayerActions = ({ player, tableId }) => {
             open={isOpen}
             onClose={() => {}}
             classes={{ tooltip: classes.popper }}
-            //placement="left"
+            // placement="left"
             title={
               <ChipAmountControlContainer
                 betButton={

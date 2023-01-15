@@ -1,19 +1,20 @@
 import React from 'react';
+
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import MicIcon from '@material-ui/icons/Mic';
+import MicOffIcon from '@material-ui/icons/MicOff';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import MicOffIcon from '@material-ui/icons/MicOff';
-import MicIcon from '@material-ui/icons/Mic';
-import VideocamOffIcon from '@material-ui/icons/VideocamOff';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import { nameByActionType } from 'helpers/actionType';
 
+import useStyles from './PlayerWindowStyles';
 import PlayerAvatarWindow from './components/PlayerAvatarWindow';
 import usePlayerWindow from './hooks/usePlayerWindow';
-import useStyles from './PlayerWindowStyles';
 
 const PlayerWindow = ({ player, isTurn, tableId }) => {
   const videoState = useSelector(state => state.webRTC);

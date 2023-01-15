@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import { Box, Button, TextField, Typography } from '@material-ui/core';
+import { Box, Button, TextField } from '@material-ui/core';
 
 import useFormData from 'hooks/useFormData';
+
 import { useSubmitFormData } from './hooks/useSubmitFormData';
 
 const initialFormData = {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { camelizeKeys } from 'humps';
 
 import { entryTournament, fetchTournament } from 'api';
+import { camelizeKeys } from 'humps';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 const useTournament = () => {
   const [tables, setTables] = useState([]);

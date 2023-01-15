@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { EmptySeat } from 'components/EmptySeat';
 import PlayerActions from 'components/PlayerActions';
+import HeroPlayerPanel from 'components/gameTable/HeroPlayerPanel';
 import useGameTableState from 'hooks/useGameTableState';
 import useIsMobile from 'hooks/useIsMobile';
-import HeroPlayerPanel from 'components/gameTable/HeroPlayerPanel';
 
 import { useStyles } from './HeroSeatStyles';
 

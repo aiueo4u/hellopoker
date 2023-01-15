@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+
 import { actionToGameDealer } from 'api';
+import { useDispatch } from 'react-redux';
 
 const useActions = (tableId, player, gameTable) => {
   const dispatch = useDispatch();

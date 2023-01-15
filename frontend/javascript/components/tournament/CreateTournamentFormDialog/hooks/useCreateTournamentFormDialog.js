@@ -1,6 +1,7 @@
-import { useHistory } from 'react-router-dom';
-import { camelizeKeys } from 'humps';
 import { createTournament } from 'api';
+import { camelizeKeys } from 'humps';
+import { useHistory } from 'react-router-dom';
+
 import useFormData from 'hooks/useFormData';
 
 const initialFormData = {

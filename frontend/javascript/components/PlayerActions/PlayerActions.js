@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
+import PropTypes from 'prop-types';
 
 import ChipAmountControlContainer from 'components/ChipAmountControlContainer';
-
 import useActions from 'hooks/useActions';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
@@ -25,7 +24,7 @@ const PlayerActions = ({ player, tableId }) => {
   const [isOpen, openTooltip, closeTooltip] = useDialogState();
   const { playerId } = usePlayerSessionState();
 
-  const aggressivePlayerExist = gameTable.lastAggressiveSeatNo ? true : false;
+  const aggressivePlayerExist = !!gameTable.lastAggressiveSeatNo;
   const checkable = !aggressivePlayerExist || gameTable.lastAggressiveSeatNo === player.seatNo;
 
   if (playerId !== player.id) return null;

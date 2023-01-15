@@ -1,15 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
 
-import useCreateTournamentFormDialog from './hooks/useCreateTournamentFormDialog';
 import useStyles from './CreateTournamentFormDialogStyles';
+import useCreateTournamentFormDialog from './hooks/useCreateTournamentFormDialog';
 
 const CreateTournamentFormDialog = ({ isOpen, onClose }) => {
   const classes = useStyles();
@@ -26,7 +26,7 @@ const CreateTournamentFormDialog = ({ isOpen, onClose }) => {
             variant="outlined"
             value={formData.name}
             onChange={onChangeFormData}
-            //disabled={isSending}
+            // disabled={isSending}
             autoFocus
           />
         </div>

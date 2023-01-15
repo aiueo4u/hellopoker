@@ -28,7 +28,7 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
     padding: '0px 8px',
-    //border: `1px solid red`,
+    // border: `1px solid red`,
   },
   popper: {
     maxWidth: '400px',

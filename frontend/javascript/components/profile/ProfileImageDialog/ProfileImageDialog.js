@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
-import useProfileImageDialog from './hooks/useProfileImageDialog';
 import useStyles from './ProfileImageDialogStyles';
+import useProfileImageDialog from './hooks/useProfileImageDialog';
 
 const ProfileImageDialog = ({ closeDialog, isOpen }) => {
   const classes = useStyles();

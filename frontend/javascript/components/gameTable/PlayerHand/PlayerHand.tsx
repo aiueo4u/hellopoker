@@ -1,8 +1,10 @@
 import * as React from 'react';
+
 import classNames from 'classnames';
 
 import { PokerCard } from 'components/PokerCard';
 import useGameTableState from 'hooks/useGameTableState';
+
 import { useStyles } from './PlayerHandStyles';
 import { usePlayerHand } from './hooks/usePlayerHand';
 

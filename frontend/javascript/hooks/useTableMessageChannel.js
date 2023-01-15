@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { camelizeKeys } from 'humps';
+
 import ActionCable from 'actioncable';
 import { fetchTableMessages } from 'api';
+import { camelizeKeys } from 'humps';
+import { useDispatch } from 'react-redux';
 
 const useTableMessageChannel = (tableId, scrollListId) => {
   const dispatch = useDispatch();

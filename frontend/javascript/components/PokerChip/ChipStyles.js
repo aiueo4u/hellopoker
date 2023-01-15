@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/styles';
 import { blue, orange, red, yellow } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/styles';
 
 const styles = theme => ({
   chip: ({ index }) => ({
@@ -9,7 +9,7 @@ const styles = theme => ({
     transform: 'translate(-50%, 0%)',
     width: '40px',
     height: '20px',
-    //border: `1px solid ${theme.palette.common.black}`,
+    // border: `1px solid ${theme.palette.common.black}`,
     [theme.breakpoints.only('xs')]: {
       width: '24px',
     },
@@ -27,12 +27,12 @@ const styles = theme => ({
       position: 'relative',
       width: '100%',
       height: '80%',
-      //backgroundColor: '#FF7043',
+      // backgroundColor: '#FF7043',
       backgroundColor: theme.palette.grey[200],
       borderRadius: '50%',
       zIndex: index * 2 + 1,
       border: `2px solid ${theme.palette.grey[700]}`,
-      //border: `1px solid blue`,
+      // border: `1px solid blue`,
     };
 
     switch (label) {
@@ -54,8 +54,8 @@ const styles = theme => ({
       bottom: '0%',
       width: '100%',
       height: '60%',
-      //border: `1px solid ${theme.palette.grey[700]}`,
-      //backgroundColor: '#F4511E',
+      // border: `1px solid ${theme.palette.grey[700]}`,
+      // backgroundColor: '#F4511E',
       backgroundColor: theme.palette.grey[700],
       borderRadius: '0 0 50% 50% / 0 0 calc(4500% / 60) calc(4500% / 60)',
       zIndex: index * 2,

@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { makeStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import PokerChip from 'components/PokerChip';

@@ -64,8 +64,8 @@
     "watch": "webpack --mode=development --progress --watch",
     "devserver": "webpack-dev-server --mode=development",
     "build": "webpack --mode=production --app-mode=production",
-    "lint": "npx eslint frontend/javascript",
-    "lint:fix": "npx eslint --fix frontend/javascript"
+    "lint": "npx eslint javascript",
+    "lint:fix": "npx eslint --fix javascript"
   },
   "version": "1.0.0",
   "main": "index.js",

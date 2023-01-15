@@ -11,7 +11,7 @@ const styles = theme => ({
     flexDirection: 'column',
     justifyContent: 'space-around',
     textAlign: 'center',
-    //border: `1px solid yellow`,
+    // border: `1px solid yellow`,
   },
   betArea: {
     borderRadius: theme.spacing(1 / 4),

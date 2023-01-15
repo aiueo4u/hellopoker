@@ -1,13 +1,14 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
+import PropTypes from 'prop-types';
 
 import { formatDateCalendar } from 'utils/date';
+
 import useStyles from './MessageListStyles';
 
 const MessageList = ({ messages }) => {

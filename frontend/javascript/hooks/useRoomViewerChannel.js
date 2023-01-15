@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import ActionCable from 'actioncable';
-import { camelizeKeys } from 'humps';
 import { onReceiveRoomViewerChannel } from 'data/actions';
+import { camelizeKeys } from 'humps';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useRoomViewerChannel = tableId => {
   const dispatch = useDispatch();

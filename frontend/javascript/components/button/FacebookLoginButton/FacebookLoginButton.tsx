@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import { Avatar, Button } from '@material-ui/core';
+
 import FacebookIcon from 'assets/facebook-icon.png';
 
 import { useStyles } from './FacebookLoginButtonStyles';

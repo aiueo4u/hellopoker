@@ -1,7 +1,9 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
-import useStyles from './PokerChipStyles';
+
 import useChipStyles from './ChipStyles';
+import useStyles from './PokerChipStyles';
 
 const Chip = ({ index, label }) => {
   const classes = useChipStyles({ index, label });

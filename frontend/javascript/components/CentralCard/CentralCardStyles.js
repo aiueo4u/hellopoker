@@ -18,7 +18,7 @@ const styles = theme => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    //border: `1px solid red`, // TODO
+    // border: `1px solid red`, // TODO
   },
   information: {
     position: 'absolute',
@@ -26,7 +26,7 @@ const styles = theme => ({
     width: '100%',
     transform: 'translate(-50%, 0%)',
     color: theme.palette.common.white,
-    //border: '1px solid red',
+    // border: '1px solid red',
     [theme.breakpoints.up('sm')]: {
       top: 'calc(50% + 60px)',
     },
@@ -36,7 +36,7 @@ const styles = theme => ({
     },
   },
   inner: {
-    //border: `1px solid blue`, // TODO
+    // border: `1px solid blue`, // TODO
     position: 'absolute',
     top: 0,
     left: '50%',
@@ -64,7 +64,7 @@ const styles = theme => ({
     [theme.breakpoints.only('xs')]: {
       top: 'calc(50% - 35px)',
     },
-    //border: '1px solid yellow',
+    // border: '1px solid yellow',
   },
 });
 

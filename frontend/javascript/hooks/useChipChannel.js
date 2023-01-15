@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+
 import ActionCable from 'actioncable';
-import { camelizeKeys } from 'humps';
 import { playerActionReceived } from 'data/actions';
+import { camelizeKeys } from 'humps';
+import { useDispatch } from 'react-redux';
 
 const useChipChannel = tableId => {
   const dispatch = useDispatch();

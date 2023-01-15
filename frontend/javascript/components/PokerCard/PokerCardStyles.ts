@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
+
 import FaceBackImage from './faces/back.png';
 
 type Props = {

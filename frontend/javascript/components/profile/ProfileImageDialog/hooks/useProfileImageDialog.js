@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { camelizeKeys } from 'humps';
 
 import { updatePlayer } from 'api';
+import { camelizeKeys } from 'humps';
+import { useDispatch } from 'react-redux';
 
 const useProfileImageDialog = ({ closeDialog }) => {
   const dispatch = useDispatch();

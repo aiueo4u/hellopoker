@@ -1,5 +1,5 @@
-import useWebRTC from 'hooks/useWebRTC';
 import { buildRoomName } from 'helpers/webrtc';
+import useWebRTC from 'hooks/useWebRTC';
 
 const usePlayerAvatarWindow = tableId => {
   const { startWebRTC } = useWebRTC();

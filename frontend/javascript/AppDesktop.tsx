@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -7,15 +8,14 @@ import PrivateRoute from 'components/PrivateRoute';
 import TopNavigation from 'components/navigation/desktop/TopNavigation';
 import useAdjustWindow from 'hooks/useAdjustWindow';
 import useInitApp from 'hooks/useInitApp';
-
 import { Home } from 'scenes/desktop/Home';
-import { Login } from 'scenes/desktop/Login';
 import { Lobby } from 'scenes/desktop/Lobby';
+import { Login } from 'scenes/desktop/Login';
+import { Room } from 'scenes/desktop/Room';
+import { Setting } from 'scenes/desktop/Setting';
 import { TableList } from 'scenes/desktop/TableList';
 import { Tournament } from 'scenes/desktop/Tournament';
 import { TournamentList } from 'scenes/desktop/TournamentList';
-import { Room } from 'scenes/desktop/Room';
-import { Setting } from 'scenes/desktop/Setting';
 
 export const App = () => {
   const { isReady } = useSelector((state: any) => state.data.playerSession);

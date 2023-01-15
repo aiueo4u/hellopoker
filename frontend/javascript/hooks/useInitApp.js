@@ -1,5 +1,6 @@
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+
+import { useDispatch } from 'react-redux';
 
 const useInitApp = () => {
   const dispatch = useDispatch();

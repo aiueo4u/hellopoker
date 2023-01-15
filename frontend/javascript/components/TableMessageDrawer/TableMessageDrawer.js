@@ -1,18 +1,18 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PropTypes from 'prop-types';
 
 import useDialogState from 'hooks/useDialogState';
 import useTableMessageChannel from 'hooks/useTableMessageChannel';
 
+import useStyles from './TableMessageDrawerStyles';
 import MailButton from './components/MailButton';
 import MessageList from './components/MessageList';
-import useStyles from './TableMessageDrawerStyles';
 import useTableMessageDrawer from './hooks/useTableMessageDrawer';
 
 const TableMessageDrawer = ({ tableId }) => {

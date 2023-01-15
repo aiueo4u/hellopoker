@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,9 +7,10 @@ import HomeIcon from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/MailOutlined';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SettingsIcon from '@material-ui/icons/Settings';
+import PropTypes from 'prop-types';
 
-import ListItemLink from './components/ListItemLink';
 import useStyles from './SideNavigationStyles';
+import ListItemLink from './components/ListItemLink';
 
 const SideNavigation = ({ isOpen, onClose }) => {
   const classes = useStyles();

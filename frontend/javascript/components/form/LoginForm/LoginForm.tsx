@@ -3,8 +3,9 @@ import * as React from 'react';
 import { Box, Button, TextField } from '@material-ui/core';
 
 import useFormData from 'hooks/useFormData';
-import { useSubmitFormData } from './hooks/useSubmitFormData';
+
 import { useStyles } from './LoginFormStyles';
+import { useSubmitFormData } from './hooks/useSubmitFormData';
 
 export const LoginForm = () => {
   const classes = useStyles();

@@ -1,13 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 
 import Badge from '@material-ui/core/Badge';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 import useIsCurrentPath from 'hooks/useIsCurrentPath';
+
 import useStyles from './ListItemLinkStyles';
 
 const ListItemLink = ({ badgeCount, closeMenu, href, icon, label }) => {

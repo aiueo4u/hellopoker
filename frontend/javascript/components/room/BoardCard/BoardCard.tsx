@@ -1,7 +1,10 @@
 import * as React from 'react';
+
 import classNames from 'classnames';
+
 import { PokerCard } from 'components/PokerCard';
 import { GameTableState } from 'services/reducers/gameTable';
+
 import { useStyles } from './BoardCardStyles';
 
 const getRoundByPosition = (position: 0 | 1 | 2 | 3 | 4) => ['flop', 'flop', 'flop', 'turn', 'river'][position];

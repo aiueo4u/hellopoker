@@ -1,7 +1,6 @@
-import { useHistory } from 'react-router-dom';
-import { camelizeKeys } from 'humps';
-
 import { createTable } from 'api';
+import { camelizeKeys } from 'humps';
+import { useHistory } from 'react-router-dom';
 
 export const useSubmitFormData = () => {
   const history = useHistory();

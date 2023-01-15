@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import CentralCard from 'components/CentralCard';
 import PlayerChipBetArea from 'components/PlayerChipBetArea';
+
 import { useStyles } from './GameTableStyles';
 
 export const GameTable = ({ heroPositionPlayer = null }: { heroPositionPlayer: any }) => {

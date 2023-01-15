@@ -1,15 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import MicIcon from '@material-ui/icons/Mic';
 import VideocamIcon from '@material-ui/icons/Videocam';
+import PropTypes from 'prop-types';
 
 import { nameByActionType } from 'helpers/actionType';
 import useIsMobile from 'hooks/useIsMobile';
-import usePlayerAvatarWindow from './hooks/usePlayerAvatarWindow';
+
 import useStyles from './PlayerAvatarWindowStyles';
+import usePlayerAvatarWindow from './hooks/usePlayerAvatarWindow';
 
 const PlayerAvatarWindow = ({ isMe, player, tableId }) => {
   const classes = useStyles();

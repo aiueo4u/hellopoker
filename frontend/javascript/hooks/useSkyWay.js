@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import Peer from 'skyway-js';
 
-import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import { buildPeerId } from 'helpers/webrtc';
+import usePlayerSessionState from 'hooks/usePlayerSessionState';
 
 const useSkyWay = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const useSkyWay = () => {
       }
 
       peer.disconnect();
-      //peer.destroy();
+      // peer.destroy();
       dispatch({ type: 'CLOSE_PEER_CONNECTION' });
     };
   }, []);

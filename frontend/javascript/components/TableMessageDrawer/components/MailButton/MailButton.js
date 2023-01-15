@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
+
 import Badge from '@material-ui/core/Badge';
 import Fab from '@material-ui/core/Fab';
 import MailIcon from '@material-ui/icons/MailOutlined';
+import PropTypes from 'prop-types';
 
 const MailButton = ({ onClick }) => (
   <Badge badgeContent={0} color="secondary">

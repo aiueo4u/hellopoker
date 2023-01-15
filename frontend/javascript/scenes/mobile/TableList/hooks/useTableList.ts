@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { camelizeKeys } from 'humps';
 
 import { fetchTables } from 'api';
+import { camelizeKeys } from 'humps';
 
 export const useTableList = () => {
   const [tables, setTables] = useState([]);

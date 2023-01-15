@@ -16,7 +16,7 @@ const styles = theme => ({
     borderRadius: '4px',
   },
   statusCard: {
-    //border: '3px solid red', // TODO
+    // border: '3px solid red', // TODO
     height: '8px',
   },
 });

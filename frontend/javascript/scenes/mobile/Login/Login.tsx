@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Redirect } from 'react-router-dom';
 
 import { Box, Typography } from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 
 import { FacebookLoginButton } from 'components/button/FacebookLoginButton';
 import { TwitterLoginButton } from 'components/button/TwitterLoginButton';

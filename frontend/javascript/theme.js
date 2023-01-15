@@ -1,5 +1,5 @@
-import { createMuiTheme } from '@material-ui/core/styles';
 import { blue, red } from '@material-ui/core/colors';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const primary = {
   main: blue[500],

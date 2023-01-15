@@ -1,9 +1,10 @@
+import { dataReducer } from 'data/reducer';
+import tableMessageReducer from 'ducks/tableMessage';
+import webRTCReducer from 'ducks/webRTC';
+
 import { gameTableReducer, GameTableState, initialState as initialGameTableState } from 'services/reducers/gameTable';
 import { playersReducer } from 'services/reducers/players';
 import { roomViewerReducer } from 'services/reducers/roomViewer';
-import tableMessageReducer from 'ducks/tableMessage';
-import webRTCReducer from 'ducks/webRTC';
-import { dataReducer } from 'data/reducer';
 
 export type RootState = {
   data: any;

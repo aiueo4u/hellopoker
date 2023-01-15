@@ -5,7 +5,7 @@ export const useStyles = makeStyles((theme: any) => ({
     position: 'absolute',
     left: '50%',
     transform: 'translate(-50%, 0%)',
-    //border: '1px solid red',
+    // border: '1px solid red',
     [theme.breakpoints.up('sm')]: {
       top: 'calc(50% + 200px)',
       width: '240px',
@@ -16,6 +16,6 @@ export const useStyles = makeStyles((theme: any) => ({
       width: '80px',
       height: '100px',
     },
-    //border: `2px solid red`, // TODO
+    // border: `2px solid red`, // TODO
   },
 }));

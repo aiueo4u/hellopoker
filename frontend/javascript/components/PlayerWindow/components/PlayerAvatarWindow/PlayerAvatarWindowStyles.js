@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/styles';
 import { orange, red, yellow } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/styles';
 
 const styles = theme => ({
   '@keyframes onHeroTurnAvatarBlinkAnimation': {
@@ -97,7 +97,7 @@ const styles = theme => ({
   },
   videoContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    //border: `4px solid ${theme.palette.grey['500']}`,
+    // border: `4px solid ${theme.palette.grey['500']}`,
     width: '100%',
     height: '100%',
     maskImage: 'radial-gradient(circle, white 100%, black 100%)',

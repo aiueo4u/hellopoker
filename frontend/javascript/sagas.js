@@ -1,10 +1,11 @@
+import { tableMessageSaga } from 'ducks/tableMessage';
+import { webRTCSaga } from 'ducks/webRTC';
 import { camelizeKeys } from 'humps';
 import { eventChannel, END } from 'redux-saga';
 import { all, cancelled, call, fork, race, put, select, take, takeEvery } from 'redux-saga/effects';
 
 import { nameByActionType } from 'helpers/actionType';
-import { tableMessageSaga } from 'ducks/tableMessage';
-import { webRTCSaga } from 'ducks/webRTC';
+
 import { fetchCurrentUser, startToGameDealer, takeSeatToGameDealer, addNpcPlayer } from './api';
 
 function* handlePlayerTakeSeat(action) {
@@ -12,7 +13,7 @@ function* handlePlayerTakeSeat(action) {
 
   try {
     const response = yield call(takeSeatToGameDealer, tableId, playerId, seatNo, buyInAmount);
-    const data = response.data;
+    const { data } = response;
     yield put({
       type: 'PLAYER_ACTION_TAKE_SEAT_COMPLETED',
       tableId,
@@ -44,7 +45,7 @@ function* handleAddNpcPlayer(action) {
 function* handleFetchPlayer() {
   try {
     const response = yield call(fetchCurrentUser);
-    const data = response.data;
+    const { data } = response;
     const user = camelizeKeys(data);
     yield put({ type: 'FETCH_PLAYER_SUCCEEDED', ...user });
   } catch (error) {

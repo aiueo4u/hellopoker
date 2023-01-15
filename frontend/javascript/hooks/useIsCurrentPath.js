@@ -4,10 +4,9 @@ const useIsCurrentPath = to => {
   const location = useLocation();
   if (to === '/') {
     return location.pathname === to;
-  } else {
-    const regexp = new RegExp('^' + to);
-    return !!location.pathname.match(regexp);
   }
+  const regexp = new RegExp(`^${to}`);
+  return !!location.pathname.match(regexp);
 };
 
 export default useIsCurrentPath;

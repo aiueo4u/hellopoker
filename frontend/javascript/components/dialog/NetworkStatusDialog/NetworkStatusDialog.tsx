@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { Box, CircularProgress, Dialog, DialogTitle } from '@material-ui/core';
 
 export const NetworkStatusDialog = ({ isOpen }: { isOpen: boolean }) => {
