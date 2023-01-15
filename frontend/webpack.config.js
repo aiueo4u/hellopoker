@@ -178,31 +178,21 @@ module.exports = (env, argv) => {
   if (mode === 'development') {
     config.devtool = 'cheap-module-source-map';
     config.devServer = {
-      clientLogLevel: 'warning',
-      compress: true,
-      quiet: false,
-      disableHostCheck: true,
+      client: {
+        logging: 'warn',
+      },
       host: 'localhost',
       port: 3045,
-      https: false,
       hot: true,
-      contentBase: path.resolve(__dirname, '../public/webpacks'),
-      inline: true,
-      useLocalIp: false,
-      public: 'localhost:3045',
-      publicPath: '/webpacks/',
+      static: {
+        directory: path.resolve(__dirname, '../public/webpacks'),
+      },
+      headers: { 'Access-Control-Allow-Origin': '*' },
+
+      https: false,
       historyApiFallback: {
         disableDotRule: true,
       },
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      overlay: true,
-      stats: {
-        entrypoints: false,
-        errorDetails: false,
-        modules: false,
-        moduleTrace: false,
-      },
-      watchOptions: { ignored: '**/node_modules/**' },
     };
     config.module.rules.push({
       test: /\.(js|jsx)$/,
