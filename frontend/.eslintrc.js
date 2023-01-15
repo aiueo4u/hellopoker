@@ -24,7 +24,7 @@ module.exports = {
     sourceType: 'module',
   },
   parser: 'babel-eslint',
-  plugins: ['import', 'react', 'prettier', 'jsx-a11y', 'only-warn'],
+  plugins: ['import', 'react', 'prettier', 'jsx-a11y', 'only-warn', 'unused-imports'],
   rules: {
     'prettier/prettier': ERROR, // prettier拡張
     'no-var': ERROR, // var禁止
@@ -55,6 +55,11 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': OFF, // ラベルタグにテキストラベルと関連するコントロールがあることを強制する
     'jsx-a11y/media-has-caption': OFF,
     'jsx-a11y/no-static-element-interactions': OFF, // TODO: remove アクセシビリティレイヤー意外にインタラクティブなイベントの付与を強制する
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+    ],
   },
   settings: {
     react: { version: '16.8.1' },
