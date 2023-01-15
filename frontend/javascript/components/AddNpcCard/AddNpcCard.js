@@ -1,16 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
-import { makeStyles } from '@material-ui/styles';
 import PersonAddIcon from '@material-ui/icons/PersonAddOutlined';
+import { makeStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import useDialogState from 'hooks/useDialogState';
+
 import styles from './AddNpcCardStyles';
 
 const useStyles = makeStyles(styles);

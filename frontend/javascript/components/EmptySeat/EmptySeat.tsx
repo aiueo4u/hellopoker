@@ -8,7 +8,12 @@ import useDialogState from 'hooks/useDialogState';
 
 import { useEmptySeat } from './hooks/useEmptySeat';
 
-export const EmptySeat = ({ seatNo, tableId }: { seatNo: number; tableId: string }) => {
+type Props = {
+  seatNo: number;
+  tableId: string;
+};
+
+export const EmptySeat = React.memo(({ seatNo, tableId }: Props) => {
   const [isOpen, openDialog, closeDialog] = useDialogState();
   const { isSeated, isRoomViewer } = useEmptySeat();
 
@@ -28,4 +33,4 @@ export const EmptySeat = ({ seatNo, tableId }: { seatNo: number; tableId: string
       )}
     </div>
   );
-};
+});
