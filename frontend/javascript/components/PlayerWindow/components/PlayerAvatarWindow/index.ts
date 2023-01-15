@@ -1,0 +1,1 @@
+export { PlayerAvatarWindow } from './PlayerAvatarWindow';

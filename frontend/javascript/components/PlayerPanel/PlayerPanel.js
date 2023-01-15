@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import DealerButtonPlate from 'components/DealerButtonPlate';
 import MessageTooltip from 'components/MessageTooltip';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
-import PlayerWindow from 'components/PlayerWindow';
+import { PlayerWindow } from 'components/PlayerWindow';
 import PokerChip from 'components/PokerChip';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';

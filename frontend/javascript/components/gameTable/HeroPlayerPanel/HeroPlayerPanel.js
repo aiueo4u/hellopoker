@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { EmptySeat } from 'components/EmptySeat';
 import MessageTooltip from 'components/MessageTooltip';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
-import PlayerWindow from 'components/PlayerWindow';
+import { PlayerWindow } from 'components/PlayerWindow';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
