@@ -1,0 +1,1 @@
+export { EmptySeat } from './EmptySeat';
