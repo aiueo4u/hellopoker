@@ -1,13 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 
 import useBetAction from 'hooks/useBetAction';
-import usePlayersState from 'hooks/usePlayersState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
+import { usePlayersState } from 'hooks/usePlayersState';
 
 import useStyles from './ChipAmountControlContainerStyles';
 

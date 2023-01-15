@@ -1,15 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import PropTypes from 'prop-types';
 
-import EmptySeat from 'components/EmptySeat';
-
-import PlayerWindow from 'components/PlayerWindow';
-import PlayerMenuDialog from 'components/PlayerMenuDialog';
+import { EmptySeat } from 'components/EmptySeat';
 import MessageTooltip from 'components/MessageTooltip';
-
+import PlayerMenuDialog from 'components/PlayerMenuDialog';
+import PlayerWindow from 'components/PlayerWindow';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
@@ -22,7 +20,7 @@ const HeroPlayerPanel = ({ player, tableId }) => {
   const gameTable = useGameTableState();
   const { playerId } = usePlayerSessionState();
   const isTurn = player && player.seatNo === gameTable.currentSeatNo;
-  const isMe = player && player.id == playerId;
+  const isMe = player && player.id === playerId;
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
   const [isOpen, openDialog, closeDialog] = useDialogState();
   const classes = useStyles({ player });

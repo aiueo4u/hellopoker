@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import EmptySeat from 'components/EmptySeat';
+import { EmptySeat } from 'components/EmptySeat';
 import PlayerActions from 'components/PlayerActions';
 import useGameTableState from 'hooks/useGameTableState';
 import useIsMobile from 'hooks/useIsMobile';
@@ -8,7 +8,7 @@ import HeroPlayerPanel from 'components/gameTable/HeroPlayerPanel';
 
 import { useStyles } from './HeroSeatStyles';
 
-export const HeroSeat = ({ player, tableId }: { player: any; tableId: string; }) => {
+export const HeroSeat = ({ player, tableId }: { player: any; tableId: string }) => {
   const classes = useStyles();
   const { tournament } = useGameTableState();
   const { isMobile } = useIsMobile();

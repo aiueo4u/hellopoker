@@ -1,7 +1,8 @@
 import { useDispatch } from 'react-redux';
+
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
-import usePlayersState from 'hooks/usePlayersState';
+import { usePlayersState } from 'hooks/usePlayersState';
 
 const useBetAction = player => {
   const dispatch = useDispatch();
