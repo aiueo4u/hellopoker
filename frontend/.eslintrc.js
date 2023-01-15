@@ -1,5 +1,5 @@
 const OFF = 0;
-// const WARNING = 1;
+const WARNING = 1;
 const ERROR = 2;
 
 module.exports = {
@@ -33,6 +33,26 @@ module.exports = {
     'prefer-const': [ERROR, { destructuring: 'all' }], // 再代入を行わない変数はconstを利用
     'import/extensions': OFF,
     'import/no-unresolved': OFF, // 絶対パスでインポートする
+    'import/order': [
+      WARNING,
+      {
+        alphabetize: { order: 'asc' },
+        groups: ['builtin', 'external', 'internal', 'sibling', 'index'],
+        'newlines-between': 'always',
+        pathGroups: [
+          { pattern: 'assets/**/*', group: 'internal' },
+          { pattern: 'components/**/*', group: 'internal' },
+          { pattern: 'helpers/**/*', group: 'internal' },
+          { pattern: 'hooks/**/*', group: 'internal' },
+          { pattern: 'scenes/**/*', group: 'internal' },
+          { pattern: 'services/**/*', group: 'internal' },
+          { pattern: 'types/**/*', group: 'internal' },
+          { pattern: 'utils/**/*', group: 'internal' },
+          { pattern: 'react', group: 'builtin', position: 'before' },
+        ],
+        pathGroupsExcludedImportTypes: ['builtin', 'object'],
+      },
+    ],
     'import/prefer-default-export': OFF, // デフォルトエクスポートを優先して使用する
     'no-nested-ternary': OFF,
     'no-undef': [ERROR, { typeof: true }], // 未定義の変数は利用しない
