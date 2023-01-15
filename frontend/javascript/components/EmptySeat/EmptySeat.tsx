@@ -19,14 +19,19 @@ export const EmptySeat = React.memo(({ seatNo, tableId }: Props) => {
   const { isSeated, isRoomViewer } = useEmptySeat();
 
   if (isRoomViewer) return null;
-  if (isSeated) return <AddNpcCard tableId={tableId} seatNo={seatNo} />;
 
   return (
     <CenterBox>
-      <Button variant="outlined" onClick={openDialog}>
-        座る
-      </Button>
-      <BuyInDialog tableId={tableId} seatNo={seatNo} isOpen={isOpen} onClose={closeDialog} />
+      {isSeated ? (
+        <AddNpcCard tableId={tableId} seatNo={seatNo} />
+      ) : (
+        <div>
+          <Button variant="outlined" onClick={openDialog}>
+            座る
+          </Button>
+          <BuyInDialog tableId={tableId} seatNo={seatNo} isOpen={isOpen} onClose={closeDialog} />
+        </div>
+      )}
     </CenterBox>
   );
 });
