@@ -19,8 +19,9 @@
       "scenes/*": ["scenes/*"],
       "services/*": ["services/*"],
       "utils/*": ["utils/*"]
-    }
+    },
+    "outDir": "./dist"
   },
-  "include": ["**/*"],
+  "include": ["javascript"],
   "exclude": ["node_modules"]
 }
