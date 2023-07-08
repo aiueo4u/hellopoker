@@ -36,6 +36,7 @@ module HelloPoker
         s3_region: 'ap-northeast-1',
         s3_host_name: 's3-ap-northeast-1.amazonaws.com',
       },
+      s3_permissions: :private,
       s3_protocol: 'https',
     }
   end
