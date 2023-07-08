@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 
-import BuyInDialog from 'components/BuyInDialog';
+import { BuyInDialog } from 'components/BuyInDialog';
 import useDialogState from 'hooks/useDialogState';
 
 import usePlayerMenuDialog from './hooks/usePlayerMenuDialog';
