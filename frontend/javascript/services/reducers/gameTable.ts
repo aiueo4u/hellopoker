@@ -31,6 +31,7 @@ export type GameTableState = {
   boardCards: readonly any[];
   buyInAmount: string;
   buyInPlayerId: number | undefined;
+  currentSeatNo: number | null;
   dealtCards: readonly any[];
   gameHandCount: number;
   gameHandState: GameHandState | undefined;
@@ -53,6 +54,7 @@ export const initialState: GameTableState = {
   boardCards: [],
   buyInAmount: '',
   buyInPlayerId: undefined,
+  currentSeatNo: null,
   dealtCards: [],
   gameHandCount: 0,
   gameHandState: undefined,

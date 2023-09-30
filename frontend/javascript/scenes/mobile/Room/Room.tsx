@@ -3,7 +3,7 @@ import * as React from 'react';
 import Box from '@material-ui/core/Box';
 import { useRouteMatch } from 'react-router-dom';
 
-import Loading from 'components/Loading';
+import { Loading } from 'components/Loading';
 import MobilePlayerActions from 'components/MobilePlayerActions';
 import TableMessageDrawer from 'components/TableMessageDrawer';
 import { NetworkStatusDialog } from 'components/dialog/NetworkStatusDialog';

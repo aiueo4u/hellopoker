@@ -1,8 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import PropTypes from 'prop-types';
 
 import { EmptySeat } from 'components/EmptySeat';
 import MessageTooltip from 'components/MessageTooltip';
@@ -12,13 +11,20 @@ import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerActionTimer from 'hooks/usePlayerActionTimer';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
+import { Player } from 'types/player';
 
-import useStyles from './HeroPlayerPanelStyles';
-import usePlayAudioMyTurn from './hooks/usePlayAudioMyTurn';
+import { useStyles } from './HeroPlayerPanelStyles';
+import { usePlayAudioMyTurn } from './hooks/usePlayAudioMyTurn';
 
-const HeroPlayerPanel = ({ player, tableId }) => {
+type Props = {
+  player: Player;
+  tableId: string;
+};
+
+export const HeroPlayerPanel = ({ player, tableId }: Props) => {
   const gameTable = useGameTableState();
   const { playerId } = usePlayerSessionState();
+
   const isTurn = player && player.seatNo === gameTable.currentSeatNo;
   const isMe = player && player.id === playerId;
   const { remainTimePercentage } = usePlayerActionTimer(player, gameTable);
@@ -26,7 +32,7 @@ const HeroPlayerPanel = ({ player, tableId }) => {
   const classes = useStyles({ player });
 
   // 自分の番が来たら音がなる
-  usePlayAudioMyTurn(isTurn && isMe);
+  usePlayAudioMyTurn({ isTurn: isTurn && isMe });
 
   if (!player || !player.id) {
     return (
@@ -44,11 +50,13 @@ const HeroPlayerPanel = ({ player, tableId }) => {
         </Box>
 
         {/* プレイヤーのアバターorビデオ */}
-        <PlayerWindow tableId={tableId} player={player} isTurn={isTurn} />
+        <PlayerWindow player={player} isTurn={isTurn} />
 
         {/* プレイヤーの残り時間 */}
         <div className={classes.statusCard} onClick={openDialog}>
-          {isTurn && remainTimePercentage > 0 && <LinearProgress variant="determinate" value={remainTimePercentage} />}
+          {isTurn && remainTimePercentage && remainTimePercentage > 0 && (
+            <LinearProgress variant="determinate" value={remainTimePercentage} />
+          )}
         </div>
       </div>
 
@@ -56,10 +64,3 @@ const HeroPlayerPanel = ({ player, tableId }) => {
     </>
   );
 };
-
-HeroPlayerPanel.propTypes = {
-  tableId: PropTypes.string.isRequired,
-  player: PropTypes.object.isRequired,
-};
-
-export default HeroPlayerPanel;

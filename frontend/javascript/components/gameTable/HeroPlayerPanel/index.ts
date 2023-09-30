@@ -1,0 +1,1 @@
+export { HeroPlayerPanel } from './HeroPlayerPanel';

@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-const usePlayAudioMyTurn = isTurn => {
-  const audio = useSelector(state => state.data.audio);
+type Props = { isTurn: boolean };
+
+export const usePlayAudioMyTurn = ({ isTurn }: Props) => {
+  const audio = useSelector((state: any) => state.data.audio);
 
   useEffect(() => {
     if (!isTurn) return;
@@ -12,5 +14,3 @@ const usePlayAudioMyTurn = isTurn => {
     audio.audioMyTurn.play();
   }, [isTurn]);
 };
-
-export default usePlayAudioMyTurn;

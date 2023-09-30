@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Loading from 'components/Loading';
+import { Loading } from 'components/Loading';
 import PrivateRoute from 'components/PrivateRoute';
 import TopNavigation from 'components/navigation/desktop/TopNavigation';
 import useAdjustWindow from 'hooks/useAdjustWindow';

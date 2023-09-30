@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 
-import Loading from 'components/Loading';
+import { Loading } from 'components/Loading';
 import CreateTournamentFormDialog from 'components/tournament/CreateTournamentFormDialog';
 import useDialogState from 'hooks/useDialogState';
 import useTournamentList from 'hooks/useTournamentList';

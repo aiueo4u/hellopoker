@@ -1,7 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
-  container: ({ player }) => ({
+import { Player } from 'types/player';
+
+export const useStyles = makeStyles((theme: any) => ({
+  container: ({ player }: { player: Player }) => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -19,6 +21,4 @@ const styles = theme => ({
     // border: '3px solid red', // TODO
     height: '8px',
   },
-});
-
-export default makeStyles(styles);
+}));
