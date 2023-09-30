@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Button from '@material-ui/core/Button';
 
-import AddNpcCard from 'components/AddNpcCard';
+import { AddNpcCard } from 'components/AddNpcCard';
 import { BuyInDialog } from 'components/BuyInDialog';
 import { CenterBox } from 'components/utils/CenterBox';
 import useDialogState from 'hooks/useDialogState';

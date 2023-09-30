@@ -111,6 +111,7 @@ module.exports = {
         ],
         '@typescript-eslint/no-unused-vars': ['error', { args: 'none' }],
         'react/prop-types': 'off',
+        'react/require-default-props': 'off',
       },
     },
   ],

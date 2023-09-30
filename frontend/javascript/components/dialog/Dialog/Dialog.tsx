@@ -11,15 +11,15 @@ type Props = {
   onClose: any;
   onSubmit: any;
   title: string;
-  children: React.ReactNode;
   submitButtonLabel: string;
+  children?: React.ReactNode | null;
 };
 
-export const Dialog = ({ isOpen, onClose, onSubmit, title, children, submitButtonLabel }: Props) => {
+export const Dialog = ({ isOpen, onClose, onSubmit, title, submitButtonLabel, children = null }: Props) => {
   return (
     <MuiDialog open={isOpen} onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>
-      <DialogContent>{children}</DialogContent>
+      {children && <DialogContent>{children}</DialogContent>}
       <DialogActions>
         <Button onClick={onClose}>キャンセル</Button>
         <Button variant="contained" color="primary" onClick={onSubmit}>
