@@ -1,0 +1,1 @@
+render 'api/resources/player', player: @player

@@ -1,0 +1,6 @@
+{
+    id: player.id,
+    player_id: player.id,
+    name: player.name,
+    profile_image_url: player.profile_image_url,
+}

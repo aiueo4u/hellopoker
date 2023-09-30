@@ -2,10 +2,9 @@ source 'https://rubygems.org'
 ruby '3.0.4'
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
-
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0'
@@ -36,43 +35,46 @@ gem 'redis', '~> 3.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'aws-sdk-s3'
-gem 'rack-cors'
-gem 'ridgepole'
+gem 'bootsnap'
+gem 'bootstrap'
+gem 'browser'
+gem 'config'
+gem 'dotenv-rails'
+gem 'jb'
+gem 'jquery-rails'
 gem 'jwt'
+gem 'koala'
 gem 'omniauth'
-gem 'omniauth-twitter'
 gem 'omniauth-facebook'
-gem "omniauth-rails_csrf_protection"
+gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-twitter'
+gem 'paperclip', '~> 6.0.0'
+gem 'rack-cors'
 gem 'rack-health'
 gem 'rack-proxy', require: false
-gem 'bootstrap'
-gem 'jquery-rails'
+gem 'ridgepole'
 gem 'slim'
-gem 'config'
-gem 'bootsnap'
-gem "paperclip", "~> 6.0.0"
-gem 'koala'
-gem 'browser'
-gem 'dotenv-rails'
 gem 'webrick'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'factory_bot_rails'
   gem 'pry'
   gem 'rspec-rails'
-  gem 'factory_bot_rails'
+  gem 'rubocop', '~> 1.56'
+  gem 'rubocop-rspec', '~> 2.24'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'listen'
-  gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'guard'
   gem 'guard-rspec'
+  gem 'listen'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :test do

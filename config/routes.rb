@@ -4,10 +4,10 @@ Rails.application.routes.draw do
   get '/', to: 'home#index'
   get '/login', to: 'home#index'
   resources :tables, to: 'home#index'
-  resources :tournaments, only: %i(index show),  to: 'home#index'
+  resources :tournaments, only: %i(index show), to: 'home#index'
   get '/settings', to: 'home#index'
 
-  namespace :api do
+  namespace :api, format: 'json' do
     resources :tests, only: %i(create)
     resource :session, only: %i(create destroy)
     resources :players, only: %i(show update)

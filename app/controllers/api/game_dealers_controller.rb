@@ -15,6 +15,7 @@ class Api::GameDealersController < Api::ApplicationController
     command = CreateTablePlayerCommand.run(
       table_id: params[:table_id].to_i,
       current_player_id: current_player.id,
+
       seat_no: params[:seat_no].to_i,
       amount: params[:buy_in_amount].to_i,
     )
@@ -29,6 +30,8 @@ class Api::GameDealersController < Api::ApplicationController
       seat_no: params[:seat_no].to_i,
       npc_type: NpcPlayer.profile_by_npc_type.keys.sample,
     )
+
+    # コマンドが成功したら201、失敗したら400を返す
     head command.success? ? :created : :bad_request
   end
 
@@ -46,8 +49,8 @@ class Api::GameDealersController < Api::ApplicationController
   def retry_npc_player_action
     game_hand = GameManager.new(params[:table_id]).game_hand
     table_player = game_hand.current_seat_table_player
-    if table_player.auto_play?
-      NpcPlayerJob.perform_later(table_player.table_id, table_player.player_id)
-    end
+    return unless table_player.auto_play?
+
+    NpcPlayerJob.perform_later(table_player.table_id, table_player.player_id)
   end
 end
