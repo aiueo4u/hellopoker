@@ -1,7 +1,7 @@
+import { makeStyles } from '@material-ui/core';
 import { orange } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/styles';
 
-const styles = theme => ({
+export const useChipAmountControlContainerStyles = makeStyles((theme: any) => ({
   button: {
     backgroundColor: orange[700],
     color: theme.palette.common.white,
@@ -22,6 +22,4 @@ const styles = theme => ({
     // alignItems: 'center',
     // justifyContent: 'space-around',
   },
-});
-
-export default makeStyles(styles);
+}));

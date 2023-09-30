@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 
-import ChipAmountControlContainer from 'components/ChipAmountControlContainer';
+import { ChipAmountControlContainer } from 'components/ChipAmountControlContainer';
 import useActions from 'hooks/useActions';
 import useDialogState from 'hooks/useDialogState';
 import useGameTableState from 'hooks/useGameTableState';

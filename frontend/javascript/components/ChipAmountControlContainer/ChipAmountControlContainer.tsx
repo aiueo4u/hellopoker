@@ -1,21 +1,26 @@
-import React from 'react';
+import * as React from 'react';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import PropTypes from 'prop-types';
 
 import useBetAction from 'hooks/useBetAction';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';
 import { usePlayersState } from 'hooks/usePlayersState';
 
-import useStyles from './ChipAmountControlContainerStyles';
+import { useChipAmountControlContainerStyles } from './hooks/useChipAmountControlContainerStyles';
 
-const ChipAmountControlContainer = ({ betButton, resetButton, closeButton }) => {
-  const classes = useStyles();
+type Props = {
+  betButton: React.ReactNode;
+  resetButton: React.ReactNode;
+  closeButton: React.ReactNode;
+};
+
+export const ChipAmountControlContainer = ({ betButton, resetButton, closeButton }: Props) => {
+  const classes = useChipAmountControlContainerStyles();
   const players = usePlayersState();
   const session = usePlayerSessionState();
-  const player = players.find(player => player.id === session.playerId);
+  const player = players.find(p => p.id === session.playerId);
 
   const { allinBetAmount, increment, oneThirdPotAmount, potBetAmount, setBetAmount } = useBetAction(player);
 
@@ -78,11 +83,3 @@ const ChipAmountControlContainer = ({ betButton, resetButton, closeButton }) => 
     </Box>
   );
 };
-
-ChipAmountControlContainer.propTypes = {
-  betButton: PropTypes.object.isRequired,
-  resetButton: PropTypes.object.isRequired,
-  closeButton: PropTypes.object.isRequired,
-};
-
-export default ChipAmountControlContainer;

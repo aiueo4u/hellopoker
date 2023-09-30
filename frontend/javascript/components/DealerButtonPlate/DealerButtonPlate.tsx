@@ -1,11 +1,11 @@
-import React from 'react';
+import * as React from 'react';
 
 import { Grid, Typography } from '@material-ui/core';
 
-import useStyles from './DealerButtonPlateStyles';
+import { useDealerButtonPlateStyles } from './hooks/useDealerButtonPlateStyles';
 
-const DealerButtonPlate = () => {
-  const classes = useStyles();
+export const DealerButtonPlate = () => {
+  const classes = useDealerButtonPlateStyles();
 
   return (
     <Grid container className={classes.plate} direction="column" justify="center">
@@ -15,5 +15,3 @@ const DealerButtonPlate = () => {
     </Grid>
   );
 };
-
-export default DealerButtonPlate;

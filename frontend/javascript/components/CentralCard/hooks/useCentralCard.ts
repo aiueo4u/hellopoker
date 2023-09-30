@@ -2,7 +2,7 @@ import { startTournament } from 'api';
 
 import useGameTableState from 'hooks/useGameTableState';
 
-const useCentralCard = () => {
+export const useCentralCard = () => {
   const gameTable = useGameTableState();
 
   const onClickStartTournament = async () => {
@@ -12,5 +12,3 @@ const useCentralCard = () => {
 
   return { onClickStartTournament };
 };
-
-export default useCentralCard;

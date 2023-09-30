@@ -3,7 +3,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 
-import DealerButtonPlate from 'components/DealerButtonPlate';
+import { DealerButtonPlate } from 'components/DealerButtonPlate';
 import PokerChip from 'components/PokerChip';
 import useGameTableState from 'hooks/useGameTableState';
 import usePlayerSessionState from 'hooks/usePlayerSessionState';

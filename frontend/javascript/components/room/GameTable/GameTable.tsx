@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import CentralCard from 'components/CentralCard';
+import { CentralCard } from 'components/CentralCard';
 import PlayerChipBetArea from 'components/PlayerChipBetArea';
 
 import { useStyles } from './GameTableStyles';

@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+export const useDealerButtonPlateStyles = makeStyles((theme: any) => ({
   plate: {
     width: '24px',
     margin: '0 auto',
@@ -12,6 +12,4 @@ const styles = theme => ({
   label: {
     lineHeight: '24px',
   },
-});
-
-export default makeStyles(styles);
+}));

@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core';
 
-const styles = theme => ({
+export const useStyles = makeStyles((theme: any) => ({
   blindInformation: {
     fontSize: theme.typography.body4.fontSize,
   },
@@ -66,6 +66,4 @@ const styles = theme => ({
     },
     // border: '1px solid yellow',
   },
-});
-
-export default makeStyles(styles);
+}));

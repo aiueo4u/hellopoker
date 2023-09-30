@@ -6,7 +6,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 
-import DealerButtonPlate from 'components/DealerButtonPlate';
+import { DealerButtonPlate } from 'components/DealerButtonPlate';
 import MessageTooltip from 'components/MessageTooltip';
 import PlayerMenuDialog from 'components/PlayerMenuDialog';
 import { PlayerWindow } from 'components/PlayerWindow';

@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 
-const useGameStartCountdown = count => {
+type Props = { count: number };
+
+export const useGameStartCountdown = ({ count }: Props) => {
   const [remain, setRemain] = useState(count);
 
   useEffect(() => {
-    let refId = null;
+    let refId: number | null = null;
     if (remain > 0) {
       refId = setTimeout(() => {
         setRemain(remain - 1);
       }, 1000);
     }
     return () => {
-      clearTimeout(refId);
+      if (refId) clearTimeout(refId);
     };
   }, [remain]);
 
   return remain;
 };
-
-export default useGameStartCountdown;

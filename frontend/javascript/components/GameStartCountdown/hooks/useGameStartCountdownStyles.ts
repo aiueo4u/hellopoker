@@ -1,6 +1,6 @@
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core';
 
-const styles = theme => ({
+export const useGameStartCountdownStyles = makeStyles((theme: any) => ({
   container: {
     position: 'absolute',
     top: '20px',
@@ -19,6 +19,4 @@ const styles = theme => ({
     color: 'orange',
     width: '24px',
   },
-});
-
-export default makeStyles(styles);
+}));

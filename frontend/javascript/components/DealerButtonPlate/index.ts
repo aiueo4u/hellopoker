@@ -1,0 +1,1 @@
+export { DealerButtonPlate } from './DealerButtonPlate';
